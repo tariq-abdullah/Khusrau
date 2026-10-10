@@ -1,0 +1,5 @@
+from pathlib import Path
+p=Path('src/App.vue');s=p.read_text(encoding='utf-8');s=s.replace('let timer,drag=null,suspend=false,measure=null','let timer,drag=null,suspend=false,measure=null,saveEpoch=0').replace('function scheduleSave(){dirty.value=true;', 'function scheduleSave(){saveEpoch++;dirty.value=true;').replace('function autosave(){try{const d=snapshot();','function autosave(){try{const stamp=saveEpoch,d=snapshot();').replace(".then(()=>{dirty.value=false;if(!exporting.value)",".then(()=>{if(stamp===saveEpoch)dirty.value=false;if(!exporting.value)")
+s=s.replace("let current=documents.value.find(d=>d.title===title.value);", "let current=documents.value.find(d=>d.id===activeDocument.value)||documents.value.find(d=>d.title===title.value);")
+s=s.replace("if(importMode){editor.value.chain().focus().insertContent(d.content.content).run()}", "if(importMode){const content=nativeParsed?nativeParsed.paragraphs.map(t=>({type:'paragraph',content:t?[{type:'text',text:t}]:[]})):d.content.content;editor.value.chain().focus().insertContent(content).run()}")
+p.write_text(s,encoding='utf-8')

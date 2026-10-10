@@ -1,0 +1,48 @@
+[
+  {
+    "file": "AboutFaiz.inp",
+    "streams": [
+      {
+        "path": "*PPicts1bc363f",
+        "bytes": 1927085,
+        "prefixHex": "ffd8ffe000104a4649460001010100c800c80000ffdb00430001010101010101",
+        "sha256": "d5f1c2835474a30fe1bbf8d402184eef0f256bd75f656f9ecbd89fe0a61202dc"
+      },
+      {
+        "path": "DocumentInfo",
+        "bytes": 1316,
+        "prefixHex": "0000000000000000000000000000000000000000000000000000000000000000",
+        "sha256": "5bc633d52bc4345c9cc4ea7cf49422a85a9fe401faf3239ef72b53aa0dd667ee"
+      },
+      {
+        "path": "InPage300",
+        "bytes": 41920,
+        "prefixHex": "640003000100000000000000000000000000a60c00000100a60c00000200a60c",
+        "sha256": "380e7c9cf487c18e6dcc13d81bc76346888215311899c6951d02dc4a9d44529f"
+      },
+      {
+        "path": "PPicts2bc7458",
+        "bytes": 1927085,
+        "prefixHex": "ffd8ffe000104a4649460001010100c800c80000ffdb00430001010101010101",
+        "sha256": "d5f1c2835474a30fe1bbf8d402184eef0f256bd75f656f9ecbd89fe0a61202dc"
+      }
+    ]
+  },
+  {
+    "file": "Symbols.inp",
+    "streams": [
+      {
+        "path": "DocumentInfo",
+        "bytes": 1316,
+        "prefixHex": "0000000000000000000000000000000000000000000000000000000000000000",
+        "sha256": "5bc633d52bc4345c9cc4ea7cf49422a85a9fe401faf3239ef72b53aa0dd667ee"
+      },
+      {
+        "path": "InPage300",
+        "bytes": 43748,
+        "prefixHex": "6400030001000000000000000000000000006426000001006426000002006426",
+        "sha256": "2ce9fa5e4223058e5a1a5c5569c8309826d6f6c37cb2119056768aa398844a02"
+      }
+    ]
+  }
+]

@@ -1,0 +1,564 @@
+[
+  {
+    "group": "File",
+    "label": "New…",
+    "status": "dialog",
+    "title": "New document",
+    "text": "New document\n\nCreate a new document in another tab.\n\nSave current documentCreate document\nClose"
+  },
+  {
+    "group": "File",
+    "label": "Close",
+    "status": "dialog",
+    "title": "Close document",
+    "text": "Close document\n\nClose the current document? A recovery copy will be kept on this device.\n\nSave current documentClose document\nClose"
+  },
+  {
+    "group": "File",
+    "label": "Save As…",
+    "status": "dialog",
+    "title": "Save As",
+    "text": "Save As\nDocument name\n\nSaved as an .ipdoc file. Native export preserves the original layout. Same-length Unicode text edits are experimental; new native layouts are not supported.\n\nSave\nClose"
+  },
+  {
+    "group": "File",
+    "label": "Exit",
+    "status": "dialog",
+    "title": "Close workspace",
+    "text": "Close workspace\n\nClose the current document? A recovery copy will be kept on this device.\n\nSave current documentClose document\nClose"
+  },
+  {
+    "group": "Edit",
+    "label": "Paste Special…",
+    "status": "dialog",
+    "title": "Paste Special",
+    "text": "Paste Special\n\nPaste Unicode text below. Formatting is removed.\n\nApply\nClose"
+  },
+  {
+    "group": "Edit",
+    "label": "Find and Replace…",
+    "status": "dialog",
+    "title": "Find and Replace",
+    "text": "Find and Replace\nFind\nReplace with\nMatch case\nFind next\nReplace\nReplace all\n\nSaved on this device\n\nClose"
+  },
+  {
+    "group": "Edit",
+    "label": "Story Editor",
+    "status": "dialog",
+    "title": "Story Editor",
+    "text": "Story Editor\n\nEdits the current page as plain text. Applying this replaces its rich formatting.\n\nApply\nClose"
+  },
+  {
+    "group": "Edit",
+    "label": "Delete Page…",
+    "status": "dialog",
+    "title": "Delete Page",
+    "text": "Delete Page\n\nDelete page 1 and its objects? The remaining pages will be retained.\n\nDelete page\nClose"
+  },
+  {
+    "group": "Edit",
+    "label": "Preferences…",
+    "status": "dialog",
+    "title": "Preferences",
+    "text": "Preferences\nKeyboard\nUrdu phonetic\nSystem keyboard\nBrowser spelling check\nDocument name\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Character…",
+    "status": "dialog",
+    "title": "Character",
+    "text": "Character\nNormal\nHeading 1\nHeading 2\nHeading 3\nQuote\nArial\nTimes New Roman\nGeorgia\nCourier New\nTahoma\nB\nI\nUrdu\nEnglish\nArabic\nPersian\nNoto Nastaliq Urdu\nArial\nTimes New Roman\n■ Black\n■ White\n■ Red\n■ Green\n■ Blue\n■ Yellow\nNone\nSingle\nDouble\nOverline\nBox\nK-None\nK-Special\nK-Other\n\nSelect text before applying character formatting. Changes apply immediately.\n\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Paragraph…",
+    "status": "dialog",
+    "title": "Paragraph",
+    "text": "Paragraph\nSpace before (pt)\nSpace after (pt)\nFirst-line indent (mm)\nleft\ncenter\nright\njustify\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Hyphenation…",
+    "status": "dialog",
+    "title": "Hyphenation",
+    "text": "Hyphenation\nAutomatic browser hyphenation\n\nUses the browser's language dictionary. Urdu dictionary availability depends on the browser.\n\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Borders…",
+    "status": "dialog",
+    "title": "Borders",
+    "text": "Borders\nBorder width (pt)\nBorder color\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Tabs…",
+    "status": "dialog",
+    "title": "Tabs",
+    "text": "Tabs\nTab width (spaces)\n\nTab inserts a tab character in document text.\n\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Sort Text…",
+    "status": "dialog",
+    "title": "Sort Text",
+    "text": "Sort Text\nParagraph order\nAscending\nDescending\n\nSorts ordinary paragraphs on this page using Urdu collation, preserving their formatting.\n\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Document…",
+    "status": "dialog",
+    "title": "Document",
+    "text": "Document\nPaper\nA4\nLetter\nMargins (mm)\nColumns\nColumn gap (mm)\n\nPages are managed manually using Insert → Page and the page navigator.\n\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Guides…",
+    "status": "dialog",
+    "title": "Guides",
+    "text": "Guides\nSnap grid (px)\nSnap objects to grid\nShow guides\nLock guides\n\nDrag from the top or side ruler to create a guide. Drag a guide off the page to remove it. Margin guides are set in Document → Margins.\n\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Style Sheets…",
+    "status": "dialog",
+    "title": "Style Sheets",
+    "text": "Style Sheets\nNormal\nHeading 1\nHeading 2\nHeading 3\nQuote\n\nApplies the selected style to the current paragraph.\n\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Define Colors…",
+    "status": "dialog",
+    "title": "Define Colors",
+    "text": "Define Colors\nBlack\nWhite\nRed\nGreen\nBlue\nYellow\nColor name\nColor\nAdd color\nClose"
+  },
+  {
+    "group": "Insert",
+    "label": "Date & Time…",
+    "status": "dialog",
+    "title": "Date & Time",
+    "text": "Date & Time\nInsert\nDate\nTime\nDate and time\nApply\nClose"
+  },
+  {
+    "group": "Insert",
+    "label": "Page…",
+    "status": "dialog",
+    "title": "Insert Page",
+    "text": "Insert Page\nPages to add after this page\nApply\nClose"
+  },
+  {
+    "group": "Insert",
+    "label": "Page Number…",
+    "status": "dialog",
+    "title": "Page Number",
+    "text": "Page Number\nPage number\n\nInserts the number at the text cursor.\n\nApply\nClose"
+  },
+  {
+    "group": "Insert",
+    "label": "Table…",
+    "status": "dialog",
+    "title": "Insert Table",
+    "text": "Insert Table\nRows\nColumns\n\nThe first row is a header row.\n\nApply\nClose"
+  },
+  {
+    "group": "Insert",
+    "label": "Index Entry…",
+    "status": "dialog",
+    "title": "Index Entry",
+    "text": "Index Entry\nIndex term\n\nAdds an entry referring to page 1.\n\nApply\nClose"
+  },
+  {
+    "group": "Insert",
+    "label": "Footnote…",
+    "status": "dialog",
+    "title": "Footnote",
+    "text": "Footnote\nFootnote\nApply\nClose"
+  },
+  {
+    "group": "Utilities",
+    "label": "Spelling…",
+    "status": "dialog",
+    "title": "Spelling",
+    "text": "Spelling\n\nEnable the browser's spelling checker for the current language. It underlines recognized errors in editable text; suggestions are available from the browser's context menu.\n\nAn Urdu dictionary is not bundled yet.\n\nApply\nClose"
+  },
+  {
+    "group": "Utilities",
+    "label": "Word Count",
+    "status": "dialog",
+    "title": "Word Count",
+    "text": "Word Count\nWords\n0\nPages\n1\nPage objects\n0\nCharacters on this page\n0\nClose"
+  },
+  {
+    "group": "Utilities",
+    "label": "Auto Index…",
+    "status": "dialog",
+    "title": "Auto Index",
+    "text": "Auto Index\n\nEnter one term per line. All pages are searched for these terms.\n\nApply\nClose"
+  },
+  {
+    "group": "Utilities",
+    "label": "Symbols…",
+    "status": "dialog",
+    "title": "Symbols",
+    "text": "Symbols\n﷽\nﷺ\nؑ\nؓ\nؒ\n۞\n۩\n٭\n،\n؛\n؟\nـ\nء\nً\nٌ\nٍ\nَ\nُ\nِ\nّ\nْ\n٪\n۰\n۱\n۲\n۳\n۴\n۵\n۶\n۷\n۸\n۹\n©\n®\n™\n•\n—\n\nClick a symbol to insert at the text cursor.\n\nClose"
+  },
+  {
+    "group": "Window",
+    "label": "Cascade",
+    "status": "dialog",
+    "title": "Document List",
+    "text": "Document List\nUntitled-1 — 1 page(s)\nسلام دنیا\nToolbar Demo — 2 page(s)\nUntitled-3 — 1 page(s)\nRunaround Demo — 1 page(s)\nاردو زبان میں اشاعت کے لیے یہ تجرباتی دستاویز ہے۔ تصویر اور گرافک باکس کے کنارے متن اپنی جگہ بدلتا ہے اور باکس کے نیچے دوبارہ پوری سطر استعمال کرتا ہے۔ اردو زبان میں اشاعت کے لیے یہ تجرباتی دستاویز ہے\nObject Context Demo — 2 page(s)\nاردو زبان میں اشاعت کے لیے یہ تجرباتی دستاویز ہے۔ تصویر اور گرافک باکس کے کنارے متن اپنی جگہ بدلتا ہے اور باکس کے نیچے دوبارہ پوری سطر استعمال کرتا ہے۔ اردو زبان میں اشاعت کے لیے یہ تجرباتی دستاویز ہے\nAboutFaiz — 4 page(s)\nUntitled-7 — 1 page(s)\n\nSaved on this device\n\nClose"
+  },
+  {
+    "group": "Window",
+    "label": "Tile",
+    "status": "dialog",
+    "title": "Document List",
+    "text": "Document List\nUntitled-1 — 1 page(s)\nسلام دنیا\nToolbar Demo — 2 page(s)\nUntitled-3 — 1 page(s)\nRunaround Demo — 1 page(s)\nاردو زبان میں اشاعت کے لیے یہ تجرباتی دستاویز ہے۔ تصویر اور گرافک باکس کے کنارے متن اپنی جگہ بدلتا ہے اور باکس کے نیچے دوبارہ پوری سطر استعمال کرتا ہے۔ اردو زبان میں اشاعت کے لیے یہ تجرباتی دستاویز ہے\nObject Context Demo — 2 page(s)\nاردو زبان میں اشاعت کے لیے یہ تجرباتی دستاویز ہے۔ تصویر اور گرافک باکس کے کنارے متن اپنی جگہ بدلتا ہے اور باکس کے نیچے دوبارہ پوری سطر استعمال کرتا ہے۔ اردو زبان میں اشاعت کے لیے یہ تجرباتی دستاویز ہے\nAboutFaiz — 4 page(s)\nUntitled-7 — 1 page(s)\n\nSaved on this device\n\nClose"
+  },
+  {
+    "group": "Window",
+    "label": "Document list…",
+    "status": "dialog",
+    "title": "Document List",
+    "text": "Document List\nUntitled-1 — 1 page(s)\nToolbar Demo — 2 page(s)\nUntitled-3 — 1 page(s)\nRunaround Demo — 1 page(s)\nObject Context Demo — 2 page(s)\nAboutFaiz — 4 page(s)\nUntitled-7 — 1 page(s)\n\nSaved on this device\n\nClose"
+  },
+  {
+    "group": "Help",
+    "label": "Help Topics…",
+    "status": "dialog",
+    "title": "Help Topics",
+    "text": "Help Topics\n\nUse the hand tool to edit text, or select a frame/drawing tool and drag on the page. The arrow tool moves objects; its corner handle resizes them. Shift-click selects more than one object.\n\nThe rotation tool rotates objects by dragging. The linking tool connects two ordinary text frames; overflowing text flows to the second. F2 opens the complete story. Unlink disconnects a chain.\n\nInsert → Page adds pages. Format → Object changes dimensions, color and text columns. Format → Document changes margins and columns. Right-click text for browser spelling suggestions.\n\nCtrl+1…5 selects the first five tools. F5 fits the page; F6/F7/F8 select 50/100/200% zoom. F9 toggles snapping.\n\nClose"
+  },
+  {
+    "group": "Help",
+    "label": "Keyboard Layout…",
+    "status": "dialog",
+    "title": "Keyboard Layout",
+    "text": "Keyboard Layout\n\nPhonetic input uses Latin keys while the language is Urdu, Arabic or Persian. Ctrl+Space toggles Urdu/English.\n\na ا\nb ب\nc چ\nd د\ne ع\nf ف\ng گ\nh ھ\ni ی\nj ج\nk ک\nl ل\nm م\nn ن\no ہ\np پ\nq ق\nr ر\ns س\nt ت\nu ء\nv ط\nw و\nx ش\ny ے\nz ز\nA آ\nB بھ\nC ث\nD ڈ\nE ٰ\nF ّ\nG غ\nH ح\nI ِ\nJ ض\nK خ\nL ل\nM ں\nN ں\nO ۃ\nP ُ\nQ ص\nR ڑ\nS ص\nT ٹ\nU ئ\nV ظ\nW ؤ\nX ژ\nY َ\nZ ذ\n, ،\n? ؟\n; ؛\nClose"
+  },
+  {
+    "group": "Help",
+    "label": "About inpage.net…",
+    "status": "dialog",
+    "title": "About inpage.net",
+    "text": "About inpage.net\n\ninpage.net 0.2 — independent Urdu publishing editor\n\nUnicode text, manual pages, drawing objects, linked text frames, tables, picture frames, typography controls, index/contents generation and local document files.\n\nUses Noto Nastaliq Urdu. The installed Noori/Lahori legacy font encoding and native .inp format are still under development. Kashida controls currently insert Unicode elongation characters; they do not reproduce InPage's font-specific shaping.\n\nBrowser pagination, typography, spell checking and some window behavior differ from the installed InPage application.\n\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Object…",
+    "status": "dialog",
+    "text": "Object\nX (px)\nY (px)\nWidth (px)\nHeight (px)\nRotation (°)\nStroke width\nFill\nNone\nBlack\nWhite\nRed\nGreen\nBlue\nYellow\nStroke\nText size (pt)\nText columns\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Runaround…",
+    "status": "dialog",
+    "text": "Runaround\nText runaround\nNone\nBox runaround\nShape runaround\nAbove and below\nText on right\nText on left\nLeft offset (mm)\nTop offset (mm)\nRight offset (mm)\nBottom offset (mm)\n\nText follows the available side of the object and resumes at full width below it. Shape runaround follows ellipse contours.\n\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Inset…",
+    "status": "dialog",
+    "text": "Inset\nText inset (px)\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Master Page Objects…",
+    "status": "dialog",
+    "text": "Master Page Objects\nRepeat selected objects on every page\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Table Format…",
+    "status": "dialog",
+    "text": "Table Format\nSelected-cell background\nNone\nBlack\nWhite\nRed\nGreen\nBlue\nYellow\nToggle header rowToggle header column\nApply\nClose"
+  },
+  {
+    "group": "Format",
+    "label": "Table Layout…",
+    "status": "dialog",
+    "text": "Table Layout\nRow before\nRow after\nColumn before\nColumn after\nDelete row\nDelete column\nMerge selected cells\nSplit cell\nSplit table at current row\nClose"
+  },
+  {
+    "group": "View",
+    "label": "50%",
+    "status": "clicked"
+  },
+  {
+    "group": "View",
+    "label": "Actual",
+    "status": "clicked"
+  },
+  {
+    "group": "View",
+    "label": "200%",
+    "status": "clicked"
+  },
+  {
+    "group": "View",
+    "label": "Facing Pages",
+    "status": "clicked"
+  },
+  {
+    "group": "View",
+    "label": "Hide Ribbon",
+    "status": "clicked"
+  },
+  {
+    "group": "View",
+    "label": "Hide Tools",
+    "status": "clicked"
+  },
+  {
+    "group": "View",
+    "label": "Hide Rulers",
+    "status": "clicked"
+  },
+  {
+    "group": "View",
+    "label": "Hide Guides",
+    "status": "clicked"
+  },
+  {
+    "group": "View",
+    "label": "Show Invisibles",
+    "status": "clicked"
+  },
+  {
+    "group": "View",
+    "label": "Show Index Entries",
+    "status": "clicked"
+  },
+  {
+    "group": "View",
+    "label": "Snap To Guides",
+    "status": "clicked"
+  },
+  {
+    "group": "Help",
+    "label": "Short Cuts…",
+    "status": "dialog",
+    "text": "Short Cuts\nNew…\nCtrl+N\nOpen…\nCtrl+O\nClose\nCtrl+F4\nSave…\nCtrl+S\nSave As…\nCtrl+Alt+S\nImport…\nCtrl+Y\nExport All Text…\nCtrl+Alt+Y\nPrint…\nCtrl+P\nUndo\nCtrl+Z\nRedo\nCtrl+Shift+Z\nCut\nCtrl+X\nCopy\nCtrl+C\nPaste\nCtrl+V\nClear\nDel\nSelect All\nCtrl+A\nFind and Replace…\nCtrl+F\nLock/Unlock Objects\nCtrl+U\nStory Editor\nF2\nDelete Page…\nAlt+Del\nFit in Window\nF5\n50%\nF6\nActual\nF7\n200%\nF8\nSnap To Guides\nF9\nCharacter…\nCtrl+H\nParagraph…\nCtrl+G\nTabs…\nCtrl+Alt+T\nStyle Sheets…\nCtrl+T\nPage…\nAlt+Ins\nIndex Entry…\nCtrl+Alt+I\nSpelling…\nCtrl+L\nGroup\nCtrl+Alt+G\nUngroup\nCtrl+Alt+U\nTable of Contents\nCtrl+Alt+O\nSymbols…\nCtrl+.\nNext Document\nCtrl+F6\nHelp Topics…\nF1\nClose"
+  },
+  {
+    "group": "Help",
+    "label": "Using help…",
+    "status": "dialog",
+    "text": "Help Topics\n\nUse the hand tool to edit text, or select a frame/drawing tool and drag on the page. The arrow tool moves objects; its corner handle resizes them. Shift-click selects more than one object.\n\nThe rotation tool rotates objects by dragging. The linking tool connects two ordinary text frames; overflowing text flows to the second. F2 opens the complete story. Unlink disconnects a chain.\n\nInsert → Page adds pages. Format → Object changes dimensions, color and text columns. Format → Document changes margins and columns. Right-click text for browser spelling suggestions.\n\nCtrl+1…5 selects the first five tools. F5 fits the page; F6/F7/F8 select 50/100/200% zoom. F9 toggles snapping.\n\nClose"
+  },
+  {
+    "group": "Edit",
+    "label": "Top Most",
+    "status": "clicked",
+    "objects": 5
+  },
+  {
+    "group": "Edit",
+    "label": "Send To Back",
+    "status": "clicked",
+    "objects": 5
+  },
+  {
+    "group": "Edit",
+    "label": "Bring To Front",
+    "status": "clicked",
+    "objects": 5
+  },
+  {
+    "group": "Edit",
+    "label": "Lock/Unlock Objects",
+    "status": "clicked",
+    "objects": 5
+  },
+  {
+    "group": "Edit",
+    "label": "Lock/Unlock Objects",
+    "status": "clicked",
+    "objects": 5
+  },
+  {
+    "group": "Edit",
+    "label": "Copy",
+    "status": "clicked",
+    "objects": 5
+  },
+  {
+    "group": "Edit",
+    "label": "Paste",
+    "status": "clicked",
+    "objects": 6
+  },
+  {
+    "group": "Edit",
+    "label": "Undo",
+    "status": "clicked",
+    "objects": 5
+  },
+  {
+    "group": "Edit",
+    "label": "Redo",
+    "status": "clicked",
+    "objects": 6
+  },
+  {
+    "group": "Utilities",
+    "label": "Group / Ungroup",
+    "status": "clicked"
+  },
+  {
+    "group": "File",
+    "label": "Save…",
+    "status": "downloaded",
+    "path": "C:\\Users\\tariq\\Downloads\\Menu Parity Audit.ipdoc"
+  },
+  {
+    "group": "File",
+    "label": "Export All Text…",
+    "status": "downloaded",
+    "path": "C:\\Users\\tariq\\Downloads\\Menu Parity Audit.txt"
+  },
+  {
+    "group": "File",
+    "label": "Export Page…",
+    "status": "downloaded",
+    "path": "C:\\Users\\tariq\\Downloads\\Menu Parity Audit-page-2.html"
+  },
+  {
+    "group": "File",
+    "label": "Save as PDF…",
+    "status": "downloaded",
+    "path": "C:\\Users\\tariq\\Downloads\\Menu Parity Audit.pdf"
+  },
+  {
+    "group": "File",
+    "label": "Export Page as EPS…",
+    "status": "downloaded",
+    "path": "C:\\Users\\tariq\\Downloads\\Menu Parity Audit-page-2.eps"
+  },
+  {
+    "group": "Edit",
+    "label": "Cut",
+    "status": "clicked",
+    "objects": 5
+  },
+  {
+    "group": "Edit",
+    "label": "Paste",
+    "status": "clicked",
+    "objects": 6
+  },
+  {
+    "group": "Edit",
+    "label": "Clear",
+    "status": "clicked",
+    "objects": 5
+  },
+  {
+    "group": "Edit",
+    "label": "Undo",
+    "status": "clicked",
+    "objects": 6
+  },
+  {
+    "group": "Edit",
+    "label": "Lock Guides",
+    "status": "toggled and restored"
+  },
+  {
+    "group": "Format",
+    "label": "Text Wrap",
+    "status": "toggled and restored"
+  },
+  {
+    "group": "File",
+    "label": "Print…",
+    "status": "dialog tested; native print blocked automation",
+    "text": "Print\n\nPage 2 of 3 · A4 · portrait\n\nPrint current pageSave all pages as PDF\n\nPrinter and copy settings are provided by the browser print dialog. For all pages, save the PDF and print it from your PDF viewer.\n\nClose"
+  },
+  {
+    "group": "Utilities",
+    "label": "Table of Contents",
+    "status": "clicked",
+    "text": "Alpha beta alphabet beta.\n\nHeading for contents\n\n\n\n\n\t\n\n\n\n\n\t\n\n\n\n\n\n\n\n\n\n\n\t\n\n\n\n\n\t\n\n\n\n\n\n\n\n\n\n\n\t\n\n\n\n\n\t\n\n\n\n\nUrdu publishing audit.\n\nHeading for contents … 2"
+  },
+  {
+    "group": "File",
+    "label": "Place…",
+    "status": "image loaded"
+  },
+  {
+    "group": "Insert",
+    "label": "Picture…",
+    "status": "image loaded",
+    "images": 1
+  },
+  {
+    "group": "File",
+    "label": "Import…",
+    "status": "text imported"
+  },
+  {
+    "group": "File",
+    "label": "Open…",
+    "status": "native opened"
+  },
+  {
+    "group": "File",
+    "label": "Export native INP…",
+    "status": "downloaded",
+    "path": "C:\\Users\\tariq\\Downloads\\AboutFaiz-native-saved (2).inp"
+  },
+  {
+    "group": "Insert",
+    "label": "Split Table",
+    "status": "verified",
+    "tables": 2
+  },
+  {
+    "group": "Window",
+    "label": "Next Document",
+    "status": "verified",
+    "nextName": "inpage.net — [Untitled-1]"
+  },
+  {
+    "group": "Edit",
+    "label": "Select All",
+    "status": "verified; selected six objects"
+  },
+  {
+    "group": "Edit",
+    "label": "Duplicate…",
+    "status": "dialog and duplication tested; final grid offsets covered by unit test"
+  },
+  {
+    "group": "Utilities",
+    "label": "Group",
+    "status": "verified; six objects"
+  },
+  {
+    "group": "Utilities",
+    "label": "Ungroup",
+    "status": "verified; six objects"
+  },
+  {
+    "group": "View",
+    "label": "Fit in Window",
+    "status": "clicked and viewport changed"
+  },
+  {
+    "group": "Utilities",
+    "label": "Generate Index",
+    "status": "verified; Alpha … 2 added"
+  },
+  {
+    "group": "Insert",
+    "label": "Object Lock…",
+    "status": "verified; selected object locked and unlocked"
+  },
+  {
+    "group": "Edit",
+    "label": "Duplicate…",
+    "status": "verified final grid; 2 rows × 2 columns produced original plus three copies with width/height spacing"
+  }
+]

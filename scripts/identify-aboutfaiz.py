@@ -1,0 +1,2 @@
+from pathlib import Path
+p=Path('src/nativeDocument.js');s=p.read_text(encoding='utf-8').replace("native.text.includes('فیض نستعلیق 1.0')", "native.text.includes('فیض نستعلیق کی انفرادیت:')&&native.text.includes('لاہوری نستعلیق کی ضرورت:')").replace('Native layout records are not decoded.', 'Native layout records are not decoded. INP export preserves native layout and allows only same-length text edits.');p.write_text(s,encoding='utf-8')

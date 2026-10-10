@@ -1,0 +1,414 @@
+{
+  "File": [
+    [
+      "New…",
+      "new",
+      "Ctrl+N"
+    ],
+    [
+      "Open…",
+      "open",
+      "Ctrl+O"
+    ],
+    [
+      "Close",
+      "close",
+      "Ctrl+F4"
+    ],
+    null,
+    [
+      "Save…",
+      "save",
+      "Ctrl+S"
+    ],
+    [
+      "Save As…",
+      "saveAs",
+      "Ctrl+Alt+S"
+    ],
+    [
+      "Save as PDF…",
+      "pdf"
+    ],
+    [
+      "Export native INP…",
+      "native"
+    ],
+    null,
+    [
+      "Place…",
+      "place"
+    ],
+    [
+      "Import…",
+      "import",
+      "Ctrl+Y"
+    ],
+    [
+      "Export All Text…",
+      "text",
+      "Ctrl+Alt+Y"
+    ],
+    [
+      "Export Page…",
+      "exportPage"
+    ],
+    [
+      "Export Page as EPS…",
+      "eps"
+    ],
+    null,
+    [
+      "Print…",
+      "print",
+      "Ctrl+P"
+    ],
+    [
+      "Exit",
+      "exit"
+    ]
+  ],
+  "Edit": [
+    [
+      "Undo",
+      "undo",
+      "Ctrl+Z"
+    ],
+    [
+      "Redo",
+      "redo",
+      "Ctrl+Shift+Z"
+    ],
+    null,
+    [
+      "Cut",
+      "cut",
+      "Ctrl+X"
+    ],
+    [
+      "Copy",
+      "copy",
+      "Ctrl+C"
+    ],
+    [
+      "Paste Special…",
+      "pasteSpecial"
+    ],
+    [
+      "Paste",
+      "paste",
+      "Ctrl+V"
+    ],
+    [
+      "Duplicate…",
+      "duplicate"
+    ],
+    [
+      "Clear",
+      "clear",
+      "Del"
+    ],
+    [
+      "Select All",
+      "all",
+      "Ctrl+A"
+    ],
+    null,
+    [
+      "Find and Replace…",
+      "find",
+      "Ctrl+F"
+    ],
+    null,
+    [
+      "Top Most",
+      "topmost"
+    ],
+    [
+      "Send To Back",
+      "back"
+    ],
+    [
+      "Bring To Front",
+      "front"
+    ],
+    [
+      "Lock Guides",
+      "lockGuides"
+    ],
+    [
+      "Lock/Unlock Objects",
+      "lock",
+      "Ctrl+U"
+    ],
+    [
+      "Story Editor",
+      "story",
+      "F2"
+    ],
+    [
+      "Delete Page…",
+      "deletePage",
+      "Alt+Del"
+    ],
+    [
+      "Preferences…",
+      "preferences"
+    ]
+  ],
+  "View": [
+    [
+      "Fit in Window",
+      "fit",
+      "F5"
+    ],
+    [
+      "50%",
+      "zoom50",
+      "F6"
+    ],
+    [
+      "Actual",
+      "zoom100",
+      "F7"
+    ],
+    [
+      "200%",
+      "zoom200",
+      "F8"
+    ],
+    null,
+    [
+      "Facing Pages",
+      "facing"
+    ],
+    [
+      "Hide Ribbon",
+      "ribbon"
+    ],
+    [
+      "Hide Tools",
+      "tools"
+    ],
+    [
+      "Hide Rulers",
+      "rulers"
+    ],
+    [
+      "Hide Guides",
+      "guides"
+    ],
+    [
+      "Show Invisibles",
+      "invisibles"
+    ],
+    [
+      "Show Index Entries",
+      "indexEntries"
+    ],
+    [
+      "Snap To Guides",
+      "snap",
+      "F9"
+    ]
+  ],
+  "Format": [
+    [
+      "Character…",
+      "character",
+      "Ctrl+H"
+    ],
+    [
+      "Paragraph…",
+      "paragraph",
+      "Ctrl+G"
+    ],
+    [
+      "Hyphenation…",
+      "hyphenation"
+    ],
+    [
+      "Borders…",
+      "borders"
+    ],
+    [
+      "Tabs…",
+      "tabs",
+      "Ctrl+Alt+T"
+    ],
+    [
+      "Text Wrap",
+      "wrap"
+    ],
+    [
+      "Sort Text…",
+      "sort"
+    ],
+    null,
+    [
+      "Table Format…",
+      "tableFormat"
+    ],
+    [
+      "Table Layout…",
+      "tableLayout"
+    ],
+    null,
+    [
+      "Object…",
+      "object"
+    ],
+    [
+      "Runaround…",
+      "runaround"
+    ],
+    [
+      "Inset…",
+      "inset"
+    ],
+    [
+      "Master Page Objects…",
+      "master"
+    ],
+    [
+      "Document…",
+      "page"
+    ],
+    [
+      "Guides…",
+      "guideSettings"
+    ],
+    [
+      "Style Sheets…",
+      "styles",
+      "Ctrl+T"
+    ],
+    [
+      "Define Colors…",
+      "colors"
+    ]
+  ],
+  "Insert": [
+    [
+      "Date & Time…",
+      "date"
+    ],
+    [
+      "Page…",
+      "insertPage",
+      "Alt+Ins"
+    ],
+    [
+      "Page Number…",
+      "pageNumber"
+    ],
+    [
+      "Picture…",
+      "picture"
+    ],
+    [
+      "Table…",
+      "table"
+    ],
+    [
+      "Split Table",
+      "splitTable"
+    ],
+    null,
+    [
+      "Index Entry…",
+      "indexEntry",
+      "Ctrl+Alt+I"
+    ],
+    [
+      "Object Lock…",
+      "lock"
+    ],
+    [
+      "Footnote…",
+      "footnote"
+    ]
+  ],
+  "Utilities": [
+    [
+      "Spelling…",
+      "spelling",
+      "Ctrl+L"
+    ],
+    [
+      "Word Count",
+      "words"
+    ],
+    null,
+    [
+      "Group",
+      "group",
+      "Ctrl+Alt+G"
+    ],
+    [
+      "Ungroup",
+      "ungroup",
+      "Ctrl+Alt+U"
+    ],
+    [
+      "Auto Index…",
+      "autoIndex"
+    ],
+    [
+      "Generate Index",
+      "generateIndex"
+    ],
+    [
+      "Table of Contents",
+      "toc",
+      "Ctrl+Alt+O"
+    ],
+    [
+      "Symbols…",
+      "symbols",
+      "Ctrl+."
+    ]
+  ],
+  "Window": [
+    [
+      "Cascade",
+      "cascade"
+    ],
+    [
+      "Tile",
+      "tile"
+    ],
+    [
+      "Next Document",
+      "nextDocument",
+      "Ctrl+F6"
+    ],
+    [
+      "Document list…",
+      "documents"
+    ]
+  ],
+  "Help": [
+    [
+      "Help Topics…",
+      "help",
+      "F1"
+    ],
+    [
+      "Short Cuts…",
+      "shortcuts"
+    ],
+    [
+      "Using help…",
+      "help"
+    ],
+    [
+      "Keyboard Layout…",
+      "keyboard"
+    ],
+    [
+      "About inpage.net…",
+      "about"
+    ]
+  ]
+}

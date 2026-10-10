@@ -1,0 +1,11 @@
+import test from 'node:test'
+import assert from 'node:assert/strict'
+import {exclusionPolygons} from '../src/runaround.js'
+const box={x:0,y:0,w:600,h:800}
+test('runaround ignores disabled and out-of-frame objects',()=>{assert.deepEqual(exclusionPolygons([{id:'a',x:30,y:40,w:50,h:50,wrap:'none'}],box),[]);assert.deepEqual(exclusionPolygons([{x:900,y:40,w:50,h:50,wrap:'box'}],box),[])})
+test('left box clears its bounds then returns to full width',()=>{const p=exclusionPolygons([{x:30,y:100,w:150,h:100,wrap:'box',wrapGap:10}],box);assert.equal(p.length,1);assert.equal(p[0].side,'left');assert.match(p[0].shape,/190\.00px 100\.00px/);assert.match(p[0].shape,/0\.00px 212\.00px/)})
+test('right-side object and full-width obstruction exclude the correct side',()=>{assert.equal(exclusionPolygons([{x:400,y:100,w:100,h:100,wrap:'box'}],box)[0].side,'right');assert.match(exclusionPolygons([{x:30,y:100,w:50,h:100,wrap:'top-bottom'}],box)[0].shape,/600\.00px 100\.00px/)})
+test('overlapping obstacles retain a free span without text through either box',()=>{const p=exclusionPolygons([{x:0,y:100,w:150,h:100,wrap:'box',wrapGap:0},{x:450,y:100,w:150,h:100,wrap:'box',wrapGap:0}],box);assert.equal(p.length,2);assert.match(p[0].shape,/150\.00px 100\.00px/);assert.match(p[1].shape,/0\.00px 100\.00px/)})
+test('ellipse contours and rotation alter exclusion outlines',()=>{const o={type:'ellipse',x:0,y:100,w:150,h:100,wrap:'shape',wrapGap:0};const contour=exclusionPolygons([o],box)[0].shape;assert.notEqual(contour,exclusionPolygons([{...o,wrap:'box'}],box)[0].shape);assert.notEqual(contour,exclusionPolygons([{...o,rotation:45}],box)[0].shape)})
+test('independent clearances expand only their corresponding sides',()=>{const o={x:30,y:100,w:150,h:100,wrap:'box',wrapGap:0,wrapLeft:2,wrapRight:20,wrapTop:12,wrapBottom:4};const p=exclusionPolygons([o],box)[0];assert.equal(p.width,200);assert.match(p.shape,/200\.00px 88\.00px/);assert.match(p.shape,/0\.00px 204\.00px/)})
+test('a wrapping frame does not exclude itself and rounded contours differ from boxes',()=>{const o={id:'story',type:'round',x:30,y:100,w:150,h:100,radius:25,wrap:'shape',wrapGap:0};assert.deepEqual(exclusionPolygons([o],{...box,id:'story'}),[]);assert.notEqual(exclusionPolygons([o],box)[0].shape,exclusionPolygons([{...o,wrap:'box'}],box)[0].shape)})

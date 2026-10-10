@@ -1,0 +1,10 @@
+node_modules/
+dist/
+research/local-fonts/
+research/samples/
+fonts/
+public/fonts/inpage/
+research/fixtures/
+research/*.bak
+research/menu-audit-export.*
+examples/AboutFaiz-reconstruction.ipdoc
