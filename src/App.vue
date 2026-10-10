@@ -125,7 +125,129 @@ function frameStory(o){const segment=flow.value[o.id],root=rootFrame(objects.val
 async function exportPage(){const styles=Array.from(document.querySelectorAll('style')).map(s=>s.textContent).join('\n');download('<!doctype html><html lang="ur"><meta charset="utf-8"><title>'+escapeHTML(title.value)+'</title><style>'+styles+'\n.paper{zoom:1!important;margin:0!important}.resize-handle,.ruler-guide,.margin-guide{display:none!important}</style><body>'+paperEl.value.outerHTML+'</body></html>',title.value+'-page-'+(pageIndex.value+1)+'.html','text/html;charset=utf-8');message.value='Exported current page as HTML; web font needs the local server.'}
 async function confirmFileExport(){const kind=dialog.value;const from=Number(forms.exportFrom),to=Number(forms.exportTo);if(kind==='pdf'){if(!forms.pdfFilename?.trim()){forms.pdfError='Enter a filename.';return}if(forms.exportScope==='range'&&(!Number.isInteger(from)||!Number.isInteger(to)||from<1||to<from||to>pages.value.length)){forms.pdfError='Enter a valid page range from 1 to '+pages.value.length+'.';return}if(forms.exportScope==='selected'&&!selected.value.length){forms.pdfError='Select objects before exporting.';return}}dialog.value='';if(kind==='pdf'||kind==='eps')await exportDocument(kind,forms.exportScope,{from,to,mirror:forms.pdfMirror,filename:forms.pdfFilename?.replace(/\.pdf$/i,'')+'.pdf'});else if(kind==='native')await exportNative();else if(kind==='exportPage')await exportPage();else if(kind==='text'){pages.value[pageIndex.value].content=editor.value.getJSON();download(pages.value.map(p=>jsonText(p.content)).join('\n\f\n')+'\n'+objects.value.filter(o=>o.text).map(o=>o.text).join('\n'),title.value+'.txt','text/plain;charset=utf-8')}}
 function printDoc(){const s=document.createElement('style');s.textContent='@media print{@page{size:'+settings.paper+';margin:0}}';document.head.appendChild(s);window.addEventListener('afterprint',()=>s.remove(),{once:true});window.print();message.value='Prints the displayed page. Navigate to other pages to print them.'}
-function shortcut(e){if(!dialog.value&&e.key==='F12'){e.preventDefault();if(e.ctrlKey)openDialog('documents');else if(e.altKey)openDialog('page');else action('ribbon');return;}if(!dialog.value&&e.altKey&&e.key==='Insert'){e.preventDefault();openDialog('insertPage');return;}if(!dialog.value&&(e.ctrlKey||e.metaKey)&&e.key==='F4'){e.preventDefault();openDialog('close');return;}if(!dialog.value&&(e.ctrlKey||e.metaKey)&&e.key==='F6'){e.preventDefault();action('nextDocument');return;}if(e.key==='Escape'&&drag?.kind==='rulerGuide'){cancelDrag();e.preventDefault();return}if(dialog.value){if(e.key==='Escape'){dialog.value='';e.preventDefault()}return}if(e.target.matches('input,textarea,select')||e.target.closest('[data-frame-editor]'))return;const ctrl=e.ctrlKey||e.metaKey;if(ctrl&&e.key===' '){e.preventDefault();setFormat('language',format.language==='English'?'Urdu':'English');return}const mapping=ctrl?{'z':e.shiftKey?'redo':'undo','n':'new','o':e.altKey?'toc':'open','s':e.altKey?'saveAs':'save','p':'print','f':'find','h':'character','g':e.altKey?'group':'paragraph','t':e.altKey?'tabs':'styles','l':'spelling','u':e.altKey?'ungroup':'lock','y':e.altKey?'text':'import','.':'symbols'}:{F1:'help',F2:'story',F5:'fit',F6:'zoom50',F7:'zoom100',F8:'zoom200',F9:'snap'};if(ctrl&&['1','2','3','4','5'].includes(e.key)){e.preventDefault();chooseTool(['select','edit','rotate','link','unlink'][Number(e.key)-1]);return}if(mapping[e.key]){e.preventDefault();action(mapping[e.key]);return}if(e.key==='Delete'&&selected.value.length){e.preventDefault();removeObjects()}if(e.key==='Escape'){selected.value=[];menu.value='';chooseTool('edit')}}
+function shortcut(e){
+const key=e.key,lowerKey=key?.toLowerCase(),ctrl=e.ctrlKey||e.metaKey,alt=e.altKey,shift=e.shiftKey;
+if(key==='Escape'){
+if(drag?.kind==='rulerGuide'){cancelDrag();e.preventDefault();return}
+if(dialog.value){dialog.value='';e.preventDefault();return}
+if(menu.value){menu.value='';e.preventDefault();return}
+if(selected.value.length){selected.value=[];e.preventDefault();return}
+if(tool.value!=='edit'){chooseTool('edit');e.preventDefault();return}
+if(document.activeElement&&document.activeElement!==document.body){document.activeElement.blur();e.preventDefault();return}
+}
+if(dialog.value){
+if(key==='Enter'&&!e.target.matches('textarea')){
+if(['saveAs','duplicate','page','insertPage','deletePage','pageNumber','footnote','find'].includes(dialog.value)){e.preventDefault();applyDialog();return}
+}
+return
+}
+if(key==='F12'||(alt&&lowerKey==='r'&&!ctrl)){
+e.preventDefault();
+if(ctrl)openDialog('documents');
+else if(alt)openDialog('page');
+else action('ribbon');
+return;
+}
+if((ctrl||alt)&&key==='F6'||(ctrl&&alt&&lowerKey==='tab')){
+e.preventDefault();action('nextDocument');return;
+}
+if(((ctrl||alt)&&key==='F4')||(ctrl&&alt&&lowerKey==='w')||(ctrl&&lowerKey==='q')){
+e.preventDefault();openDialog('close');return;
+}
+if((alt&&(key==='Insert'||key==='Ins'))||(alt&&lowerKey==='p'&&!ctrl)||(ctrl&&alt&&lowerKey==='p')){
+e.preventDefault();openDialog('insertPage');return;
+}
+if(alt&&(key==='Delete'||key==='Del'||key==='Backspace')){
+e.preventDefault();openDialog('deletePage');return;
+}
+if(ctrl&&(key===' '||key==='Spacebar')){
+e.preventDefault();setFormat('language',format.language==='English'?'Urdu':'English');return;
+}
+if(ctrl&&lowerKey==='s'){
+e.preventDefault();if(alt||shift)openDialog('saveAs');else save();return;
+}
+if(ctrl&&lowerKey==='p'&&!alt){
+e.preventDefault();openDialog('print');return;
+}
+if(ctrl&&lowerKey==='f'&&!alt){
+e.preventDefault();openDialog('find');return;
+}
+const isInput=e.target.matches('input,textarea,select');
+if((ctrl&&lowerKey==='n'&&!alt)||(alt&&lowerKey==='n'&&!isInput)){
+e.preventDefault();action('new');return;
+}
+if(ctrl&&lowerKey==='o'&&!alt){
+e.preventDefault();action('open');return;
+}
+if(ctrl&&alt&&lowerKey==='o'){
+e.preventDefault();action('toc');return;
+}
+if((ctrl&&lowerKey==='t'&&!alt)||(ctrl&&shift&&lowerKey==='t')||(alt&&lowerKey==='t'&&!isInput)){
+e.preventDefault();action('styles');return;
+}
+if(ctrl&&alt&&lowerKey==='t'){
+e.preventDefault();action('tabs');return;
+}
+if(ctrl&&alt&&lowerKey==='i'){
+e.preventDefault();openDialog('indexEntry');return;
+}
+if(ctrl&&alt&&lowerKey==='g'){
+e.preventDefault();action('group');return;
+}
+if(ctrl&&alt&&lowerKey==='u'){
+e.preventDefault();action('ungroup');return;
+}
+if(ctrl&&lowerKey==='g'&&!alt){
+e.preventDefault();action('paragraph');return;
+}
+if(ctrl&&lowerKey==='h'&&!alt){
+e.preventDefault();action('character');return;
+}
+if(ctrl&&lowerKey==='u'&&!alt){
+e.preventDefault();action('lock');return;
+}
+if(ctrl&&lowerKey==='y'&&!alt&&!shift){
+e.preventDefault();action('import');return;
+}
+if(ctrl&&alt&&lowerKey==='y'){
+e.preventDefault();openDialog('text');return;
+}
+if(ctrl&&lowerKey==='l'&&!alt){
+e.preventDefault();action('spelling');return;
+}
+if(ctrl&&(key==='.'||key==='>')){
+e.preventDefault();action('symbols');return;
+}
+if(ctrl&&lowerKey==='d'&&!alt){
+e.preventDefault();action('duplicate');return;
+}
+if(ctrl&&['1','2','3','4','5'].includes(key)){
+e.preventDefault();chooseTool(['select','edit','rotate','link','unlink'][Number(key)-1]);return;
+}
+const fKeys={F1:'help',F2:'story',F5:'fit',F6:'zoom50',F7:'zoom100',F8:'zoom200',F9:'snap'};
+if(!ctrl&&!alt&&fKeys[key]){
+e.preventDefault();action(fKeys[key]);return;
+}
+if(ctrl&&(key==='0'||key==='NumPad0')){
+e.preventDefault();action('fit');return;
+}
+if(ctrl&&lowerKey==='z'){
+e.preventDefault();if(shift)action('redo');else action('undo');return;
+}
+if(ctrl&&lowerKey==='a'){
+if(tool.value==='select'||(selected.value.length&&!isInput)){
+e.preventDefault();action('all');return;
+}
+}
+if(selected.value.length&&!isInput){
+if(ctrl&&lowerKey==='c'){e.preventDefault();action('copy');return;}
+if(ctrl&&lowerKey==='x'){e.preventDefault();action('cut');return;}
+if(ctrl&&lowerKey==='v'){e.preventDefault();action('paste');return;}
+}
+if((key==='Delete'||key==='Del'||(key==='Backspace'&&!isInput&&!e.target.closest('[data-frame-editor]'))&&selected.value.length)){
+e.preventDefault();removeObjects();return;
+}
+}
 function installReady(e){e.preventDefault();installEvent.value=e}async function install(){await installEvent.value?.prompt();installEvent.value=null}
 function beforeUnload(e){if(dirty.value){autosave();if(dirty.value){e.preventDefault();e.returnValue=''}}}
 onMounted(async()=>{try{const stored=await loadWorkspace();if(stored){documents.value=stored.documents||[];activeDocument.value=stored.active;apply(parseDocument(JSON.stringify(stored.draft)))}const raw=stored?null:localStorage.getItem('inpage-net-draft');if(raw)apply(parseDocument(raw));if(!stored){const tabs=JSON.parse(localStorage.getItem('inpage-net-tabs')||'[]');documents.value=Array.isArray(tabs)?tabs:[];}let current=documents.value.find(d=>d.id===activeDocument.value)||documents.value.find(d=>d.title===title.value);if(!current){current={id:activeDocument.value,title:title.value,data:snapshot()};documents.value.push(current)}activeDocument.value=current.id}catch{message.value='Stored draft could not be restored';documents.value=[{id:activeDocument.value,title:title.value,data:snapshot()}]}window.addEventListener('keydown',shortcut);window.addEventListener('beforeunload',beforeUnload);window.addEventListener('beforeinstallprompt',installReady);window.addEventListener('pointermove',pointerMove);window.addEventListener('pointerup',pointerUp);window.addEventListener('pointercancel',cancelDrag);document.fonts.ready.then(updateFlow);nextTick(updateFlow)})
