@@ -2,7 +2,7 @@
 
 Independent Vue 3 Urdu publishing PWA, developed at E:\inpage.net.
 
-Installed InPage and user-supplied font binaries are kept local and excluded from Git. The font catalog/CSS references remain in source; place licensed copies in `public/fonts/inpage/` to enable those faces. The Unicode Noto fallback is included where available. This repository does not claim full native InPage parity; see `research/MENU-PARITY-AUDIT.md` for current limitations.
+Font binaries and native sample fixtures are included for development on another PC. Native legacy font glyph mapping and full InPage parity remain incomplete; see `research/MENU-PARITY-AUDIT.md`. Font redistribution rights must be checked before public hosting.
 
 ## Run
 
