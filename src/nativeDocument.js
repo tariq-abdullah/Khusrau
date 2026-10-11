@@ -1,4 +1,5 @@
 import {paragraphRuns} from './frameStory.js'
+import {paginateParagraphs} from './pagination.js'
 const blank=()=>({type:'doc',content:[{type:'paragraph'}]})
 const mm=96/25.4
 function dataURL(bytes){let str='';for(let i=0;i<bytes.length;i+=8192)str+=String.fromCharCode(...bytes.slice(i,i+8192));return 'data:image/jpeg;base64,'+btoa(str)}
@@ -106,13 +107,13 @@ export function nativeDocument(native,name){
  }
 
  if(!about){
-  const pageId = 'page-1'
-  d.pages = [{ id: pageId, content }]
+  const inputParas = native.formattedParagraphs?.length ? native.formattedParagraphs : native.paragraphs
+  d.pages = paginateParagraphs(inputParas, layout, native.pictureObjects)
   d.content = content
   if (native.pictureObjects?.length) {
    d.objects = native.pictureObjects.map((pic, idx) => ({
     id: 'pic-' + idx,
-    page: pageId,
+    page: pic.page === 0 ? null : ('page-' + (pic.page || 1)),
     type: 'picture',
     x: Math.round(pic.x * mm),
     y: Math.round(pic.y * mm),
@@ -134,7 +135,7 @@ export function nativeDocument(native,name){
   } else if (native.pictures?.length) {
    d.objects = native.pictures.map((picBytes, idx) => ({
     id: 'pic-' + idx,
-    page: pageId,
+    page: 'page-1',
     type: 'picture',
     x: Math.round(12.7 * mm),
     y: Math.round((12.7 + idx * 55) * mm),

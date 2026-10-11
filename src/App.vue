@@ -28,6 +28,7 @@ import {guidePoint,guideDrop,validGuides,snapToGuides} from './guides'
 import {findTextMatches,textStatistics,pageInsertionIndex,dateFormats,duplicateOffsets} from './menuFeatures'
 import {formatPageNumber,resolveMasterText,isObjectOnPage,isGuideOnPage,computeDefaultGrid,computeColumnGuides,resizeBox,MM_TO_PX} from './masterPage'
 import {loadGoogleFont} from './fontLoader.js'
+import {paginateParagraphs} from './pagination.js'
 const uid=()=>crypto.randomUUID(),blank=()=>({type:'doc',content:[{type:'paragraph'}]})
 const title=ref('Untitled-1'),message=ref('For Help, press F1'),errorMessage=ref(''),menu=ref(''),dialog=ref(''),dirty=ref(false),revision=ref(0),tool=ref('edit'),selected=ref([]),pageIndex=ref(0),zoom=ref(100),file=ref(),imageFile=ref(),scroller=ref(),paperEl=ref(),previewRect=ref(null),flow=ref({}),documents=ref([]),activeDocument=ref(uid()),clipboard=ref(null),objectHistory=ref([]),objectFuture=ref([]),lastActionKind=ref('text'),indexTerms=ref([]),footnotes=ref([]),linkSource=ref(null),installEvent=ref(null)
 const workspaceClosed=ref(false),windowLayout=ref('list'),isMasterPage=ref(false),masterSide=ref('right')
@@ -226,7 +227,124 @@ function objectColumnGuides(o){if(!o||(o.columns||1)<=1)return[];const inset=o.i
 const pictureEditing=ref(false),nativeSource=ref(null),importReport=ref(null),exporting=ref(false)
 let flowPending=false
 let timer,drag=null,suspend=false,measure=null,saveEpoch=0
-const editor=useEditor({extensions:[StarterKit,TextAlign.configure({types:['heading','paragraph'],defaultAlignment:'right'}),TextStyleKit,Metrics,ParagraphLayout,TableKit,Image,Runaround],content:blank(),editorProps:{attributes:{lang:'ur','aria-label':'Document text'},handleKeyDown(view,e){if(tool.value==='edit'&&settings.keyboard==='phonetic'&&format.language!=='English'&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.isComposing&&keys[e.key]){e.preventDefault();view.dispatch(view.state.tr.insertText(keys[e.key]));return true}if(e.key==='Tab'){e.preventDefault();view.dispatch(view.state.tr.insertText('\t'));return true}return false}},onUpdate(){if(suspend)return;lastActionKind.value='text';pages.value[pageIndex.value].content=editor.value.getJSON();revision.value++;scheduleSave()},onSelectionUpdate(){syncFormat()}})
+let overflowTimer = null
+function schedulePageOverflowCheck(){
+  if(overflowTimer)clearTimeout(overflowTimer)
+  overflowTimer=setTimeout(()=>{
+    checkPageOverflow()
+  },100)
+}
+function checkPageOverflow(){
+  if(suspend||isMasterPage.value||!editor.value)return
+  const paper=paperEl.value
+  if(!paper)return
+  const textBoundary=paper.querySelector('.text-boundary')
+  const editorDom=textBoundary?.querySelector('.tiptap')
+  if(!textBoundary||!editorDom)return
+
+  const maxH=defaultGridObject.value.h
+  if(editorDom.scrollHeight<=maxH+4)return
+
+  const children=Array.from(editorDom.children)
+  if(!children.length)return
+
+  const parentRect=textBoundary.getBoundingClientRect()
+  let overflowIdx=-1
+  for(let i=0;i<children.length;i++){
+    const child=children[i]
+    const r=child.getBoundingClientRect()
+    const relBottom=r.bottom-parentRect.top
+    if(relBottom>maxH+2){
+      overflowIdx=i
+      break
+    }
+  }
+
+  if(overflowIdx===-1)return
+
+  const currentDoc=editor.value.getJSON()
+  const currentNodes=currentDoc.content||[]
+  if(overflowIdx>=currentNodes.length)return
+
+  let stayingNodes,overflowingNodes
+  if(overflowIdx===0){
+    const node=currentNodes[0]
+    const text=node.content?.map(c=>c.text||'').join('')||''
+    if(text.length>60){
+      const approxRatio=Math.max(0.2,Math.min(0.85,maxH/(editorDom.scrollHeight||1)))
+      const targetChar=Math.floor(text.length*approxRatio)
+      const sub=text.slice(0,Math.min(text.length,targetChar+30))
+      const lastPunct=Math.max(sub.lastIndexOf('۔'),sub.lastIndexOf('.'),sub.lastIndexOf('\n'))
+      let splitAt=-1
+      if(lastPunct>20){
+        splitAt=lastPunct+1
+      }else{
+        const space=sub.lastIndexOf(' ')
+        splitAt=space>20?space+1:targetChar
+      }
+      const stayingText=text.slice(0,splitAt).trim()
+      const overflowingText=text.slice(splitAt).trim()
+      stayingNodes=[{...node,content:stayingText?[{type:'text',text:stayingText}]:[]}]
+      overflowingNodes=[
+        {...node,content:overflowingText?[{type:'text',text:overflowingText}]:[]},
+        ...currentNodes.slice(1)
+      ]
+    }else{
+      return
+    }
+  }else{
+    stayingNodes=currentNodes.slice(0,overflowIdx)
+    overflowingNodes=currentNodes.slice(overflowIdx)
+  }
+
+  if(!overflowingNodes.length)return
+
+  const currentSel=editor.value.state.selection
+  let stayingChars=0
+  for(const n of stayingNodes){
+    const t=n.content?.map(c=>c.text||'').join('')||''
+    stayingChars+=t.length+2
+  }
+  const userWasAtOverflow=currentSel.from>=stayingChars
+
+  suspend=true
+  editor.value.commands.setContent({type:'doc',content:stayingNodes})
+  pages.value[pageIndex.value].content=editor.value.getJSON()
+  suspend=false
+
+  const nextIdx=pageIndex.value+1
+  if(nextIdx<pages.value.length){
+    const nextPage=pages.value[nextIdx]
+    const existing=(nextPage.content?.content||[]).filter(n=>{
+      if(n.type==='paragraph'&&(!n.content||n.content.length===0))return false
+      return true
+    })
+    nextPage.content={
+      type:'doc',
+      content:[...overflowingNodes,...existing]
+    }
+  }else{
+    const newPage={
+      id:uid(),
+      content:{
+        type:'doc',
+        content:overflowingNodes
+      }
+    }
+    pages.value.push(newPage)
+  }
+
+  revision.value++
+  scheduleSave()
+
+  if(userWasAtOverflow){
+    changePage(nextIdx)
+    nextTick(()=>{
+      editor.value?.commands.focus('start')
+    })
+  }
+}
+const editor=useEditor({extensions:[StarterKit,TextAlign.configure({types:['heading','paragraph'],defaultAlignment:'right'}),TextStyleKit,Metrics,ParagraphLayout,TableKit,Image,Runaround],content:blank(),editorProps:{attributes:{lang:'ur','aria-label':'Document text'},handleKeyDown(view,e){if(tool.value==='edit'&&settings.keyboard==='phonetic'&&format.language!=='English'&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.isComposing&&keys[e.key]){e.preventDefault();view.dispatch(view.state.tr.insertText(keys[e.key]));return true}if(e.key==='Tab'){e.preventDefault();view.dispatch(view.state.tr.insertText('\t'));return true}return false}},onUpdate(){if(suspend)return;lastActionKind.value='text';pages.value[pageIndex.value].content=editor.value.getJSON();revision.value++;scheduleSave();schedulePageOverflowCheck()},onSelectionUpdate(){syncFormat()}})
 const selectedObject=computed(()=>selected.value[0]==='default-grid'?defaultGridObject.value:objects.value.find(o=>o.id===selected.value[0]))
 const contextType=computed(()=>selectedObject.value?.type||(!['select','edit','rotate','link','unlink'].includes(tool.value)?tool.value:null))
 const objectContext=computed(()=>contextType.value&&!(tool.value==='edit'&&['text','title'].includes(contextType.value)))
@@ -286,7 +404,7 @@ function autosave(){try{const stamp=saveEpoch,d=snapshot();const tab=documents.v
 function apply(d){suspend=true;nativeSource.value=d.nativeSource||null;importReport.value=d.importReport||null;title.value=d.title||'Untitled';Object.assign(baseStyle,{font:d.font,size:d.size,color:'#000000'},d.baseStyle||{});Object.assign(format,defaultsFormat,{direction:d.direction,font:d.font,size:d.size},d.textFormat||{});Object.assign(settings,defaultsSettings,{paper:d.paper,margin:d.margin,paperWidth:d.paperWidth,paperHeight:d.paperHeight,marginTop:d.marginTop,marginBottom:d.marginBottom,marginLeft:d.marginLeft,marginRight:d.marginRight,autoTextBox:d.settings?.autoTextBox!==false},d.settings||{});if(d.preferences){for(const k in d.preferences){if(preferences[k])Object.assign(preferences[k],d.preferences[k])}}pages.value=d.pages?.length?d.pages:[{id:uid(),content:d.content}];pages.value=pages.value.map(p=>({...p,content:editor.value.schema.nodeFromJSON(p.content).toJSON()}));objects.value=d.objects?validateObjects(d.objects):[];customStyles.value=Array.isArray(d.customStyles)?d.customStyles:[];rulerGuides.value=validGuides(d.rulerGuides,pages.value);guidePreview.value=null;drag=null;colors.value=d.colors?.length?d.colors:colors.value;indexTerms.value=d.indexTerms||[];footnotes.value=d.footnotes||[];pageIndex.value=Math.max(0,Math.min(pages.value.length-1,d.currentPage||0));selected.value=[];editor.value.commands.setContent(pages.value[pageIndex.value].content);suspend=false;revision.value++;objectHistory.value=[];objectFuture.value=[];nextTick(updateFlow)}
 function download(data,name,type){const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=name.replace(/[<>:"/\\|?*]/g,'_');a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function save(){download(JSON.stringify(snapshot(),null,2),title.value+'.ipdoc','application/json');autosave()}
-async function open(e){const f=e.target.files?.[0];if(!f)return;try{let d,sourceBytes,nativeParsed;if(/\.inp$/i.test(f.name)){sourceBytes=new Uint8Array(await f.arrayBuffer());nativeParsed=readNative(sourceBytes);d=nativeDocument(nativeParsed,f.name)}else if(/\.txt$/i.test(f.name)){const text=await f.text();d={format:'inpage-net',version:1,title:f.name.replace(/\.txt$/i,''),direction:'rtl',font:'Jameel Noori Nastaleeq',size:12,paper:'A4',margin:13,content:{type:'doc',content:text.split(/\r?\n/).map(t=>({type:'paragraph',content:t?[{type:'text',text:t}]:[]}))}}}else d=parseDocument(await f.text());if(importMode){const content=nativeParsed?nativeParsed.paragraphs.map(t=>({type:'paragraph',content:t?[{type:'text',text:t}]:[]})):d.content.content;editor.value.chain().focus().insertContent(content).run()}else{autosave();const id=uid();documents.value.push({id,title:d.title,data:d});activeDocument.value=id;apply(d);chooseTool('edit');await document.fonts.ready;updateFlow();nextTick(()=>editor.value?.commands.focus());if(sourceBytes){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',sourceBytes))).map(v=>v.toString(16).padStart(2,'0')).join('');await storeNative(hash,sourceBytes);const root=objects.value.find(o=>o.autoPaginate&&o.text);const rawStory=root?.text.replace(/\n/g,'\r'),position=rawStory?nativeParsed.text.indexOf(rawStory):-1;nativeSource.value={key:hash,name:f.name,version:nativeParsed.version,isOlderVersion:!!nativeParsed.isOlderVersion,baseline:documentFingerprint(snapshot()),storyId:position>=0?root.id:null,textRange:position>=0&&nativeParsed.range?{start:nativeParsed.range.start+position*2,end:nativeParsed.range.start+(position+rawStory.length)*2}:null}}if(nativeParsed?.isOlderVersion){const alertMsg='This file was created in an older version of this software and we have converted it for you. You can download it in older version by File -> Download for older InPage.';message.value=alertMsg;dialog.value='olderVersion'}}autosave()}catch(err){fail(err.message)}finally{e.target.value='';importMode=false}}
+async function open(e){const f=e.target.files?.[0];if(!f)return;try{let d,sourceBytes,nativeParsed;if(/\.inp$/i.test(f.name)){sourceBytes=new Uint8Array(await f.arrayBuffer());nativeParsed=readNative(sourceBytes);d=nativeDocument(nativeParsed,f.name)}else if(/\.txt$/i.test(f.name)){const text=await f.text();const paginated=paginateParagraphs(text.split(/\r?\n/).map(t=>({text:t,isHeading:false})),{paper:'A4',paperWidth:210,paperHeight:297,margin:13,marginLeft:13,marginRight:13,marginTop:13,marginBottom:13});d={format:'inpage-net',version:1,title:f.name.replace(/\.txt$/i,''),direction:'rtl',font:'Jameel Noori Nastaleeq',size:12,paper:'A4',margin:13,pages:paginated,content:paginated[0].content}}else d=parseDocument(await f.text());if(importMode){const content=nativeParsed?nativeParsed.paragraphs.map(t=>({type:'paragraph',content:t?[{type:'text',text:t}]:[]})):d.content.content;editor.value.chain().focus().insertContent(content).run()}else{autosave();const id=uid();documents.value.push({id,title:d.title,data:d});activeDocument.value=id;apply(d);chooseTool('edit');await document.fonts.ready;updateFlow();nextTick(()=>editor.value?.commands.focus());if(sourceBytes){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',sourceBytes))).map(v=>v.toString(16).padStart(2,'0')).join('');await storeNative(hash,sourceBytes);const root=objects.value.find(o=>o.autoPaginate&&o.text);const rawStory=root?.text.replace(/\n/g,'\r'),position=rawStory?nativeParsed.text.indexOf(rawStory):-1;nativeSource.value={key:hash,name:f.name,version:nativeParsed.version,isOlderVersion:!!nativeParsed.isOlderVersion,baseline:documentFingerprint(snapshot()),storyId:position>=0?root.id:null,textRange:position>=0&&nativeParsed.range?{start:nativeParsed.range.start+position*2,end:nativeParsed.range.start+(position+rawStory.length)*2}:null}}if(nativeParsed?.isOlderVersion){const alertMsg='This file was created in an older version of this software and we have converted it for you. You can download it in older version by File -> Download for older InPage.';message.value=alertMsg;dialog.value='olderVersion'}}autosave()}catch(err){fail(err.message)}finally{e.target.value='';importMode=false}}
 let importMode=false
 function fail(text){errorMessage.value=text;message.value=text;dialog.value='error'}
 function changePage(index){if(index<0||index>=pages.value.length)return;pages.value[pageIndex.value].content=editor.value.getJSON();pageIndex.value=index;selected.value=[];suspend=true;editor.value.commands.setContent(pages.value[index].content);suspend=false;revision.value++;autosave();nextTick(updateFlow)}
@@ -665,7 +783,7 @@ onBeforeUnmount(()=>{clearTimeout(timer);window.removeEventListener('keydown',sh
 <div v-if="settings.rulers" class="horizontal-ruler" aria-label="Horizontal ruler" title="Drag onto the page to add a horizontal guide" @pointerdown="rulerDown($event,'horizontal')"><span v-for="n in 50" :style="{left:((n-1)*75.59 + (Number(preferences.doc.rulerOriginAcross)||0)*3.7795)*zoom/100+'px'}">{{340-(n-1)*20}}</span></div>
 <div class="canvas-row"><div v-if="settings.rulers" class="vertical-ruler" aria-label="Vertical ruler" title="Drag onto the page to add a vertical guide" @pointerdown="rulerDown($event,'vertical')"><span v-for="n in 50" :style="{top:((n-1)*75.59 + (Number(preferences.doc.rulerOriginDown)||0)*3.7795)*zoom/100+'px'}">{{(n-1)*20}}</span></div>
 <div ref="scroller" class="scroll" :class="{drawing:!['edit','select'].includes(tool)}" @contextmenu="onCanvasContextMenu"><div class="page-spread" :class="{facing:settings.facing}" :style="{paddingLeft:(preferences.doc.pasteboardAcross||15)+'%',paddingRight:(preferences.doc.pasteboardAcross||15)+'%',paddingBottom:(preferences.doc.pasteboardDown||25)+'mm'}">
-<div ref="paperEl" class="paper" :class="{guides:settings.guides,invisibles:settings.invisibles,'master-mode':isMasterPage}" :style="{width:pageWidth+'mm',minHeight:pageHeight+'mm',paddingTop:(settings.marginTop??settings.margin)+'mm',paddingBottom:(settings.marginBottom??settings.margin)+'mm',paddingLeft:(settings.marginLeft??settings.margin)+'mm',paddingRight:(settings.marginRight??settings.margin)+'mm',zoom:zoom/100}" @pointerdown="pointerDown" @contextmenu="onCanvasContextMenu">
+<div ref="paperEl" class="paper" :class="{guides:settings.guides,invisibles:settings.invisibles,'master-mode':isMasterPage}" :style="{width:pageWidth+'mm',height:pageHeight+'mm',maxHeight:pageHeight+'mm',boxSizing:'border-box',overflow:'hidden',paddingTop:(settings.marginTop??settings.margin)+'mm',paddingBottom:(settings.marginBottom??settings.margin)+'mm',paddingLeft:(settings.marginLeft??settings.margin)+'mm',paddingRight:(settings.marginRight??settings.margin)+'mm',zoom:zoom/100}" @pointerdown="pointerDown" @contextmenu="onCanvasContextMenu">
 <div v-if="isMasterPage" class="master-page-banner" aria-label="Master Page indicator"><span class="master-badge">M</span><span>Master Page {{ settings.facing ? (masterSide === 'left' ? '— Left (Even Pages)' : '— Right (Odd Pages)') : '— All Pages' }}</span><span class="master-hint">(Objects placed here repeat across pages. Use # in a Title Text Box for page numbers)</span></div>
 <div v-if="isMasterPage" class="master-default-grid" :class="{selected:selected.includes('default-grid')}" :style="{left:defaultGridObject.x+'px',top:defaultGridObject.y+'px',width:defaultGridObject.w+'px',height:defaultGridObject.h+'px',zIndex:60,backgroundColor:defaultGridObject.fill!=='none'?defaultGridObject.fill:undefined,border:defaultGridObject.strokeWidth?defaultGridObject.strokeWidth+'pt solid '+defaultGridObject.stroke:undefined}" @pointerdown.stop="selectDefaultGrid($event)" @dblclick.stop="openDialog('object')">
   <div v-if="columnGuides.length" class="column-guides">
@@ -678,8 +796,8 @@ onBeforeUnmount(()=>{clearTimeout(timer);window.removeEventListener('keydown',sh
     <button v-for="h in ['nw','n','ne','w','e','sw','s','se']" :key="h" class="resize-handle" :class="'handle-'+h" :aria-label="'Resize '+h" @pointerdown.stop="resizeDown($event,defaultGridObject,h)"></button>
   </template>
 </div>
-<div class="text-boundary" :class="{'multi-column':(settings.columns||1)>1}" :style="{height:(settings.columns||1)>1?defaultGridObject.h+'px':undefined,minHeight:defaultGridObject.h+'px',border:settings.borderWidth?settings.borderWidth+'pt solid '+settings.borderColor:undefined,backgroundColor:settings.fill!=='none'?settings.fill:undefined}" @pointerdown="tool==='edit'&&nextTick(()=>editor?.commands.focus())">
-<EditorContent v-if="editor&&settings.autoTextBox!==false&&!isMasterPage" :editor="editor" :dir="format.direction" :style="{height:(settings.columns||1)>1?'100%':undefined,fontFamily:baseStyle.font,fontSize:baseStyle.size+'pt',color:baseStyle.color,'--editor-columns':settings.columns||1,'--editor-gap':(settings.gap||4.233)+'mm',tabSize:settings.tabSize,whiteSpace:settings.wrap?'pre-wrap':'pre',hyphens:settings.hyphenation?'auto':'none'}"/>
+<div class="text-boundary" :class="{'multi-column':(settings.columns||1)>1}" :style="{height:defaultGridObject.h+'px',maxHeight:defaultGridObject.h+'px',boxSizing:'border-box',overflow:'hidden',border:settings.borderWidth?settings.borderWidth+'pt solid '+settings.borderColor:undefined,backgroundColor:settings.fill!=='none'?settings.fill:undefined}" @pointerdown="tool==='edit'&&nextTick(()=>editor?.commands.focus())">
+<EditorContent v-if="editor&&settings.autoTextBox!==false&&!isMasterPage" :editor="editor" :dir="format.direction" :style="{height:'100%',fontFamily:baseStyle.font,fontSize:baseStyle.size+'pt',color:baseStyle.color,'--editor-columns':settings.columns||1,'--editor-gap':(settings.gap||4.233)+'mm',tabSize:settings.tabSize,whiteSpace:settings.wrap?'pre-wrap':'pre',hyphens:settings.hyphenation?'auto':'none'}"/>
 </div>
 <svg class="link-layer" v-if="['link','unlink'].includes(tool)" width="100%" height="100%"><template v-for="o in pageObjects.filter(o=>o.next)"><line v-if="objects.find(a=>a.id===o.next)" :x1="o.x+o.w" :y1="o.y+o.h" :x2="objects.find(a=>a.id===o.next).x" :y2="objects.find(a=>a.id===o.next).y" stroke="#1468bb" stroke-width="1.5" stroke-dasharray="4 3"/></template></svg>
 <div v-for="(o,index) in pageObjects" :key="o.id" class="canvas-object" :class="{selected:selected.includes(o.id),locked:o.locked,textframe:['text','title'].includes(o.type),pictureframe:o.type.includes('picture'),nonprinting:o.dontPrint,'master-object':o.master,'master-background':o.master&&!isMasterPage}" :data-object-id="o.id" :data-object-type="o.type" :style="{left:o.x+'px',top:o.y+'px',width:o.w+'px',height:o.h+'px',transform:'rotate('+o.rotation+'deg)',zIndex:index+2}" @pointerdown.stop="objectDown($event,o)" @dblclick.stop="o.type.includes('picture')?pickPicture(o):['text','title'].includes(o.type)?objectAction('editText'):tool==='select'?openDialog('object'):null">
