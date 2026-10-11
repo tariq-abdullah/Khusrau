@@ -1,0 +1,6582 @@
+[
+  {
+    "family": "Arial",
+    "displayName": "Arial",
+    "category": "System",
+    "source": "system",
+    "isDefault": true,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Arial",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Arial",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Arial",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Arial",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Times New Roman",
+    "displayName": "Times New Roman",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Times New Roman",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Times New Roman",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Times New Roman",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Times New Roman",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Georgia",
+    "displayName": "Georgia",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Georgia",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Georgia",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Georgia",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Georgia",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Courier New",
+    "displayName": "Courier New",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Courier New",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Courier New",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Courier New",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Courier New",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Tahoma",
+    "displayName": "Tahoma",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Tahoma",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Tahoma",
+        "weight": "700",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Verdana",
+    "displayName": "Verdana",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Verdana",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Verdana",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Verdana",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Verdana",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Trebuchet MS",
+    "displayName": "Trebuchet MS",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Trebuchet MS",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Trebuchet MS",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Trebuchet MS",
+        "weight": "400",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Impact",
+    "displayName": "Impact",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Impact",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Comic Sans MS",
+    "displayName": "Comic Sans MS",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Comic Sans MS",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Comic Sans MS",
+        "weight": "700",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Palatino",
+    "displayName": "Palatino",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Palatino",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Palatino",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Palatino",
+        "weight": "400",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Garamond",
+    "displayName": "Garamond",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Garamond",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Garamond",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Garamond",
+        "weight": "400",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Lucida Console",
+    "displayName": "Lucida Console",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Lucida Console",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Segoe UI",
+    "displayName": "Segoe UI",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Segoe UI",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Segoe UI",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Segoe UI",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Segoe UI",
+        "weight": "700",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Calibri",
+    "displayName": "Calibri",
+    "category": "System",
+    "source": "system",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Calibri",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Calibri",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Calibri",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Calibri",
+        "weight": "400",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Roboto",
+    "displayName": "Roboto",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Roboto",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Roboto",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Roboto",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Roboto",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Roboto",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Roboto",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Open Sans",
+    "displayName": "Open Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Open Sans",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Open Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Open Sans",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Open Sans",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Open Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Open Sans",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Montserrat",
+    "displayName": "Montserrat",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Montserrat",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Montserrat",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Montserrat",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Montserrat",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Montserrat",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Montserrat",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Lato",
+    "displayName": "Lato",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Lato",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Lato",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Lato",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Lato",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Lato",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Lato",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Poppins",
+    "displayName": "Poppins",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Poppins",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Poppins",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Poppins",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Poppins",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Poppins",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Poppins",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Inter",
+    "displayName": "Inter",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Inter",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Inter",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Inter",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Inter",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Inter",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Inter",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Oswald",
+    "displayName": "Oswald",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Oswald",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Oswald",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Oswald",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Oswald",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Oswald",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Oswald",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Raleway",
+    "displayName": "Raleway",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Raleway",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Raleway",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Raleway",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Raleway",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Raleway",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Raleway",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Nunito",
+    "displayName": "Nunito",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Nunito",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Nunito",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Nunito",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Nunito",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Nunito",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Nunito",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Rubik",
+    "displayName": "Rubik",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Rubik",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Rubik",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Rubik",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Rubik",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Rubik",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Rubik",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "PT Sans",
+    "displayName": "PT Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "PT Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "PT Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "PT Sans",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "PT Sans",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Ubuntu",
+    "displayName": "Ubuntu",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Ubuntu",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Ubuntu",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Ubuntu",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Ubuntu",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Work Sans",
+    "displayName": "Work Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Work Sans",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Work Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Work Sans",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Work Sans",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Work Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Work Sans",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "DM Sans",
+    "displayName": "DM Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "DM Sans",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "DM Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "DM Sans",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "DM Sans",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "DM Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "DM Sans",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Plus Jakarta Sans",
+    "displayName": "Plus Jakarta Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Plus Jakarta Sans",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Plus Jakarta Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Plus Jakarta Sans",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Plus Jakarta Sans",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Plus Jakarta Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Plus Jakarta Sans",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Quicksand",
+    "displayName": "Quicksand",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Quicksand",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Quicksand",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Quicksand",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Quicksand",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Quicksand",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Quicksand",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Heebo",
+    "displayName": "Heebo",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Heebo",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Heebo",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Heebo",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Heebo",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Heebo",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Heebo",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Kanit",
+    "displayName": "Kanit",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Kanit",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Kanit",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Kanit",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Kanit",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Kanit",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Kanit",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Titillium Web",
+    "displayName": "Titillium Web",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Titillium Web",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Titillium Web",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Titillium Web",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Titillium Web",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Titillium Web",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Titillium Web",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Josefin Sans",
+    "displayName": "Josefin Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Josefin Sans",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Josefin Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Josefin Sans",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Josefin Sans",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Josefin Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Josefin Sans",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Cabin",
+    "displayName": "Cabin",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Cabin",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Cabin",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Cabin",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Cabin",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Dosis",
+    "displayName": "Dosis",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Dosis",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Dosis",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Dosis",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Dosis",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Dosis",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Dosis",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Oxygen",
+    "displayName": "Oxygen",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Oxygen",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Oxygen",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Oxygen",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Oxygen",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Prompt",
+    "displayName": "Prompt",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Prompt",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Prompt",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Prompt",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Prompt",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Prompt",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Prompt",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Barlow",
+    "displayName": "Barlow",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Barlow",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Barlow",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Barlow",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Barlow",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Barlow",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Barlow",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Outfit",
+    "displayName": "Outfit",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Outfit",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Outfit",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Outfit",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Outfit",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Outfit",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Outfit",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Figtree",
+    "displayName": "Figtree",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Figtree",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Figtree",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Figtree",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Figtree",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Figtree",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Figtree",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Manrope",
+    "displayName": "Manrope",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Manrope",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Manrope",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Manrope",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Manrope",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Manrope",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Manrope",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Lexend",
+    "displayName": "Lexend",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Lexend",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Lexend",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Lexend",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Lexend",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Lexend",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Lexend",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Archivo",
+    "displayName": "Archivo",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Archivo",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Archivo",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Archivo",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Archivo",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Archivo",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Archivo",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Overpass",
+    "displayName": "Overpass",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Overpass",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Overpass",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Overpass",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Overpass",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Overpass",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Overpass",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Fira Sans",
+    "displayName": "Fira Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Fira Sans",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Fira Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Fira Sans",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Fira Sans",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Fira Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Fira Sans",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Mukta",
+    "displayName": "Mukta",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Mukta",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Mukta",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Mukta",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Mukta",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Mukta",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Mukta",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Nanum Gothic",
+    "displayName": "Nanum Gothic",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Nanum Gothic",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Nanum Gothic",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Nanum Gothic",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Nanum Gothic",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Karla",
+    "displayName": "Karla",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Karla",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Karla",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Karla",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Karla",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Karla",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Karla",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Public Sans",
+    "displayName": "Public Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Public Sans",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Public Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Public Sans",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Public Sans",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Public Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Public Sans",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Urbanist",
+    "displayName": "Urbanist",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Urbanist",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Urbanist",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Urbanist",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Urbanist",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Urbanist",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Urbanist",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Mulish",
+    "displayName": "Mulish",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Mulish",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Mulish",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Mulish",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Mulish",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Mulish",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Mulish",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Red Hat Display",
+    "displayName": "Red Hat Display",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Red Hat Display",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Red Hat Display",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Red Hat Display",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Red Hat Display",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Red Hat Display",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Red Hat Display",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Exo 2",
+    "displayName": "Exo 2",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Exo 2",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Exo 2",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Exo 2",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Exo 2",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Exo 2",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Exo 2",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Asap",
+    "displayName": "Asap",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Asap",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Asap",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Asap",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Asap",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Maven Pro",
+    "displayName": "Maven Pro",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Maven Pro",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Maven Pro",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Maven Pro",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Maven Pro",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Maven Pro",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Maven Pro",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Signika",
+    "displayName": "Signika",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Signika",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Signika",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Signika",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Signika",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Catamaran",
+    "displayName": "Catamaran",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Catamaran",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Catamaran",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Catamaran",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Catamaran",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Catamaran",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Catamaran",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Hind",
+    "displayName": "Hind",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Hind",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Hind",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Hind",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Hind",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Questrial",
+    "displayName": "Questrial",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Questrial",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "ABeeZee",
+    "displayName": "ABeeZee",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "ABeeZee",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Varela Round",
+    "displayName": "Varela Round",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Varela Round",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Nunito Sans",
+    "displayName": "Nunito Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Nunito Sans",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Nunito Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Nunito Sans",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Nunito Sans",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Nunito Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Nunito Sans",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Jost",
+    "displayName": "Jost",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Jost",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Jost",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Jost",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Jost",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Jost",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Jost",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Sora",
+    "displayName": "Sora",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Sora",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Sora",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Sora",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Sora",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Sora",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Sora",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Syne",
+    "displayName": "Syne",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Syne",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Syne",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Syne",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Syne",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Syne",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Syne",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Space Grotesk",
+    "displayName": "Space Grotesk",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Space Grotesk",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Space Grotesk",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Space Grotesk",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Space Grotesk",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Space Grotesk",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Space Grotesk",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Be Vietnam Pro",
+    "displayName": "Be Vietnam Pro",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Be Vietnam Pro",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Be Vietnam Pro",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Be Vietnam Pro",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Be Vietnam Pro",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Be Vietnam Pro",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Be Vietnam Pro",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Epilogue",
+    "displayName": "Epilogue",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Epilogue",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Epilogue",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Epilogue",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Epilogue",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Epilogue",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Epilogue",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "General Sans",
+    "displayName": "General Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "General Sans",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "General Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "General Sans",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "General Sans",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "General Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "General Sans",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Readex Pro",
+    "displayName": "Readex Pro",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Readex Pro",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Readex Pro",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Readex Pro",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Readex Pro",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Readex Pro",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Readex Pro",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Albert Sans",
+    "displayName": "Albert Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Albert Sans",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Albert Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Albert Sans",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Albert Sans",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Albert Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Albert Sans",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Bricolage Grotesque",
+    "displayName": "Bricolage Grotesque",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Bricolage Grotesque",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Bricolage Grotesque",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Bricolage Grotesque",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Bricolage Grotesque",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Bricolage Grotesque",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Bricolage Grotesque",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Instrument Sans",
+    "displayName": "Instrument Sans",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Instrument Sans",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Instrument Sans",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Instrument Sans",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Instrument Sans",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Instrument Sans",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Instrument Sans",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Chivo",
+    "displayName": "Chivo",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Chivo",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Chivo",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Chivo",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Chivo",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Chivo",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Chivo",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Onest",
+    "displayName": "Onest",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Onest",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Onest",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Onest",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Onest",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Onest",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Onest",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Hanken Grotesk",
+    "displayName": "Hanken Grotesk",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Hanken Grotesk",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Hanken Grotesk",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Hanken Grotesk",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Hanken Grotesk",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Hanken Grotesk",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Hanken Grotesk",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Geist",
+    "displayName": "Geist",
+    "category": "Sans Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Geist",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Geist",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Geist",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Geist",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Geist",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Geist",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Merriweather",
+    "displayName": "Merriweather",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Merriweather",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Merriweather",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Merriweather",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Merriweather",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Playfair Display",
+    "displayName": "Playfair Display",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Playfair Display",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Playfair Display",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Playfair Display",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Playfair Display",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Playfair Display",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Playfair Display",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Lora",
+    "displayName": "Lora",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Lora",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Lora",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Lora",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Lora",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "PT Serif",
+    "displayName": "PT Serif",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "PT Serif",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "PT Serif",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "PT Serif",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "PT Serif",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Roboto Slab",
+    "displayName": "Roboto Slab",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Roboto Slab",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Roboto Slab",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Roboto Slab",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Roboto Slab",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Roboto Slab",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Roboto Slab",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Bitter",
+    "displayName": "Bitter",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Bitter",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Bitter",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Bitter",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Bitter",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Bitter",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Bitter",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Libre Baskerville",
+    "displayName": "Libre Baskerville",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Libre Baskerville",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Libre Baskerville",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Libre Baskerville",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Libre Baskerville",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Cormorant Garamond",
+    "displayName": "Cormorant Garamond",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Cormorant Garamond",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Cormorant Garamond",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Cormorant Garamond",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Cormorant Garamond",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Cormorant Garamond",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Cormorant Garamond",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "EB Garamond",
+    "displayName": "EB Garamond",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "EB Garamond",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "EB Garamond",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "EB Garamond",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "EB Garamond",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "EB Garamond",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "EB Garamond",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Cinzel",
+    "displayName": "Cinzel",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Cinzel",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Cinzel",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Cinzel",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Cinzel",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Cinzel",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Cinzel",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Arvo",
+    "displayName": "Arvo",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Arvo",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Arvo",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Arvo",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Arvo",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Spectral",
+    "displayName": "Spectral",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Spectral",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Spectral",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Spectral",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Spectral",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Spectral",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Spectral",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Domine",
+    "displayName": "Domine",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Domine",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Domine",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Domine",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Domine",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Domine",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Domine",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Bodoni Moda",
+    "displayName": "Bodoni Moda",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Bodoni Moda",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Bodoni Moda",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Bodoni Moda",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Bodoni Moda",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Bodoni Moda",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Bodoni Moda",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Cardo",
+    "displayName": "Cardo",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Cardo",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Cardo",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Cardo",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Cardo",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Frank Ruhl Libre",
+    "displayName": "Frank Ruhl Libre",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Frank Ruhl Libre",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Frank Ruhl Libre",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Frank Ruhl Libre",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Frank Ruhl Libre",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Frank Ruhl Libre",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Frank Ruhl Libre",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Castoro",
+    "displayName": "Castoro",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Castoro",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Prata",
+    "displayName": "Prata",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Prata",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Newsreader",
+    "displayName": "Newsreader",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Newsreader",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Newsreader",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Newsreader",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Newsreader",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Newsreader",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Newsreader",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Faustina",
+    "displayName": "Faustina",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Faustina",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Faustina",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Faustina",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Faustina",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Faustina",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Faustina",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Vollkorn",
+    "displayName": "Vollkorn",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Vollkorn",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Vollkorn",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Vollkorn",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Vollkorn",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Vollkorn",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Vollkorn",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Source Serif 4",
+    "displayName": "Source Serif 4",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Source Serif 4",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Source Serif 4",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Source Serif 4",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Source Serif 4",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Source Serif 4",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Source Serif 4",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Zilla Slab",
+    "displayName": "Zilla Slab",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Zilla Slab",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Zilla Slab",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Zilla Slab",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Zilla Slab",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Zilla Slab",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Zilla Slab",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Bree Serif",
+    "displayName": "Bree Serif",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Bree Serif",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Crimson Text",
+    "displayName": "Crimson Text",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Crimson Text",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Crimson Text",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Crimson Text",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Crimson Text",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Crimson Pro",
+    "displayName": "Crimson Pro",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Crimson Pro",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Crimson Pro",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Crimson Pro",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Crimson Pro",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Crimson Pro",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Crimson Pro",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Libre Bodoni",
+    "displayName": "Libre Bodoni",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Libre Bodoni",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Libre Bodoni",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Libre Bodoni",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Libre Bodoni",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Marcellus",
+    "displayName": "Marcellus",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Marcellus",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "DM Serif Display",
+    "displayName": "DM Serif Display",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "DM Serif Display",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "DM Serif Text",
+    "displayName": "DM Serif Text",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "DM Serif Text",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Old Standard TT",
+    "displayName": "Old Standard TT",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Old Standard TT",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Old Standard TT",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Old Standard TT",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Old Standard TT",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Fraunces",
+    "displayName": "Fraunces",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Fraunces",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Fraunces",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Fraunces",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Fraunces",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Fraunces",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Fraunces",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Besley",
+    "displayName": "Besley",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Besley",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Besley",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Besley",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Besley",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Besley",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Besley",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Young Serif",
+    "displayName": "Young Serif",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Young Serif",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Instrument Serif",
+    "displayName": "Instrument Serif",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Instrument Serif",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Gilda Display",
+    "displayName": "Gilda Display",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Gilda Display",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Rozha One",
+    "displayName": "Rozha One",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Rozha One",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Alice",
+    "displayName": "Alice",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Alice",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Lustria",
+    "displayName": "Lustria",
+    "category": "Serif",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Lustria",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Anton",
+    "displayName": "Anton",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Anton",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Lobster",
+    "displayName": "Lobster",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Lobster",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Pacifico",
+    "displayName": "Pacifico",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Pacifico",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Righteous",
+    "displayName": "Righteous",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Righteous",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Bangers",
+    "displayName": "Bangers",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Bangers",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Bungee",
+    "displayName": "Bungee",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Bungee",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Permanent Marker",
+    "displayName": "Permanent Marker",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Permanent Marker",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Abril Fatface",
+    "displayName": "Abril Fatface",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Abril Fatface",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Alfa Slab One",
+    "displayName": "Alfa Slab One",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Alfa Slab One",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Bebas Neue",
+    "displayName": "Bebas Neue",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Bebas Neue",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Passion One",
+    "displayName": "Passion One",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Passion One",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Passion One",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Passion One",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Passion One",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Comfortaa",
+    "displayName": "Comfortaa",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Comfortaa",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Comfortaa",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Comfortaa",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Comfortaa",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Comfortaa",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Comfortaa",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Fredoka",
+    "displayName": "Fredoka",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Fredoka",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Fredoka",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Fredoka",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Fredoka",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Fredoka",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Fredoka",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Monoton",
+    "displayName": "Monoton",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Monoton",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Faster One",
+    "displayName": "Faster One",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Faster One",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Creepster",
+    "displayName": "Creepster",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Creepster",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Special Elite",
+    "displayName": "Special Elite",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Special Elite",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Black Ops One",
+    "displayName": "Black Ops One",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Black Ops One",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Shrikhand",
+    "displayName": "Shrikhand",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Shrikhand",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Audiowide",
+    "displayName": "Audiowide",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Audiowide",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Titan One",
+    "displayName": "Titan One",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Titan One",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Luckiest Guy",
+    "displayName": "Luckiest Guy",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Luckiest Guy",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Ultra",
+    "displayName": "Ultra",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Ultra",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Ruslan Display",
+    "displayName": "Ruslan Display",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Ruslan Display",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Press Start 2P",
+    "displayName": "Press Start 2P",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Press Start 2P",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Silkscreen",
+    "displayName": "Silkscreen",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Silkscreen",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Rubik Glitch",
+    "displayName": "Rubik Glitch",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Rubik Glitch",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Bungee Shade",
+    "displayName": "Bungee Shade",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Bungee Shade",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Bungee Inline",
+    "displayName": "Bungee Inline",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Bungee Inline",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Chango",
+    "displayName": "Chango",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Chango",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Shojumaru",
+    "displayName": "Shojumaru",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Shojumaru",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Smokum",
+    "displayName": "Smokum",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Smokum",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Rye",
+    "displayName": "Rye",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Rye",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Sancreek",
+    "displayName": "Sancreek",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Sancreek",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Megrim",
+    "displayName": "Megrim",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Megrim",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Plaster",
+    "displayName": "Plaster",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Plaster",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Vast Shadow",
+    "displayName": "Vast Shadow",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Vast Shadow",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Wallpoet",
+    "displayName": "Wallpoet",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Wallpoet",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Trade Winds",
+    "displayName": "Trade Winds",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Trade Winds",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Big Shoulders Display",
+    "displayName": "Big Shoulders Display",
+    "category": "Display",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Big Shoulders Display",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Big Shoulders Display",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Big Shoulders Display",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Big Shoulders Display",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Big Shoulders Display",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Big Shoulders Display",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Dancing Script",
+    "displayName": "Dancing Script",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Dancing Script",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Dancing Script",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Dancing Script",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Dancing Script",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Dancing Script",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Dancing Script",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Caveat",
+    "displayName": "Caveat",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Caveat",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Caveat",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Caveat",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Caveat",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Caveat",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Caveat",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Shadows Into Light",
+    "displayName": "Shadows Into Light",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Shadows Into Light",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Indie Flower",
+    "displayName": "Indie Flower",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Indie Flower",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Kalam",
+    "displayName": "Kalam",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Kalam",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Kalam",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Kalam",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Kalam",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Satisfy",
+    "displayName": "Satisfy",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Satisfy",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Sacramento",
+    "displayName": "Sacramento",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Sacramento",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Great Vibes",
+    "displayName": "Great Vibes",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Great Vibes",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Kaushan Script",
+    "displayName": "Kaushan Script",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Kaushan Script",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Courgette",
+    "displayName": "Courgette",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Courgette",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Yellowtail",
+    "displayName": "Yellowtail",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Yellowtail",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Marck Script",
+    "displayName": "Marck Script",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Marck Script",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Oleo Script",
+    "displayName": "Oleo Script",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Oleo Script",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Oleo Script",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Oleo Script",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Oleo Script",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Berkshire Swash",
+    "displayName": "Berkshire Swash",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Berkshire Swash",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Cookie",
+    "displayName": "Cookie",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Cookie",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Gloria Hallelujah",
+    "displayName": "Gloria Hallelujah",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Gloria Hallelujah",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Alex Brush",
+    "displayName": "Alex Brush",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Alex Brush",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Allura",
+    "displayName": "Allura",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Allura",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Amatic SC",
+    "displayName": "Amatic SC",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Amatic SC",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Amatic SC",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Amatic SC",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Amatic SC",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Bad Script",
+    "displayName": "Bad Script",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Bad Script",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Covered By Your Grace",
+    "displayName": "Covered By Your Grace",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Covered By Your Grace",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Damion",
+    "displayName": "Damion",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Damion",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Gochi Hand",
+    "displayName": "Gochi Hand",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Gochi Hand",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Homemade Apple",
+    "displayName": "Homemade Apple",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Homemade Apple",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Just Another Hand",
+    "displayName": "Just Another Hand",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Just Another Hand",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Kristi",
+    "displayName": "Kristi",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Kristi",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Patrick Hand",
+    "displayName": "Patrick Hand",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Patrick Hand",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Reenie Beanie",
+    "displayName": "Reenie Beanie",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Reenie Beanie",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Rock Salt",
+    "displayName": "Rock Salt",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Rock Salt",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Rouge Script",
+    "displayName": "Rouge Script",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Rouge Script",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Sriracha",
+    "displayName": "Sriracha",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Sriracha",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Tangerine",
+    "displayName": "Tangerine",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Tangerine",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Walter Turncoat",
+    "displayName": "Walter Turncoat",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Walter Turncoat",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Zeyada",
+    "displayName": "Zeyada",
+    "category": "Handwriting",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Zeyada",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Inconsolata",
+    "displayName": "Inconsolata",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Inconsolata",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Inconsolata",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Inconsolata",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Inconsolata",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Inconsolata",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Inconsolata",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Roboto Mono",
+    "displayName": "Roboto Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Roboto Mono",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Roboto Mono",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Roboto Mono",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Roboto Mono",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Roboto Mono",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Roboto Mono",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Source Code Pro",
+    "displayName": "Source Code Pro",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Source Code Pro",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Source Code Pro",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Source Code Pro",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Source Code Pro",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Source Code Pro",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Source Code Pro",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Space Mono",
+    "displayName": "Space Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Space Mono",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Space Mono",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Space Mono",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Space Mono",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Fira Code",
+    "displayName": "Fira Code",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Fira Code",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Fira Code",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Fira Code",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Fira Code",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Fira Code",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Fira Code",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "IBM Plex Mono",
+    "displayName": "IBM Plex Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "IBM Plex Mono",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "IBM Plex Mono",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "IBM Plex Mono",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "IBM Plex Mono",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "IBM Plex Mono",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "IBM Plex Mono",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "JetBrains Mono",
+    "displayName": "JetBrains Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "JetBrains Mono",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "JetBrains Mono",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "JetBrains Mono",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "JetBrains Mono",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "JetBrains Mono",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "JetBrains Mono",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "VT323",
+    "displayName": "VT323",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "VT323",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Courier Prime",
+    "displayName": "Courier Prime",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Courier Prime",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Courier Prime",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Courier Prime",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Courier Prime",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Cutive Mono",
+    "displayName": "Cutive Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Cutive Mono",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Share Tech Mono",
+    "displayName": "Share Tech Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Share Tech Mono",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Overpass Mono",
+    "displayName": "Overpass Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Overpass Mono",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Overpass Mono",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Overpass Mono",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Overpass Mono",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Overpass Mono",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Overpass Mono",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Anonymous Pro",
+    "displayName": "Anonymous Pro",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Anonymous Pro",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Anonymous Pro",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Anonymous Pro",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Anonymous Pro",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Ubuntu Mono",
+    "displayName": "Ubuntu Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Ubuntu Mono",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Ubuntu Mono",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "Italic",
+        "fontFamily": "Ubuntu Mono",
+        "weight": "400",
+        "style": "italic"
+      },
+      {
+        "name": "Bold Italic",
+        "fontFamily": "Ubuntu Mono",
+        "weight": "700",
+        "style": "italic"
+      }
+    ]
+  },
+  {
+    "family": "Major Mono Display",
+    "displayName": "Major Mono Display",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Major Mono Display",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Nova Mono",
+    "displayName": "Nova Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Nova Mono",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Syne Mono",
+    "displayName": "Syne Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Syne Mono",
+        "weight": "400",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Red Hat Mono",
+    "displayName": "Red Hat Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Red Hat Mono",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Red Hat Mono",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Red Hat Mono",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Red Hat Mono",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Red Hat Mono",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Red Hat Mono",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Azeret Mono",
+    "displayName": "Azeret Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Azeret Mono",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Azeret Mono",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Azeret Mono",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Azeret Mono",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Azeret Mono",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Azeret Mono",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  },
+  {
+    "family": "Spline Sans Mono",
+    "displayName": "Spline Sans Mono",
+    "category": "Monospace",
+    "source": "google",
+    "isDefault": false,
+    "hasSubmenu": true,
+    "variants": [
+      {
+        "name": "Light",
+        "fontFamily": "Spline Sans Mono",
+        "weight": "300",
+        "style": "normal"
+      },
+      {
+        "name": "Regular",
+        "fontFamily": "Spline Sans Mono",
+        "weight": "400",
+        "style": "normal"
+      },
+      {
+        "name": "Medium",
+        "fontFamily": "Spline Sans Mono",
+        "weight": "500",
+        "style": "normal"
+      },
+      {
+        "name": "SemiBold",
+        "fontFamily": "Spline Sans Mono",
+        "weight": "600",
+        "style": "normal"
+      },
+      {
+        "name": "Bold",
+        "fontFamily": "Spline Sans Mono",
+        "weight": "700",
+        "style": "normal"
+      },
+      {
+        "name": "ExtraBold",
+        "fontFamily": "Spline Sans Mono",
+        "weight": "800",
+        "style": "normal"
+      }
+    ]
+  }
+]
