@@ -26,5 +26,7 @@ export const ParagraphLayout=Extension.create({
   beginIndent:{default:0,renderHTML:a=>({style:`padding-inline-start:${a.beginIndent}mm`})},
   endIndent:{default:0,renderHTML:a=>({style:`padding-inline-end:${a.endIndent}mm`})},
   fullJustify:{default:false,parseHTML:e=>e.style.textAlignLast==='justify',renderHTML:a=>({style:`text-align-last:${a.fullJustify?'justify':'auto'}`})},
+  borderAbove:{default:null,parseHTML:e=>e.style.borderTop||null,renderHTML:a=>a.borderAbove?{style:`border-top:${a.borderAbove}`}:{}},
+  borderBelow:{default:null,parseHTML:e=>e.style.borderBottom||null,renderHTML:a=>a.borderBelow?{style:`border-bottom:${a.borderBelow}`}:{}},
  }},{types:['tableCell','tableHeader'],attributes:{backgroundColor:{default:null,parseHTML:e=>e.style.backgroundColor||null,renderHTML:a=>a.backgroundColor?{style:`background-color:${a.backgroundColor}`}:{}}}}]}
 })

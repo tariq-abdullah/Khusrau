@@ -1,5 +1,64 @@
 import * as CFB from 'cfb'
-import {decodeV1V2,filterParagraphs} from 'inpage-format'
+import {decodeV1V2,filterParagraphs,filterParagraphsWithMeta,CHAR_MAP_URDU,COMPOSITE_SEQUENCES} from 'inpage-format'
+import { parseOlderInPageStream, buildOlderInPageFile } from './olderInPage.js'
+
+const charToByte = new Map()
+for (const [b, ch] of CHAR_MAP_URDU) {
+ if (!charToByte.has(ch)) charToByte.set(ch, b)
+}
+
+export function encodeToV1V2(text) {
+ const bytes = []
+ let i = 0
+ while (i < text.length) {
+  if (text[i] === '\r' && text[i + 1] === '\n') {
+   bytes.push(0x0D)
+   i += 2
+   continue
+  }
+  if (text[i] === '\n' || text[i] === '\r') {
+   bytes.push(0x0D)
+   i++
+   continue
+  }
+  if (text[i] === '\t') {
+   bytes.push(0x09)
+   i++
+   continue
+  }
+  if (text[i] === ' ') {
+   bytes.push(0x04, 0x20)
+   i++
+   continue
+  }
+  let matchedComposite = false
+  for (const [key, comp] of COMPOSITE_SEQUENCES) {
+   if (text.startsWith(comp, i)) {
+    const [b1, b2] = key.split('_').map(h => parseInt(h, 16))
+    bytes.push(0x04, b1, 0x04, b2)
+    i += comp.length
+    matchedComposite = true
+    break
+   }
+  }
+  if (matchedComposite) continue
+  const ch = text[i]
+  if (charToByte.has(ch)) {
+   bytes.push(0x04, charToByte.get(ch))
+  } else {
+   const code = ch.charCodeAt(0)
+   if (code < 128) {
+    bytes.push(code)
+   }
+  }
+  i++
+ }
+ return new Uint8Array(bytes)
+}
+
+export function createOlderInPageFile(text, options) {
+ return buildOlderInPageFile(text, options)
+}
 
 // V3 Unicode stories are contiguous UTF-16LE. The published decoder's
 // paragraph-count table interpretation truncates this particular native file.
@@ -21,12 +80,34 @@ export function recoverV3(stream){
 }
 export function readNative(bytes){
  if(bytes.length>50*1024*1024)throw Error('Native files must be smaller than 50 MB.')
- const cfb=CFB.read(bytes,{type:'array'}),v3=cfb.FileIndex.find(e=>e.name==='InPage300'),v2=cfb.FileIndex.find(e=>e.name==='InPage200')
- if(!v3&&!v2)throw Error('This compound file has no supported InPage content stream.')
- const story=v3?recoverV3(new Uint8Array(v3.content)):{paragraphs:filterParagraphs(decodeV1V2(new Uint8Array(v2.content)).paragraphs)}
- if(!story.text)story.text=story.paragraphs.join('\n')
+ const cfb=CFB.read(bytes,{type:'array'}),v3=cfb.FileIndex.find(e=>e.name==='InPage300'),v2=cfb.FileIndex.find(e=>e.name==='InPage200'),v1=cfb.FileIndex.find(e=>e.name==='InPage100')
+ if(!v3&&!v2&&!v1)throw Error('This compound file has no supported InPage content stream.')
+ const isOlderVersion=!v3&&!!(v2||v1)
+ const version=v3?3:(v2?2:1)
+ let story
+ if(v3){
+  story=recoverV3(new Uint8Array(v3.content))
+ }else{
+  const oldStream=v2||v1
+  const parsed=parseOlderInPageStream(new Uint8Array(oldStream.content))
+  story={
+   paragraphs:parsed.paragraphs.map(p=>p.text),
+   formattedParagraphs:parsed.paragraphs,
+   layout:parsed.layout,
+   text:parsed.text,
+   pageBreakIndices:[]
+  }
+ }
  const pictures=cfb.FileIndex.filter(e=>e.content?.[0]===255&&e.content?.[1]===216).map(e=>new Uint8Array(e.content))
- return {...story,pictures,version:v3?3:2,warning:'Recovered text; native layout and character styling are not fully decoded.'}
+ return {
+  ...story,
+  pictures,
+  version,
+  isOlderVersion,
+  warning:isOlderVersion
+   ?'This file was created in an older version of this software and we have converted it for you. You can download it in older version by File -> Download for older InPage.'
+   :'Recovered text; native layout and character styling are not fully decoded.'
+ }
 }
 export function documentFingerprint(d){return JSON.stringify({direction:d.direction,font:d.font,size:d.size,paper:d.paper,margin:d.margin,pages:JSON.parse(JSON.stringify(d.pages, (k,v)=>['beginIndent','endIndent'].includes(k)&&v===0?undefined:v)),objects:d.objects,baseStyle:d.baseStyle,...(d.settings?.orientation==='landscape'?{orientation:'landscape'}:{}),settings:Object.fromEntries(['paper','margin','columns','gap','wrap','hyphenation','tabSize','borderWidth','borderColor'].map(k=>[k,d.settings?.[k]])),footnotes:d.footnotes})}
 export function unchangedNative(d){return !!d.nativeSource&&documentFingerprint(d)===d.nativeSource.baseline}

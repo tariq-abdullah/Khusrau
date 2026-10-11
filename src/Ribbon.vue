@@ -5,7 +5,7 @@ const urduFonts=inpageFonts.filter(f=>!f.legacy&&f.arabicCharacters>=10).sort((a
 import Icon from './Icon.vue'
 import UrduFontSelect from './UrduFontSelect.vue'
 import {reactive} from 'vue'
-const props=defineProps({format:Object,editor:Object,colors:Array,styles:Array})
+const props=defineProps({format:Object,editor:Object,colors:Array,styles:Array,documentFonts:Array})
 const emit=defineEmits(['format','align','direction','character'])
 const drafts=reactive({})
 function update(k,e){const value=drafts[k]??e.target.value;emit('format',k,value);delete drafts[k]}
@@ -26,7 +26,7 @@ function commit(k,e){if(k in drafts)update(k,e)}
 <div class="ribbon-row">
 <div class="align-field"><button v-for="a in ['left','center','right','justify','full']" :title="a==='full'?'Full justification':a+' alignment'" :aria-label="a==='full'?'Full justification':a+' alignment'" :class="{active:editor?.isActive({textAlign:a==='full'?'justify':a})}" @mousedown.prevent @click="emit('align',a)"><Icon :name="a"/></button></div>
 <label class="metric leading-field" title="Baseline shift"><Icon name="baseline"/><input aria-label="Baseline shift" :value="drafts.baseline??(format.baseline+'pt')" @input="drafts.baseline=$event.target.value" @blur="commit('baseline',$event)" @keydown.enter="$event.target.blur()"/></label>
-<UrduFontSelect :model-value="format.font" :fonts="urduFonts" :editor="editor" @change="emit('format','font',$event)"/>
+<UrduFontSelect :model-value="format.font" :fonts="urduFonts" :document-fonts="documentFonts" :editor="editor" @change="emit('format','font',$event)"/>
 <div class="pair"><button title="Right to left" aria-label="Right to left" :class="{active:format.direction==='rtl'}" @mousedown.prevent @click="emit('direction','rtl')"><Icon name="rtl"/></button><button title="Left to right" aria-label="Left to right" :class="{active:format.direction==='ltr'}" @mousedown.prevent @click="emit('direction','ltr')"><Icon name="ltr"/></button></div>
 <select class="size-field color-field" :value="format.color" aria-label="Text color" @change="update('color',$event)"><option v-for="c in colors" :value="c.value">■ {{c.name}}</option></select>
 <label class="metric percent-field" title="Horizontal character scaling"><Icon name="scale"/><input aria-label="Character scale" :value="drafts.scale??(format.scale+'%')" @input="drafts.scale=$event.target.value" @blur="commit('scale',$event)" @keydown.enter="$event.target.blur()"/></label>
