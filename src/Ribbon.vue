@@ -6,7 +6,7 @@ import Icon from './Icon.vue'
 import UrduFontSelect from './UrduFontSelect.vue'
 import EnglishFontSelect from './EnglishFontSelect.vue'
 import {reactive} from 'vue'
-const props=defineProps({format:Object,editor:Object,colors:Array,styles:Array,documentFonts:Array})
+const props=defineProps({format:Object,editor:Object,colors:Array,styles:Array,documentFonts:Array,exporting:Boolean,exportMessage:String})
 const emit=defineEmits(['format','align','direction','character','about'])
 const drafts=reactive({})
 function update(k,e){const value=drafts[k]??e.target.value;emit('format',k,value);delete drafts[k]}
@@ -50,6 +50,10 @@ function commit(k,e){if(k in drafts)update(k,e)}
 <select class="decoration-field" :value="format.decoration" aria-label="Text decoration" data-tooltip="Text decoration" @change="update('decoration',$event)"><option>None</option><option>Single</option><option>Double</option><option>Overline</option><option>Box</option></select>
 <select class="kashida-field" :value="format.kashida" aria-label="Kashida" data-tooltip="Kashida justification" @change="update('kashida',$event)"><option>K-None</option><option>K-Special</option><option>K-Other</option></select>
 </div>
+</div>
+<div v-if="exporting" class="ribbon-export-status" role="status" aria-live="polite" data-tooltip="Rendering PDF document">
+  <div class="ribbon-spinner" aria-hidden="true"></div>
+  <span class="ribbon-spinner-text">{{ exportMessage || 'Rendering PDF…' }}</span>
 </div>
 </section>
 </template>

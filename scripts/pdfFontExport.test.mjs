@@ -113,3 +113,32 @@ test('makeEPS produces valid PostScript EPS text with BoundingBox', () => {
   assert.ok(eps.includes('%%BoundingBox:'), 'Must include BoundingBox')
   assert.ok(eps.includes('colorimage'), 'Must include colorimage operator')
 })
+
+test('Ribbon and ObjectRibbon show spinner when pdf is being rendered', () => {
+  const ribbonCode = fs.readFileSync(path.resolve(__dirname, '../src/Ribbon.vue'), 'utf-8')
+  const objectRibbonCode = fs.readFileSync(path.resolve(__dirname, '../src/ObjectRibbon.vue'), 'utf-8')
+  const appCode = fs.readFileSync(path.resolve(__dirname, '../src/App.vue'), 'utf-8')
+  const cssCode = fs.readFileSync(path.resolve(__dirname, '../src/style.css'), 'utf-8')
+
+  // Check props
+  assert.ok(ribbonCode.includes('exporting:Boolean'), 'Ribbon.vue must define exporting prop')
+  assert.ok(ribbonCode.includes('exportMessage:String'), 'Ribbon.vue must define exportMessage prop')
+  assert.ok(objectRibbonCode.includes('exporting:Boolean'), 'ObjectRibbon.vue must define exporting prop')
+  assert.ok(objectRibbonCode.includes('exportMessage:String'), 'ObjectRibbon.vue must define exportMessage prop')
+
+  // Check markup
+  assert.ok(ribbonCode.includes('ribbon-export-status'), 'Ribbon.vue must include ribbon-export-status container')
+  assert.ok(ribbonCode.includes('ribbon-spinner'), 'Ribbon.vue must include ribbon-spinner element')
+  assert.ok(objectRibbonCode.includes('ribbon-export-status'), 'ObjectRibbon.vue must include ribbon-export-status container')
+  assert.ok(objectRibbonCode.includes('ribbon-spinner'), 'ObjectRibbon.vue must include ribbon-spinner element')
+
+  // Check App.vue wiring
+  assert.ok(appCode.includes(':exporting="exporting"'), 'App.vue must pass exporting state to ribbons')
+  assert.ok(appCode.includes(':export-message="message"'), 'App.vue must pass message to ribbons')
+
+  // Check CSS animations and styling
+  assert.ok(cssCode.includes('.ribbon-export-status'), 'style.css must style .ribbon-export-status')
+  assert.ok(cssCode.includes('.ribbon-spinner'), 'style.css must style .ribbon-spinner')
+  assert.ok(cssCode.includes('@keyframes ribbon-spin'), 'style.css must define ribbon-spin animation')
+})
+
