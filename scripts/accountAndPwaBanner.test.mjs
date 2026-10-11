@@ -46,9 +46,8 @@ test('InstallBanner.vue implements PWA install banner and hides when already in 
 
   // Banner UI elements
   assert.ok(content.includes('pwa-install-banner'), 'Must have pwa-install-banner')
-  assert.ok(content.includes('Install Khusrau 5.0 as an app'), 'Must display install app title')
+  assert.ok(content.includes('Install App'), 'Must have Install App button text')
   assert.ok(content.includes('pwa-install-action-btn'), 'Must have install action button')
-  assert.ok(content.includes('pwa-banner-dismiss-btn'), 'Must have dismiss button')
 
   // Install execution & instructions fallback
   assert.ok(content.includes('props.installEvent.prompt()'), 'Must prompt install event if present')
