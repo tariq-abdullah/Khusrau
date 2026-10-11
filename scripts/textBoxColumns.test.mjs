@@ -80,6 +80,14 @@ test('CSS rules enforce sequential column fill (column-fill: auto) and single or
   assert.ok(css.includes('column-fill:auto'), 'CSS must include column-fill:auto');
   assert.ok(css.includes('orphans:1'), 'CSS must include orphans:1');
   assert.ok(css.includes('widows:1'), 'CSS must include widows:1');
+  assert.ok(css.includes('break-inside:auto'), 'CSS must include break-inside:auto for paragraphs');
+  assert.ok(css.includes('column-count:var(--editor-columns'), 'CSS must apply column-count directly to .tiptap in multi-column mode');
+});
+
+test('App.vue supplies editor column variables to EditorContent for multi-column main text', () => {
+  const appVue = fs.readFileSync(path.join(__dirname, '../src/App.vue'), 'utf-8');
+  assert.ok(appVue.includes("'--editor-columns':settings.columns"), 'App.vue must pass --editor-columns to EditorContent');
+  assert.ok(appVue.includes("'--editor-gap':"), 'App.vue must pass --editor-gap to EditorContent');
 });
 
 test('App.vue renders column-guides for multi-column text boxes when guides are enabled', () => {
