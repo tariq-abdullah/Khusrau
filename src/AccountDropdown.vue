@@ -1,8 +1,10 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 
 const open = ref(false)
 const signedIn = ref(true)
+const triggerRef = ref(null)
+const dropdownRef = ref(null)
 
 const currentAccount = ref({
   name: 'Tariq Abdullah',
@@ -21,9 +23,55 @@ const secondaryAccount = ref({
 const activeAccountIndex = ref(0)
 const feedbackMessage = ref('')
 
+const dropdownStyle = ref({
+  position: 'fixed',
+  top: '44px',
+  right: '8px',
+  width: '330px',
+  zIndex: '99999'
+})
+
+function updateDropdownPosition() {
+  if (!triggerRef.value) return
+  const rect = triggerRef.value.getBoundingClientRect()
+  const width = Math.min(330, window.innerWidth - 16)
+
+  let right = window.innerWidth - rect.right
+  if (right < 8) right = 8
+  if (rect.right - width < 8) {
+    right = Math.max(8, window.innerWidth - 8 - width)
+  }
+
+  let top = rect.bottom + 6
+  const estimatedHeight = 440
+  if (top + estimatedHeight > window.innerHeight && rect.top > estimatedHeight) {
+    top = Math.max(8, rect.top - estimatedHeight - 6)
+  }
+
+  dropdownStyle.value = {
+    position: 'fixed',
+    top: `${Math.round(top)}px`,
+    right: `${Math.round(right)}px`,
+    width: `${Math.round(width)}px`,
+    zIndex: '99999'
+  }
+}
+
 function toggleMenu() {
-  open.value = !open.value
+  if (open.value) {
+    closeMenu()
+  } else {
+    openMenu()
+  }
+}
+
+function openMenu() {
+  open.value = true
   feedbackMessage.value = ''
+  updateDropdownPosition()
+  nextTick(() => {
+    updateDropdownPosition()
+  })
 }
 
 function closeMenu() {
@@ -60,19 +108,30 @@ function toggleSignOut() {
 }
 
 function handleClickOutside(e) {
-  if (!e.target.closest('.google-account-container')) {
-    closeMenu()
+  if (!open.value) return
+  if (triggerRef.value?.contains(e.target)) return
+  if (dropdownRef.value?.contains(e.target)) return
+  closeMenu()
+}
+
+function onWindowResize() {
+  if (open.value) {
+    updateDropdownPosition()
   }
 }
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
-  document.addEventListener('click', handleClickOutside)
+  document.addEventListener('pointerdown', handleClickOutside)
+  window.addEventListener('resize', onWindowResize)
+  window.addEventListener('scroll', onWindowResize, true)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeyDown)
-  document.removeEventListener('click', handleClickOutside)
+  document.removeEventListener('pointerdown', handleClickOutside)
+  window.removeEventListener('resize', onWindowResize)
+  window.removeEventListener('scroll', onWindowResize, true)
 })
 </script>
 
@@ -80,6 +139,7 @@ onBeforeUnmount(() => {
   <div class="google-account-container" @click.stop>
     <!-- Ribbon Account Avatar Button -->
     <button
+      ref="triggerRef"
       type="button"
       class="nav-account-btn ribbon-account-btn"
       :class="{ 'menu-open': open }"
@@ -99,15 +159,24 @@ onBeforeUnmount(() => {
       </span>
     </button>
 
-    <!-- Google-style Account Dropdown Card -->
-    <div v-if="open" class="google-account-dropdown" role="dialog" aria-label="Google Account Menu">
-      <!-- Card Header: Email & Close -->
-      <div class="account-card-header">
-        <span class="account-header-email">
-          {{ signedIn ? (activeAccountIndex === 0 ? currentAccount.email : secondaryAccount.email) : 'Not signed in' }}
-        </span>
-        <button type="button" class="account-close-btn" aria-label="Close account menu" @click="closeMenu">✕</button>
-      </div>
+    <!-- Google-style Account Dropdown Card Teleported to Body -->
+    <Teleport to="body">
+      <div
+        v-if="open"
+        ref="dropdownRef"
+        class="google-account-dropdown"
+        :style="dropdownStyle"
+        role="dialog"
+        aria-label="Google Account Menu"
+        @click.stop
+      >
+        <!-- Card Header: Email & Close -->
+        <div class="account-card-header">
+          <span class="account-header-email">
+            {{ signedIn ? (activeAccountIndex === 0 ? currentAccount.email : secondaryAccount.email) : 'Not signed in' }}
+          </span>
+          <button type="button" class="account-close-btn" aria-label="Close account menu" @click="closeMenu">✕</button>
+        </div>
 
       <!-- Feedback notice if action clicked -->
       <div v-if="feedbackMessage" class="account-feedback-banner">
@@ -203,6 +272,7 @@ onBeforeUnmount(() => {
         <a href="#terms" @click.prevent="feedbackMessage = 'Terms of Service: Khusrau 5.0 Urdu Suite.'">Terms of Service</a>
       </div>
     </div>
+    </Teleport>
   </div>
 </template>
 
@@ -275,17 +345,15 @@ onBeforeUnmount(() => {
 
 /* Google-style Dropdown Card */
 .google-account-dropdown {
-  position: absolute;
-  top: 38px;
-  right: 0;
+  position: fixed;
   width: 330px;
-  max-width: 90vw;
+  max-width: 92vw;
   background: #ffffff;
   border: 1px solid #dadce0;
   border-radius: 24px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18), 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.22), 0 1px 4px rgba(0, 0, 0, 0.1);
   padding: 16px 14px 14px;
-  z-index: 1000;
+  z-index: 99999;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Google Sans", Tahoma, sans-serif;
   box-sizing: border-box;
   animation: google-dropdown-pop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
