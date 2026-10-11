@@ -121,5 +121,12 @@ test('Ribbon.vue displays logo, emblem icon, and version 5.0 matching preloader 
   // Tooltip and about action
   assert.ok(content.includes('data-tooltip="Khusrau 5.0 • Developed by Tariq Abdullah"'), 'Brand card must have tooltip with author')
   assert.ok(content.includes("@click=\"emit('about')\""), 'Brand card must emit about on click')
+
+  // Light mode styling in style.css
+  const css = fs.readFileSync(path.resolve('src/style.css'), 'utf8')
+  assert.ok(css.includes('.ribbon-brand-card'), 'style.css must style .ribbon-brand-card')
+  assert.ok(css.includes('.ribbon-brand-name{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;font-weight:700;letter-spacing:-0.3px;color:#0f172a'), 'Brand name must use light mode dark text #0f172a')
+  assert.ok(!css.includes('#090f1a'), 'Logo brand card must not use dark mode #090f1a background')
 })
+
 
