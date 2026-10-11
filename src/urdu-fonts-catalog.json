@@ -23,6 +23,23 @@
     ]
   },
   {
+    "family": "Faiz Lahori Nastaleeq",
+    "displayName": "Faiz Lahori Nastaleeq",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "defaultVariant": "Regular",
+    "defaultFile": "Faiz Lahori Nastaleeq.ttf",
+    "primaryFontFamily": "Faiz Lahori Nastaleeq",
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Faiz Lahori Nastaleeq",
+        "fullName": "Faiz Lahori Nastaleeq",
+        "file": "Faiz Lahori Nastaleeq.ttf"
+      }
+    ]
+  },
+  {
     "family": "Noto Nastaliq Urdu",
     "displayName": "Noto Nastaliq Urdu",
     "isDefault": false,

@@ -13,7 +13,7 @@ const props = defineProps({
   },
   documentFonts: {
     type: Array,
-    default: () => ['Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu']
+    default: () => ['Jameel Noori Nastaleeq', 'Faiz Lahori Nastaleeq', 'Noto Nastaliq Urdu']
   },
   editor: {
     type: Object,
@@ -133,7 +133,7 @@ const ITEM_HEIGHT = 46
 
 // Fonts currently in the document MUST ALWAYS stay loaded
 const pinnedFontsSet = computed(() => {
-  const set = new Set(['Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu'])
+  const set = new Set(['Jameel Noori Nastaleeq', 'Faiz Lahori Nastaleeq', 'Noto Nastaliq Urdu'])
   if (props.modelValue) set.add(props.modelValue)
   if (Array.isArray(props.documentFonts)) {
     for (const f of props.documentFonts) {

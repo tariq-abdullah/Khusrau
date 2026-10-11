@@ -94,3 +94,11 @@ test('CSS defines 2x preview line-height for Urdu fonts', () => {
   const selectVue = fs.readFileSync(path.resolve(process.cwd(), 'src/UrduFontSelect.vue'), 'utf-8')
   assert.ok(selectVue.includes('line-height: 2.0;'))
 })
+
+test('Faiz Lahori Nastaleeq is the second font in urdu-fonts-catalog right after Jameel Noori Nastaleeq', () => {
+  assert.equal(catalog[0].family, 'Jameel Noori Nastaleeq')
+  assert.equal(catalog[1].family, 'Faiz Lahori Nastaleeq')
+  assert.equal(catalog[1].defaultFile, 'Faiz Lahori Nastaleeq.ttf')
+  const fontsDir = path.resolve(process.cwd(), 'fonts')
+  assert.ok(fs.existsSync(path.join(fontsDir, 'Faiz Lahori Nastaleeq.ttf')))
+})
