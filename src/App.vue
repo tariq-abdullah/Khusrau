@@ -19,6 +19,7 @@ import PreferencesDialog from './PreferencesDialog.vue'
 import KhusrauPreloader from './KhusrauPreloader.vue'
 import AccountDropdown from './AccountDropdown.vue'
 import InstallBanner from './InstallBanner.vue'
+import FloatingContextMenu from './FloatingContextMenu.vue'
 import {exclusionPolygons,insertExclusions} from './runaround'
 import {Runaround,updateExclusions} from './RunaroundExtension'
 import {readNative,storeNative,loadNative,storeWorkspace,loadWorkspace,documentFingerprint,unchangedNative,writeNativeText,createOlderInPageFile,createV3InPageFile} from './native'
@@ -185,11 +186,27 @@ function maintainBackupVersions() {
   } catch (e) {}
 }
 
+const floatingMenu = ref({ visible: false, x: 0, y: 0 })
+
 function onCanvasContextMenu(e) {
+  if (e.target.closest('.tiptap') || e.target.closest('[data-frame-editor]')) {
+    floatingMenu.value.visible = false
+    return
+  }
+
+  e.preventDefault()
+
   if (preferences.app.rightButtonAction === 'Zoom') {
-    e.preventDefault()
+    floatingMenu.value.visible = false
     const targetZoom = Number(preferences.app.rightButtonZoom) || 100
     zoom.value = zoom.value === targetZoom ? 100 : targetZoom
+    return
+  }
+
+  floatingMenu.value = {
+    visible: true,
+    x: e.clientX,
+    y: e.clientY
   }
 }
 
@@ -649,7 +666,7 @@ onBeforeUnmount(()=>{clearTimeout(timer);window.removeEventListener('keydown',sh
 <div v-if="tabsMode" class="tabs-ribbon ribbon" role="region" aria-label="Tabs ribbon"><label data-tooltip="Default tab stop spacing">Default stop (spaces)<input type="number" min="1" max="16" v-model.number="settings.tabSize" @change="scheduleSave"/></label><button data-tooltip="Done editing tabs" @click="tabsMode=false">Done</button><span>Tab inserts a tab character. Explicit aligned tab stops remain unsupported.</span></div>
 <div v-if="settings.rulers" class="horizontal-ruler" aria-label="Horizontal ruler" title="Drag onto the page to add a horizontal guide" @pointerdown="rulerDown($event,'horizontal')"><span v-for="n in 50" :style="{left:((n-1)*75.59 + (Number(preferences.doc.rulerOriginAcross)||0)*3.7795)*zoom/100+'px'}">{{340-(n-1)*20}}</span></div>
 <div class="canvas-row"><div v-if="settings.rulers" class="vertical-ruler" aria-label="Vertical ruler" title="Drag onto the page to add a vertical guide" @pointerdown="rulerDown($event,'vertical')"><span v-for="n in 50" :style="{top:((n-1)*75.59 + (Number(preferences.doc.rulerOriginDown)||0)*3.7795)*zoom/100+'px'}">{{(n-1)*20}}</span></div>
-<div ref="scroller" class="scroll" :class="{drawing:!['edit','select'].includes(tool)}"><div class="page-spread" :class="{facing:settings.facing}" :style="{paddingLeft:(preferences.doc.pasteboardAcross||15)+'%',paddingRight:(preferences.doc.pasteboardAcross||15)+'%',paddingBottom:(preferences.doc.pasteboardDown||25)+'mm'}">
+<div ref="scroller" class="scroll" :class="{drawing:!['edit','select'].includes(tool)}" @contextmenu="onCanvasContextMenu"><div class="page-spread" :class="{facing:settings.facing}" :style="{paddingLeft:(preferences.doc.pasteboardAcross||15)+'%',paddingRight:(preferences.doc.pasteboardAcross||15)+'%',paddingBottom:(preferences.doc.pasteboardDown||25)+'mm'}">
 <div ref="paperEl" class="paper" :class="{guides:settings.guides,invisibles:settings.invisibles,'master-mode':isMasterPage}" :style="{width:pageWidth+'mm',minHeight:pageHeight+'mm',paddingTop:(settings.marginTop??settings.margin)+'mm',paddingBottom:(settings.marginBottom??settings.margin)+'mm',paddingLeft:(settings.marginLeft??settings.margin)+'mm',paddingRight:(settings.marginRight??settings.margin)+'mm',zoom:zoom/100}" @pointerdown="pointerDown" @contextmenu="onCanvasContextMenu">
 <div v-if="isMasterPage" class="master-page-banner" aria-label="Master Page indicator"><span class="master-badge">M</span><span>Master Page {{ settings.facing ? (masterSide === 'left' ? '— Left (Even Pages)' : '— Right (Odd Pages)') : '— All Pages' }}</span><span class="master-hint">(Objects placed here repeat across pages. Use # in a Title Text Box for page numbers)</span></div>
 <div v-if="isMasterPage" class="master-default-grid" :class="{selected:selected.includes('default-grid')}" :style="{left:defaultGridObject.x+'px',top:defaultGridObject.y+'px',width:defaultGridObject.w+'px',height:defaultGridObject.h+'px',zIndex:60,backgroundColor:defaultGridObject.fill!=='none'?defaultGridObject.fill:undefined,border:defaultGridObject.strokeWidth?defaultGridObject.strokeWidth+'pt solid '+defaultGridObject.stroke:undefined}" @pointerdown.stop="selectDefaultGrid($event)" @dblclick.stop="openDialog('object')">
@@ -741,6 +758,7 @@ onBeforeUnmount(()=>{clearTimeout(timer);window.removeEventListener('keydown',sh
 <template v-else-if="dialog==='olderVersion'"><p>This file was created in an older version of this software and we have converted it for you. You can download it in older version by File -&gt; Download for older InPage.</p></template>
 <template v-else-if="dialog==='error'"><p>{{message}}</p></template>
 </div><div class="dialog-actions"><button v-if="!['new','close','exit','find','symbols','colors','styles','character','tableLayout','documents','help','pdf','eps','native','text','exportPage','print','shortcuts','keyboard','about','words','error','olderVersion'].includes(dialog)" @click="applyDialog">{{dialog==='saveAs'?'Save':dialog==='deletePage'?'Delete page':'Apply'}}</button><button @click="dialog='';autosave()">Close</button></div></section></div>
+<FloatingContextMenu :visible="floatingMenu.visible" :x="floatingMenu.x" :y="floatingMenu.y" @action="action" @close="floatingMenu.visible = false" />
 </div>
 </template>
 
