@@ -6,9 +6,10 @@ import Icon from './Icon.vue'
 import UrduFontSelect from './UrduFontSelect.vue'
 import EnglishFontSelect from './EnglishFontSelect.vue'
 import AccountDropdown from './AccountDropdown.vue'
+import InstallBanner from './InstallBanner.vue'
 import {reactive} from 'vue'
-const props=defineProps({format:Object,editor:Object,colors:Array,styles:Array,documentFonts:Array,exporting:Boolean,exportMessage:String})
-const emit=defineEmits(['format','align','direction','character','about'])
+const props=defineProps({format:Object,editor:Object,colors:Array,styles:Array,documentFonts:Array,exporting:Boolean,exportMessage:String,installEvent:Object})
+const emit=defineEmits(['format','align','direction','character','about','install','installed'])
 const drafts=reactive({})
 function update(k,e){const value=drafts[k]??e.target.value;emit('format',k,value);delete drafts[k]}
 function commit(k,e){if(k in drafts)update(k,e)}
@@ -57,6 +58,7 @@ function commit(k,e){if(k in drafts)update(k,e)}
     <div class="ribbon-spinner" aria-hidden="true"></div>
     <span class="ribbon-spinner-text">{{ exportMessage || 'Rendering PDF…' }}</span>
   </div>
+  <InstallBanner :install-event="installEvent" @install="emit('install')" @installed="emit('installed')" />
   <AccountDropdown />
 </div>
 </section>

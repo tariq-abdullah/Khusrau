@@ -85,7 +85,11 @@ test('Ribbon and ObjectRibbon wire AccountDropdown on right side with larger 32p
   // CSS cluster
   assert.ok(cssCode.includes('.ribbon-right-cluster'), 'style.css must style .ribbon-right-cluster')
 
-  // InstallBanner in App.vue below nav
-  assert.ok(appCode.includes('<InstallBanner'), 'App.vue must render InstallBanner')
+  // InstallBanner rendered near AccountDropdown in ribbon-right-cluster
+  assert.ok(ribbonCode.includes('<InstallBanner'), 'Ribbon.vue must render InstallBanner')
+  assert.ok(ribbonCode.includes("import InstallBanner from './InstallBanner.vue'"), 'Ribbon.vue must import InstallBanner')
+  assert.ok(objectRibbonCode.includes('<InstallBanner'), 'ObjectRibbon.vue must render InstallBanner')
+  assert.ok(objectRibbonCode.includes("import InstallBanner from './InstallBanner.vue'"), 'ObjectRibbon.vue must import InstallBanner')
+  assert.ok(appCode.includes(':install-event="installEvent"'), 'App.vue must pass installEvent to ribbons')
 })
 

@@ -1,8 +1,9 @@
 <script setup>
 import {computed,reactive,watch} from 'vue'
 import AccountDropdown from './AccountDropdown.vue'
-const props=defineProps({object:Object,type:String,colors:Array,content:Boolean,exporting:Boolean,exportMessage:String})
-const emit=defineEmits(['change','action','about'])
+import InstallBanner from './InstallBanner.vue'
+const props=defineProps({object:Object,type:String,colors:Array,content:Boolean,exporting:Boolean,exportMessage:String,installEvent:Object})
+const emit=defineEmits(['change','action','about','install','installed'])
 const drafts=reactive({})
 watch(()=>[props.object?.id,props.type,props.content],()=>Object.keys(drafts).forEach(k=>delete drafts[k]))
 const text=computed(()=>['text','title'].includes(props.type)),picture=computed(()=>props.type?.includes('picture')),line=computed(()=>props.type==='line')
@@ -68,6 +69,7 @@ const metrics=computed(()=>props.content&&picture.value?[['imageX','Picture X',0
     <div class="ribbon-spinner" aria-hidden="true"></div>
     <span class="ribbon-spinner-text">{{ exportMessage || 'Rendering PDF…' }}</span>
   </div>
+  <InstallBanner :install-event="installEvent" @install="emit('install')" @installed="emit('installed')" />
   <AccountDropdown />
 </div>
 </section>
