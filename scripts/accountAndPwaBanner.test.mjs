@@ -55,20 +55,37 @@ test('InstallBanner.vue implements PWA install banner and hides when already in 
   assert.ok(content.includes('showInstructions'), 'Must provide instructions if native prompt unavailable')
 })
 
-test('App.vue wires AccountDropdown on right side of nav and InstallBanner below nav', () => {
+test('Ribbon and ObjectRibbon wire AccountDropdown on right side with larger 32px size', () => {
+  const ribbonPath = path.resolve(__dirname, '../src/Ribbon.vue')
+  const objectRibbonPath = path.resolve(__dirname, '../src/ObjectRibbon.vue')
+  const accountPath = path.resolve(__dirname, '../src/AccountDropdown.vue')
+  const cssPath = path.resolve(__dirname, '../src/style.css')
   const appPath = path.resolve(__dirname, '../src/App.vue')
-  const content = fs.readFileSync(appPath, 'utf8')
 
-  // Imports
-  assert.ok(content.includes("import AccountDropdown from './AccountDropdown.vue'"), 'App.vue must import AccountDropdown')
-  assert.ok(content.includes("import InstallBanner from './InstallBanner.vue'"), 'App.vue must import InstallBanner')
+  const ribbonCode = fs.readFileSync(ribbonPath, 'utf8')
+  const objectRibbonCode = fs.readFileSync(objectRibbonPath, 'utf8')
+  const accountCode = fs.readFileSync(accountPath, 'utf8')
+  const cssCode = fs.readFileSync(cssPath, 'utf8')
+  const appCode = fs.readFileSync(appPath, 'utf8')
 
-  // Placement in template
-  assert.ok(content.includes('<AccountDropdown />'), 'App.vue must render AccountDropdown inside nav')
-  assert.ok(content.includes('<InstallBanner'), 'App.vue must render InstallBanner')
+  // AccountDropdown rendered in ribbons
+  assert.ok(ribbonCode.includes("import AccountDropdown from './AccountDropdown.vue'"), 'Ribbon.vue must import AccountDropdown')
+  assert.ok(ribbonCode.includes('<AccountDropdown />'), 'Ribbon.vue must render AccountDropdown')
+  assert.ok(ribbonCode.includes('ribbon-right-cluster'), 'Ribbon.vue must contain ribbon-right-cluster')
 
-  // Nav order: install button followed by AccountDropdown on the right side
-  const navInstallIdx = content.indexOf('nav-install-btn')
-  const accountDropdownIdx = content.indexOf('<AccountDropdown />')
-  assert.ok(navInstallIdx > 0 && accountDropdownIdx > navInstallIdx, 'AccountDropdown must be placed on the right side of the install button')
+  assert.ok(objectRibbonCode.includes("import AccountDropdown from './AccountDropdown.vue'"), 'ObjectRibbon.vue must import AccountDropdown')
+  assert.ok(objectRibbonCode.includes('<AccountDropdown />'), 'ObjectRibbon.vue must render AccountDropdown')
+  assert.ok(objectRibbonCode.includes('ribbon-right-cluster'), 'ObjectRibbon.vue must contain ribbon-right-cluster')
+
+  // Larger size styling in AccountDropdown (32px)
+  assert.ok(accountCode.includes('ribbon-account-btn'), 'AccountDropdown must declare ribbon-account-btn')
+  assert.ok(accountCode.includes('width: 32px'), 'Account button must be 32px wide for ribbon')
+  assert.ok(accountCode.includes('height: 32px'), 'Account button must be 32px tall for ribbon')
+
+  // CSS cluster
+  assert.ok(cssCode.includes('.ribbon-right-cluster'), 'style.css must style .ribbon-right-cluster')
+
+  // InstallBanner in App.vue below nav
+  assert.ok(appCode.includes('<InstallBanner'), 'App.vue must render InstallBanner')
 })
+

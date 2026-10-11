@@ -1,5 +1,6 @@
 <script setup>
 import {computed,reactive,watch} from 'vue'
+import AccountDropdown from './AccountDropdown.vue'
 const props=defineProps({object:Object,type:String,colors:Array,content:Boolean,exporting:Boolean,exportMessage:String})
 const emit=defineEmits(['change','action','about'])
 const drafts=reactive({})
@@ -62,9 +63,12 @@ const metrics=computed(()=>props.content&&picture.value?[['imageX','Picture X',0
 <template v-else><label class="object-metric" data-tooltip="Picture vertical skew (%)"><span>⇣</span><input aria-label="Picture vertical skew" :value="field('imageSkewY',0,'%')" @input="drafts.imageSkewY=$event.target.value" @blur="commit('imageSkewY',$event)" @keydown.enter="$event.target.blur()"/></label><button aria-label="Replace picture" data-tooltip="Replace picture…" data-shortcut="Ctrl+D" @click="emit('action','place')">Replace…</button><button aria-label="Select picture box" data-tooltip="Select picture box / Exit content mode" @click="emit('action','selectBox')">Box controls</button></template>
 </div>
 </div>
-<div v-if="exporting" class="ribbon-export-status" role="status" aria-live="polite" data-tooltip="Rendering PDF document">
-  <div class="ribbon-spinner" aria-hidden="true"></div>
-  <span class="ribbon-spinner-text">{{ exportMessage || 'Rendering PDF…' }}</span>
+<div class="ribbon-right-cluster">
+  <div v-if="exporting" class="ribbon-export-status" role="status" aria-live="polite" data-tooltip="Rendering PDF document">
+    <div class="ribbon-spinner" aria-hidden="true"></div>
+    <span class="ribbon-spinner-text">{{ exportMessage || 'Rendering PDF…' }}</span>
+  </div>
+  <AccountDropdown />
 </div>
 </section>
 </template>

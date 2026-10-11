@@ -78,10 +78,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="google-account-container" @click.stop>
-    <!-- Nav Account Avatar Button -->
+    <!-- Ribbon Account Avatar Button -->
     <button
       type="button"
-      class="nav-account-btn"
+      class="nav-account-btn ribbon-account-btn"
       :class="{ 'menu-open': open }"
       :aria-expanded="open"
       aria-haspopup="true"
@@ -215,30 +215,35 @@ onBeforeUnmount(() => {
   flex-shrink: 0;
 }
 
-.nav-account-btn {
-  width: 20px;
-  height: 20px;
-  min-height: 20px;
+.nav-account-btn,
+.ribbon-account-btn {
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
   padding: 0;
   border-radius: 50%;
-  border: 1px solid #b8c4d4;
+  border: 1.5px solid #b8c4d4;
   background: white;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
+  transition: all 0.18s ease;
   box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-.nav-account-btn:hover {
+.nav-account-btn:hover,
+.ribbon-account-btn:hover {
   border-color: #1a73e8;
-  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.25);
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.25), 0 2px 6px rgba(0, 0, 0, 0.15);
+  transform: scale(1.04);
 }
 
-.nav-account-btn.menu-open {
+.nav-account-btn.menu-open,
+.ribbon-account-btn.menu-open {
   border-color: #1a73e8;
-  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.35);
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.35);
 }
 
 .account-avatar-pill {
@@ -249,7 +254,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Google Sans", sans-serif;
-  font-size: 11px;
+  font-size: 14.5px;
   font-weight: 600;
   color: white;
   line-height: 1;
@@ -271,7 +276,7 @@ onBeforeUnmount(() => {
 /* Google-style Dropdown Card */
 .google-account-dropdown {
   position: absolute;
-  top: 24px;
+  top: 38px;
   right: 0;
   width: 330px;
   max-width: 90vw;

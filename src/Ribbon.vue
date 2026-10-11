@@ -5,6 +5,7 @@ const urduFonts=inpageFonts.filter(f=>!f.legacy&&f.arabicCharacters>=10).sort((a
 import Icon from './Icon.vue'
 import UrduFontSelect from './UrduFontSelect.vue'
 import EnglishFontSelect from './EnglishFontSelect.vue'
+import AccountDropdown from './AccountDropdown.vue'
 import {reactive} from 'vue'
 const props=defineProps({format:Object,editor:Object,colors:Array,styles:Array,documentFonts:Array,exporting:Boolean,exportMessage:String})
 const emit=defineEmits(['format','align','direction','character','about'])
@@ -51,9 +52,12 @@ function commit(k,e){if(k in drafts)update(k,e)}
 <select class="kashida-field" :value="format.kashida" aria-label="Kashida" data-tooltip="Kashida justification" @change="update('kashida',$event)"><option>K-None</option><option>K-Special</option><option>K-Other</option></select>
 </div>
 </div>
-<div v-if="exporting" class="ribbon-export-status" role="status" aria-live="polite" data-tooltip="Rendering PDF document">
-  <div class="ribbon-spinner" aria-hidden="true"></div>
-  <span class="ribbon-spinner-text">{{ exportMessage || 'Rendering PDF…' }}</span>
+<div class="ribbon-right-cluster">
+  <div v-if="exporting" class="ribbon-export-status" role="status" aria-live="polite" data-tooltip="Rendering PDF document">
+    <div class="ribbon-spinner" aria-hidden="true"></div>
+    <span class="ribbon-spinner-text">{{ exportMessage || 'Rendering PDF…' }}</span>
+  </div>
+  <AccountDropdown />
 </div>
 </section>
 </template>
