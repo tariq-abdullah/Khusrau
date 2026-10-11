@@ -51,7 +51,7 @@ test('nativeDocument paginates UMA-Vision Doc P.inp across multiple pages and ca
   const parsed = readNative(bytes)
   const d = nativeDocument(parsed, 'UMA-Vision Doc P.inp')
 
-  assert.ok(d.pages.length >= 35, `Expected at least 35 pages, got ${d.pages.length}`)
+  assert.equal(d.pages.length, 18, `Expected exactly 18 pages matching InPage, got ${d.pages.length}`)
   assert.equal(d.paperWidth, 127)
   assert.equal(d.paperHeight, 203.2)
   // Ensure page 1 has heading content

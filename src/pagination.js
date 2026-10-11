@@ -64,9 +64,10 @@ export function toTiptapNode(p) {
   }
 }
 
-export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = []) {
+export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = [], options = {}) {
+  const { targetPages, startPageNum = 1 } = options
   if (!paragraphs || !paragraphs.length) {
-    return [{ id: 'page-1', content: { type: 'doc', content: [{ type: 'paragraph' }] } }]
+    return [{ id: 'page-' + startPageNum, content: { type: 'doc', content: [{ type: 'paragraph' }] } }]
   }
 
   // Normalize incoming paragraphs to { text, isHeading, level, align, bold }
@@ -91,7 +92,7 @@ export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = [])
   while (cleanList.length && !cleanList[0]?.text?.trim()) cleanList.shift()
   while (cleanList.length && !cleanList[cleanList.length - 1]?.text?.trim()) cleanList.pop()
   if (!cleanList.length) {
-    return [{ id: 'page-1', content: { type: 'doc', content: [{ type: 'paragraph' }] } }]
+    return [{ id: 'page-' + startPageNum, content: { type: 'doc', content: [{ type: 'paragraph' }] } }]
   }
 
   const paperW = layout.width || layout.paperWidth || 210
@@ -115,6 +116,42 @@ export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = [])
     expanded.push(...splitLongParagraph(p, maxParaChars))
   }
 
+  if (targetPages && targetPages > 0) {
+    const totalChars = expanded.reduce((acc, p) => acc + (p.text?.trim().length || 0), 0)
+    const charsPerPage = Math.ceil(totalChars / targetPages)
+    const pages = []
+    let curNodes = []
+    let curChars = 0
+    for (let i = 0; i < expanded.length; i++) {
+      const p = expanded[i]
+      const len = p.text?.trim().length || 0
+      if (pages.length < targetPages - 1 && curChars + len > charsPerPage && curNodes.length > 0) {
+        pages.push({
+          id: 'page-' + (startPageNum + pages.length),
+          content: {
+            type: 'doc',
+            content: curNodes.map(toTiptapNode)
+          }
+        })
+        curNodes = [p]
+        curChars = len
+      } else {
+        curNodes.push(p)
+        curChars += len
+      }
+    }
+    if (curNodes.length) {
+      pages.push({
+        id: 'page-' + (startPageNum + pages.length),
+        content: {
+          type: 'doc',
+          content: curNodes.map(toTiptapNode)
+        }
+      })
+    }
+    return pages
+  }
+
   // Check if page 1 has top picture header
   let page1Reserve = 0
   if (pictureObjects?.length) {
@@ -133,7 +170,7 @@ export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = [])
     const h = estimateParagraphHeightMm(p, usableW)
     if (curH + h > pageLimit && curNodes.length > 0) {
       pages.push({
-        id: 'page-' + (pages.length + 1),
+        id: 'page-' + (startPageNum + pages.length),
         content: {
           type: 'doc',
           content: curNodes.map(toTiptapNode)
@@ -150,7 +187,7 @@ export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = [])
 
   if (curNodes.length) {
     pages.push({
-      id: 'page-' + (pages.length + 1),
+      id: 'page-' + (startPageNum + pages.length),
       content: {
         type: 'doc',
         content: curNodes.map(toTiptapNode)
@@ -158,5 +195,5 @@ export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = [])
     })
   }
 
-  return pages.length ? pages : [{ id: 'page-1', content: { type: 'doc', content: [{ type: 'paragraph' }] } }]
+  return pages.length ? pages : [{ id: 'page-' + startPageNum, content: { type: 'doc', content: [{ type: 'paragraph' }] } }]
 }

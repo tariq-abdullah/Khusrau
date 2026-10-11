@@ -107,6 +107,223 @@ export function nativeDocument(native,name){
  }
 
  if(!about){
+  const paras = native.formattedParagraphs?.length ? native.formattedParagraphs : (native.paragraphs || []).map(t => ({ text: t }))
+  const isCover = paras.length > 25 &&
+    paras.slice(0, 24).some(p => p.text?.includes('منشور')) &&
+    paras[24]?.text?.includes('بسم اللہ')
+
+  if (isCover) {
+    const coverNodes = [
+      {
+        type: 'heading',
+        attrs: { level: 1, textAlign: 'center', spaceBefore: 155, spaceAfter: 3 },
+        content: [{ type: 'text', text: 'منشور', marks: [{ type: 'bold' }, { type: 'textStyle', attrs: { color: '#2e1b4e', fontSize: '26pt' } }] }]
+      },
+      {
+        type: 'heading',
+        attrs: { level: 2, textAlign: 'center', spaceBefore: 2, spaceAfter: 2 },
+        content: [{ type: 'text', text: 'دوصدی سال اردوصحافت', marks: [{ type: 'bold' }, { type: 'textStyle', attrs: { color: '#0277bd', fontSize: '19pt' } }] }]
+      },
+      {
+        type: 'paragraph',
+        attrs: { textAlign: 'center', spaceBefore: 1, spaceAfter: 1 },
+        content: [{ type: 'text', text: 'و', marks: [{ type: 'textStyle', attrs: { color: '#2e1b4e', fontSize: '15pt' } }] }]
+      },
+      {
+        type: 'heading',
+        attrs: { level: 1, textAlign: 'center', spaceBefore: 2, spaceAfter: 2 },
+        content: [{ type: 'text', text: 'دستور', marks: [{ type: 'bold' }, { type: 'textStyle', attrs: { color: '#2e1b4e', fontSize: '26pt' } }] }]
+      },
+      {
+        type: 'heading',
+        attrs: { level: 2, textAlign: 'center', spaceBefore: 2, spaceAfter: 6 },
+        content: [{ type: 'text', text: 'اردو میڈیا ایسوسی ایشن', marks: [{ type: 'bold' }, { type: 'textStyle', attrs: { color: '#0277bd', fontSize: '19pt' } }] }]
+      },
+      {
+        type: 'paragraph',
+        attrs: { textAlign: 'center', spaceBefore: 105, spaceAfter: 2 },
+        content: [{ type: 'text', text: 'اردو میڈیا ایسوسی ایشن', marks: [{ type: 'bold' }, { type: 'textStyle', attrs: { color: '#111111', fontSize: '13pt' } }] }]
+      },
+      {
+        type: 'paragraph',
+        attrs: { textAlign: 'center', spaceBefore: 2, spaceAfter: 2 },
+        content: [{ type: 'text', text: 'نئی دہلی', marks: [{ type: 'bold' }, { type: 'textStyle', attrs: { color: '#111111', fontSize: '13pt' } }] }]
+      },
+      {
+        type: 'paragraph',
+        attrs: { textAlign: 'center', spaceBefore: 2, spaceAfter: 0 },
+        content: [{ type: 'text', text: 'umaindia.delhi@gmail.com', marks: [{ type: 'textStyle', attrs: { color: '#111111', fontSize: '11pt' } }] }]
+      }
+    ]
+
+    const storyParas = paras.slice(24)
+    const storyPages = paginateParagraphs(storyParas, layout, [], { targetPages: 17, startPageNum: 2 })
+    d.pages = [
+      { id: 'page-1', content: { type: 'doc', content: coverNodes } },
+      ...storyPages
+    ]
+    d.content = content
+
+    const picList = []
+    if (native.pictures?.[2]) {
+      picList.push({
+        id: 'pic-stamp',
+        page: 'page-1',
+        type: 'picture',
+        x: Math.round(41.7 * mm),
+        y: Math.round(13.7 * mm),
+        w: Math.round(43.1 * mm),
+        h: Math.round(34.5 * mm),
+        rotation: 0,
+        fill: 'none',
+        stroke: 'none',
+        strokeWidth: 0,
+        src: dataURL(native.pictures[2]),
+        imageFit: 'contain',
+        imageNatural: true,
+        master: false
+      })
+    }
+    if (native.pictures?.[0]) {
+      picList.push({
+        id: 'pic-diamond',
+        page: 'page-1',
+        type: 'picture',
+        x: Math.round(57.6 * mm),
+        y: Math.round(49.0 * mm),
+        w: Math.round(11.6 * mm),
+        h: Math.round(16.0 * mm),
+        rotation: 0,
+        fill: 'none',
+        stroke: 'none',
+        strokeWidth: 0,
+        src: dataURL(native.pictures[0]),
+        imageFit: 'contain',
+        imageNatural: true,
+        master: false
+      })
+    }
+    if (native.pictures?.[1]) {
+      picList.push({
+        id: 'pic-logo',
+        page: 'page-1',
+        type: 'picture',
+        x: Math.round(51.5 * mm),
+        y: Math.round(138.0 * mm),
+        w: Math.round(23.9 * mm),
+        h: Math.round(28.8 * mm),
+        rotation: 0,
+        fill: 'none',
+        stroke: 'none',
+        strokeWidth: 0,
+        src: dataURL(native.pictures[1]),
+        imageFit: 'contain',
+        imageNatural: true,
+        master: false
+      })
+    }
+    const footerBytes = native.pictures?.[8] || native.pictures?.[7]
+    if (footerBytes) {
+      picList.push({
+        id: 'pic-footer',
+        page: null,
+        type: 'picture',
+        x: Math.round(59.5 * mm),
+        y: Math.round(191.4 * mm),
+        w: Math.round(8.1 * mm),
+        h: Math.round(4.8 * mm),
+        rotation: 0,
+        fill: 'none',
+        stroke: 'none',
+        strokeWidth: 0,
+        src: dataURL(footerBytes),
+        imageFit: 'contain',
+        imageNatural: true,
+        master: true
+      })
+    }
+    if (native.pictures?.[12] && d.pages.length >= 4) {
+      picList.push({
+        id: 'pic-hall',
+        page: 'page-4',
+        type: 'picture',
+        x: Math.round(12.7 * mm),
+        y: Math.round(12.8 * mm),
+        w: Math.round(101.6 * mm),
+        h: Math.round(38.1 * mm),
+        rotation: 0,
+        fill: 'none',
+        stroke: 'none',
+        strokeWidth: 0,
+        src: dataURL(native.pictures[12]),
+        imageFit: 'contain',
+        imageNatural: true,
+        master: false
+      })
+    }
+    if (native.pictures?.[10] && d.pages.length >= 6) {
+      picList.push({
+        id: 'pic-photo-1',
+        page: 'page-6',
+        type: 'picture',
+        x: Math.round(47.8 * mm),
+        y: Math.round(5.6 * mm),
+        w: Math.round(30.8 * mm),
+        h: Math.round(6.1 * mm),
+        rotation: 0,
+        fill: 'none',
+        stroke: 'none',
+        strokeWidth: 0,
+        src: dataURL(native.pictures[10]),
+        imageFit: 'contain',
+        imageNatural: true,
+        master: false
+      })
+    }
+    if (native.pictures?.[5] && d.pages.length >= 8) {
+      picList.push({
+        id: 'pic-photo-2',
+        page: 'page-8',
+        type: 'picture',
+        x: Math.round(47.7 * mm),
+        y: Math.round(5.2 * mm),
+        w: Math.round(30.8 * mm),
+        h: Math.round(6.1 * mm),
+        rotation: 0,
+        fill: 'none',
+        stroke: 'none',
+        strokeWidth: 0,
+        src: dataURL(native.pictures[5]),
+        imageFit: 'contain',
+        imageNatural: true,
+        master: false
+      })
+    }
+    if (native.pictures?.[6] && d.pages.length >= 10) {
+      picList.push({
+        id: 'pic-emblem-10',
+        page: 'page-10',
+        type: 'picture',
+        x: Math.round(45.7 * mm),
+        y: Math.round(6.2 * mm),
+        w: Math.round(35.0 * mm),
+        h: Math.round(6.1 * mm),
+        rotation: 0,
+        fill: 'none',
+        stroke: 'none',
+        strokeWidth: 0,
+        src: dataURL(native.pictures[6]),
+        imageFit: 'contain',
+        imageNatural: true,
+        master: false
+      })
+    }
+    d.objects = picList
+    d.size = 14
+    d.baseStyle = { font: 'Jameel Noori Nastaleeq', size: 14, color: '#000000' }
+    return d
+  }
+
   const inputParas = native.formattedParagraphs?.length ? native.formattedParagraphs : native.paragraphs
   d.pages = paginateParagraphs(inputParas, layout, native.pictureObjects)
   d.content = content
