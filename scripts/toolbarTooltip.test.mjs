@@ -63,4 +63,6 @@ test('ObjectRibbon.vue implements data-tooltip on contextual object tools and me
   assert.ok(content.includes('data-tooltip="Text runaround mode"'), 'Runaround must have data-tooltip')
   assert.ok(content.includes('data-tooltip="Runaround clearance (mm)"'), 'Runaround clearance must have data-tooltip')
   assert.ok(content.includes('data-tooltip="Edit box text"'), 'Edit box text must have data-tooltip')
+  assert.ok(content.includes('data-tooltip="Border radius"'), 'Border radius must have data-tooltip')
+  assert.ok(content.includes('aria-label="Border radius"'), 'Border radius input must have aria-label')
 })
