@@ -1,0 +1,115 @@
+import test from 'node:test'
+import assert from 'node:assert/strict'
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import {
+  collectUsedFontFamilies,
+  buildFontEmbedCSS,
+  makePDF,
+  makeEPS
+} from '../src/pageExport.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+test('collectUsedFontFamilies collects inline and computed font families from DOM tree', () => {
+  // Mock element structure
+  const el = {
+    nodeType: 1,
+    style: { fontFamily: 'PDMS_NastaliqNafees, Arial' },
+    children: [
+      {
+        nodeType: 1,
+        style: { fontFamily: 'Jameel Noori Nastaleeq' },
+        children: []
+      },
+      {
+        nodeType: 1,
+        style: { fontFamily: 'Roboto' },
+        children: []
+      }
+    ]
+  }
+
+  const families = collectUsedFontFamilies(el)
+  assert.ok(families.has('PDMS_NastaliqNafees'), 'Should collect PDMS_NastaliqNafees')
+  assert.ok(families.has('Arial'), 'Should collect Arial')
+  assert.ok(families.has('Jameel Noori Nastaleeq'), 'Should collect Jameel Noori Nastaleeq')
+  assert.ok(families.has('Roboto'), 'Should collect Roboto')
+})
+
+test('buildFontEmbedCSS resolves known fonts and generates @font-face rules', async () => {
+  const el = {
+    nodeType: 1,
+    style: { fontFamily: 'PDMS_NastaliqNafees' },
+    children: []
+  }
+
+  // Mock global fetch for testing
+  const origFetch = globalThis.fetch
+  globalThis.fetch = async (url) => {
+    return {
+      ok: true,
+      blob: async () => ({
+        size: 100,
+        type: 'font/ttf'
+      })
+    }
+  }
+
+  // Mock FileReader
+  const origFileReader = globalThis.FileReader
+  globalThis.FileReader = class {
+    readAsDataURL() {
+      setTimeout(() => {
+        this.result = 'data:font/truetype;base64,QUJD'
+        if (this.onloadend) this.onloadend()
+      }, 0)
+    }
+  }
+
+  try {
+    const css = await buildFontEmbedCSS(el)
+    assert.ok(css.includes('@font-face'), 'Should contain @font-face rules')
+    assert.ok(css.includes('PDMS_NastaliqNafees'), 'Should reference PDMS_NastaliqNafees')
+    assert.ok(css.includes('data:font/truetype;base64,'), 'Should include base64 data url')
+    assert.ok(css.includes('font-weight: bold'), 'Should include bold font-face declaration')
+  } finally {
+    globalThis.fetch = origFetch
+    globalThis.FileReader = origFileReader
+  }
+})
+
+test('makePDF produces valid PDF ArrayBuffer with correct PDF header', () => {
+  // Mock canvas
+  const canvas = {
+    width: 200,
+    height: 300,
+    toDataURL: () => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='
+  }
+
+  const buffer = makePDF([canvas], 210, 297, 'Sample Title')
+  assert.ok(buffer instanceof ArrayBuffer, 'Output must be ArrayBuffer')
+  assert.ok(buffer.byteLength > 100, 'PDF buffer must have content')
+
+  const header = String.fromCharCode(...new Uint8Array(buffer.slice(0, 5)))
+  assert.equal(header, '%PDF-', 'PDF must begin with %PDF- header')
+})
+
+test('makeEPS produces valid PostScript EPS text with BoundingBox', () => {
+  const canvas = {
+    width: 10,
+    height: 10,
+    getContext: () => ({
+      getImageData: () => ({
+        data: new Uint8ClampedArray(10 * 10 * 4).fill(255)
+      })
+    })
+  }
+
+  const eps = makeEPS(canvas, 210, 297)
+  assert.ok(eps.startsWith('%!PS-Adobe-3.0 EPSF-3.0'), 'Must start with EPS header')
+  assert.ok(eps.includes('%%BoundingBox:'), 'Must include BoundingBox')
+  assert.ok(eps.includes('colorimage'), 'Must include colorimage operator')
+})

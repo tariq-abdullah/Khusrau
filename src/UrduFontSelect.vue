@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
-import defaultCatalog from './urdu-fonts-catalog.json'
+import defaultCatalog from './urdu-fonts-catalog.json' with { type: 'json' }
 
 const props = defineProps({
   modelValue: {
