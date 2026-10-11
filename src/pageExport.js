@@ -146,25 +146,25 @@ export async function buildFontEmbedCSS(paper) {
         rules.push(`
 @font-face {
   font-family: "${family}";
-  src: url("${dataUrl}") format("truetype");
+  src: url("${dataUrl}") format("truetype"), url("${dataUrl}") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "${family}";
-  src: url("${dataUrl}") format("truetype");
+  src: url("${dataUrl}") format("truetype"), url("${dataUrl}") format("opentype");
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: "${family}";
-  src: url("${dataUrl}") format("truetype");
+  src: url("${dataUrl}") format("truetype"), url("${dataUrl}") format("opentype");
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
   font-family: "${family}";
-  src: url("${dataUrl}") format("truetype");
+  src: url("${dataUrl}") format("truetype"), url("${dataUrl}") format("opentype");
   font-weight: bold;
   font-style: italic;
 }
@@ -176,11 +176,77 @@ export async function buildFontEmbedCSS(paper) {
   return rules.join('\n')
 }
 
+export function preserveNewlinesForExport(root) {
+  if (typeof document === 'undefined' || !root) return () => {}
+  const textNodesWithNewline = []
+  try {
+    const filter = typeof NodeFilter !== 'undefined' && NodeFilter.SHOW_TEXT ? NodeFilter.SHOW_TEXT : 4
+    const walker = document.createTreeWalker ? document.createTreeWalker(root, filter, null, false) : null
+    if (walker) {
+      let node
+      while ((node = walker.nextNode())) {
+        if (node.nodeValue && node.nodeValue.includes('\n')) {
+          textNodesWithNewline.push(node)
+        }
+      }
+    }
+  } catch {}
+
+  const restorations = []
+  for (const textNode of textNodesWithNewline) {
+    const parent = textNode.parentNode
+    if (!parent) continue
+    const text = textNode.nodeValue
+    const parts = text.split('\n')
+    const span = document.createElement('span')
+    span.setAttribute('data-export-newline-wrapper', 'true')
+    span.style.whiteSpace = 'pre-wrap'
+    parts.forEach((part, idx) => {
+      if (idx > 0) {
+        span.appendChild(document.createElement('br'))
+      }
+      if (part) {
+        span.appendChild(document.createTextNode(part))
+      }
+    })
+    parent.replaceChild(span, textNode)
+    restorations.push(() => {
+      if (span.parentNode) {
+        span.parentNode.replaceChild(textNode, span)
+      }
+    })
+  }
+
+  return () => {
+    restorations.reverse().forEach((restore) => restore())
+  }
+}
+
 export async function capturePaper(paper, widthMM, heightMM, options = {}) {
-  await document.fonts.ready
+  const usedFamilies = collectUsedFontFamilies(paper)
+  if (typeof document !== 'undefined' && document.fonts && document.fonts.load) {
+    for (const family of usedFamilies) {
+      try {
+        await Promise.all([
+          document.fonts.load(`12pt "${family}"`),
+          document.fonts.load(`bold 12pt "${family}"`),
+          document.fonts.load(`italic 12pt "${family}"`),
+          document.fonts.load(`bold italic 12pt "${family}"`)
+        ])
+      } catch {}
+    }
+  }
+  if (typeof document !== 'undefined' && document.fonts) {
+    try {
+      await document.fonts.ready
+    } catch {}
+  }
+
   const guides = paper.classList.contains('guides')
   const invisibles = paper.classList.contains('invisibles')
   paper.classList.remove('guides', 'invisibles')
+
+  const restoreNewlines = preserveNewlinesForExport(paper)
 
   try {
     const fontEmbedCSS = await buildFontEmbedCSS(paper)
@@ -192,6 +258,8 @@ export async function capturePaper(paper, widthMM, heightMM, options = {}) {
       height: Math.round((heightMM * 96) / 25.4),
       style: {
         zoom: '1',
+        transform: 'none',
+        transformOrigin: 'top left',
         border: 'none',
         outline: 'none',
         margin: '0',
@@ -237,6 +305,7 @@ export async function capturePaper(paper, widthMM, heightMM, options = {}) {
 
     return canvas
   } finally {
+    restoreNewlines()
     if (guides) paper.classList.add('guides')
     if (invisibles) paper.classList.add('invisibles')
   }

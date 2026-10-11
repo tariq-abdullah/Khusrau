@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import {
   collectUsedFontFamilies,
   buildFontEmbedCSS,
+  preserveNewlinesForExport,
   makePDF,
   makeEPS
 } from '../src/pageExport.js'
@@ -141,4 +142,104 @@ test('Ribbon and ObjectRibbon show spinner when pdf is being rendered', () => {
   assert.ok(cssCode.includes('.ribbon-spinner'), 'style.css must style .ribbon-spinner')
   assert.ok(cssCode.includes('@keyframes ribbon-spin'), 'style.css must define ribbon-spin animation')
 })
+
+test('preserveNewlinesForExport converts newline text nodes to explicit br spans and restores cleanly', () => {
+  // Mock DOM nodes
+  const textNode = {
+    nodeType: 3,
+    nodeValue: 'jhhhgg\nیک دیگر دیگر\nتیسرا دیگر',
+    parentNode: null
+  }
+  const parent = {
+    nodeType: 1,
+    childNodes: [textNode],
+    replaceChild(newChild, oldChild) {
+      const idx = this.childNodes.indexOf(oldChild)
+      if (idx !== -1) {
+        this.childNodes[idx] = newChild
+        newChild.parentNode = this
+        oldChild.parentNode = null
+      }
+    }
+  }
+  textNode.parentNode = parent
+
+  const origDocument = globalThis.document
+  const origNodeFilter = globalThis.NodeFilter
+
+  globalThis.NodeFilter = { SHOW_TEXT: 4 }
+  globalThis.document = {
+    createTreeWalker(root, filter) {
+      let visited = false
+      return {
+        nextNode() {
+          if (!visited) {
+            visited = true
+            return textNode
+          }
+          return null
+        }
+      }
+    },
+    createElement(tag) {
+      return {
+        tagName: tag.toUpperCase(),
+        nodeType: 1,
+        style: {},
+        attrs: {},
+        childNodes: [],
+        parentNode: null,
+        setAttribute(k, v) { this.attrs[k] = v },
+        appendChild(child) {
+          this.childNodes.push(child)
+          child.parentNode = this
+        }
+      }
+    },
+    createTextNode(text) {
+      return {
+        nodeType: 3,
+        nodeValue: text,
+        parentNode: null
+      }
+    }
+  }
+
+  try {
+    const restore = preserveNewlinesForExport(parent)
+
+    // Verify replacement
+    assert.equal(parent.childNodes.length, 1)
+    const wrapper = parent.childNodes[0]
+    assert.equal(wrapper.attrs['data-export-newline-wrapper'], 'true')
+    assert.equal(wrapper.style.whiteSpace, 'pre-wrap')
+
+    // Children of wrapper should be: text, BR, text, BR, text
+    const tags = wrapper.childNodes.map(n => n.nodeType === 3 ? n.nodeValue : n.tagName)
+    assert.deepEqual(tags, ['jhhhgg', 'BR', 'یک دیگر دیگر', 'BR', 'تیسرا دیگر'])
+
+    // Clean restore
+    restore()
+    assert.equal(parent.childNodes[0], textNode)
+    assert.equal(parent.childNodes[0].nodeValue, 'jhhhgg\nیک دیگر دیگر\nتیسرا دیگر')
+  } finally {
+    globalThis.document = origDocument
+    globalThis.NodeFilter = origNodeFilter
+  }
+})
+
+test('CSS enforces white-space pre-wrap on tiptap, frame-text, and story paragraphs', () => {
+  const css = fs.readFileSync(path.resolve(__dirname, '../src/style.css'), 'utf-8')
+  assert.ok(css.includes('.tiptap{outline:none;min-height:240mm;line-height:2.1;white-space:pre-wrap!important'), 'tiptap must have white-space:pre-wrap!important')
+  assert.ok(css.includes('.tiptap p{margin:0;white-space:pre-wrap!important'), 'tiptap p must have white-space:pre-wrap!important')
+  assert.ok(css.includes('.frame-text{position:absolute;inset:0;line-height:2.1;white-space:pre-wrap!important'), 'frame-text must have white-space:pre-wrap!important')
+  assert.ok(css.includes('.story-paragraph{min-height:1lh;white-space:pre-wrap!important'), 'story-paragraph must have white-space:pre-wrap!important')
+})
+
+test('App.vue splits text containing newlines into paragraphs on paste and insertPlain', () => {
+  const appCode = fs.readFileSync(path.resolve(__dirname, '../src/App.vue'), 'utf-8')
+  assert.ok(appCode.includes("if(text.includes('\\n')){const paragraphs=text.split(/\\r?\\n/).map(t=>({type:'paragraph'"), 'paste must split multi-line text into paragraphs')
+  assert.ok(appCode.includes("else if(typeof text==='string'&&text.includes('\\n')){const paragraphs=text.split(/\\r?\\n/).map(t=>({type:'paragraph'"), 'insertPlain must split multi-line text into paragraphs')
+})
+
 
