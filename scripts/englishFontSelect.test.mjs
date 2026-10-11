@@ -102,3 +102,24 @@ test('App.vue includes format.latinFont in documentFonts and invokes loadGoogleF
   assert.ok(content.includes('if(format.latinFont)s.add(format.latinFont)'), 'documentFonts must pin format.latinFont')
   assert.ok(content.includes("loadGoogleFont(value)"), 'setFormat must call loadGoogleFont for latinFont')
 })
+
+test('Ribbon.vue displays logo, emblem icon, and version 5.0 matching preloader screen', () => {
+  const ribbonPath = path.resolve('src/Ribbon.vue')
+  const content = fs.readFileSync(ribbonPath, 'utf8')
+
+  // Brand card and emblem
+  assert.ok(content.includes('ribbon-brand-card'), 'Ribbon must have ribbon-brand-card')
+  assert.ok(content.includes('ribbon-brand-emblem'), 'Ribbon must have brand emblem')
+  assert.ok(content.includes('خسرو'), 'Emblem must include Urdu calligraphy خسرو')
+  assert.ok(content.includes('Kh'), 'Emblem must include Kh monogram')
+
+  // Logo name and version
+  assert.ok(content.includes('Khusrau'), 'Brand card must display Khusrau logo')
+  assert.ok(content.includes('5.0'), 'Brand card must display version 5.0')
+  assert.ok(content.includes('Urdu Publishing Suite'), 'Brand card must display Urdu Publishing Suite')
+
+  // Tooltip and about action
+  assert.ok(content.includes('data-tooltip="Khusrau 5.0 • Developed by Tariq Abdullah"'), 'Brand card must have tooltip with author')
+  assert.ok(content.includes("@click=\"emit('about')\""), 'Brand card must emit about on click')
+})
+

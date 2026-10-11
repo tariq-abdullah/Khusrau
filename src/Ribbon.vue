@@ -7,13 +7,28 @@ import UrduFontSelect from './UrduFontSelect.vue'
 import EnglishFontSelect from './EnglishFontSelect.vue'
 import {reactive} from 'vue'
 const props=defineProps({format:Object,editor:Object,colors:Array,styles:Array,documentFonts:Array})
-const emit=defineEmits(['format','align','direction','character'])
+const emit=defineEmits(['format','align','direction','character','about'])
 const drafts=reactive({})
 function update(k,e){const value=drafts[k]??e.target.value;emit('format',k,value);delete drafts[k]}
 function commit(k,e){if(k in drafts)update(k,e)}
 </script>
 <template>
 <section class="ribbon" aria-label="Text formatting ribbon">
+<div class="ribbon-brand-card" data-tooltip="Khusrau 5.0 • Developed by Tariq Abdullah" title="Khusrau 5.0 — Urdu Publishing Suite" @click="emit('about')">
+  <div class="ribbon-brand-emblem">
+    <span class="ribbon-emblem-urdu">خسرو</span>
+    <span class="ribbon-emblem-sub">Kh</span>
+  </div>
+  <div class="ribbon-brand-info">
+    <div class="ribbon-brand-title-row">
+      <span class="ribbon-brand-name">Khusrau</span>
+      <span class="ribbon-version-badge">5.0</span>
+    </div>
+    <span class="ribbon-brand-suite">Urdu Publishing Suite</span>
+  </div>
+</div>
+<div class="ribbon-brand-divider" aria-hidden="true"></div>
+<div class="ribbon-controls">
 <div class="ribbon-row">
 <select class="style-field" :value="format.style" aria-label="Style sheet" data-tooltip="Style sheet" data-shortcut="Ctrl+T" @change="update('style',$event)"><option>Normal</option><option>Heading 1</option><option>Heading 2</option><option>Heading 3</option><option>Quote</option><option v-for="s in styles||[]">{{s.name}}</option></select>
 <label class="metric leading-field" data-tooltip="Line spacing (Leading)"><Icon name="leading"/><input aria-label="Line spacing" :value="drafts.leading??(format.leading)" @input="drafts.leading=$event.target.value" @blur="commit('leading',$event)" @keydown.enter="$event.target.blur()"/></label>
@@ -34,6 +49,7 @@ function commit(k,e){if(k in drafts)update(k,e)}
 <button aria-label="Outline text" data-tooltip="Outline text" :class="{active:format.outline}" @mousedown.prevent @click="emit('format','outline',!format.outline)"><Icon name="outline"/></button>
 <select class="decoration-field" :value="format.decoration" aria-label="Text decoration" data-tooltip="Text decoration" @change="update('decoration',$event)"><option>None</option><option>Single</option><option>Double</option><option>Overline</option><option>Box</option></select>
 <select class="kashida-field" :value="format.kashida" aria-label="Kashida" data-tooltip="Kashida justification" @change="update('kashida',$event)"><option>K-None</option><option>K-Special</option><option>K-Other</option></select>
+</div>
 </div>
 </section>
 </template>

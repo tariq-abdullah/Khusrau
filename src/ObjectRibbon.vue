@@ -1,7 +1,7 @@
 <script setup>
 import {computed,reactive,watch} from 'vue'
 const props=defineProps({object:Object,type:String,colors:Array,content:Boolean})
-const emit=defineEmits(['change','action'])
+const emit=defineEmits(['change','action','about'])
 const drafts=reactive({})
 watch(()=>[props.object?.id,props.type,props.content],()=>Object.keys(drafts).forEach(k=>delete drafts[k]))
 const text=computed(()=>['text','title'].includes(props.type)),picture=computed(()=>props.type?.includes('picture')),line=computed(()=>props.type==='line')
@@ -13,6 +13,21 @@ const metrics=computed(()=>props.content&&picture.value?[['imageX','Picture X',0
 </script>
 <template>
 <section class="ribbon object-ribbon" :aria-label="name+' ribbon'" :data-context="name">
+<div class="ribbon-brand-card" data-tooltip="Khusrau 5.0 • Developed by Tariq Abdullah" title="Khusrau 5.0 — Urdu Publishing Suite" @click="emit('about')">
+  <div class="ribbon-brand-emblem">
+    <span class="ribbon-emblem-urdu">خسرو</span>
+    <span class="ribbon-emblem-sub">Kh</span>
+  </div>
+  <div class="ribbon-brand-info">
+    <div class="ribbon-brand-title-row">
+      <span class="ribbon-brand-name">Khusrau</span>
+      <span class="ribbon-version-badge">5.0</span>
+    </div>
+    <span class="ribbon-brand-suite">Urdu Publishing Suite</span>
+  </div>
+</div>
+<div class="ribbon-brand-divider" aria-hidden="true"></div>
+<div class="ribbon-controls">
 <div class="ribbon-row">
 <label v-for="m in metrics.filter((_,i)=>i%2===0)" :key="m[0]" class="object-metric" :data-tooltip="m[1]"><span>{{({x:'X',w:'W',endX:'X₂',imageX:'X',imageScaleX:'↔'}[m[0]])}}</span><input :aria-label="m[1]" :value="field(m[0],m[2],m[3])" @input="drafts[m[0]]=$event.target.value" @blur="commit(m[0],$event,m[3])" @keydown.enter="$event.target.blur()"/></label>
 <template v-if="!content">
@@ -45,6 +60,7 @@ const metrics=computed(()=>props.content&&picture.value?[['imageX','Picture X',0
 <button v-if="text" aria-label="Edit box text" data-tooltip="Edit box text" data-shortcut="F2" @click="emit('action','editText')">Edit text</button><button v-if="picture" aria-label="Edit picture content" data-tooltip="Edit picture content" data-shortcut="Double click" @click="emit('action','editPicture')">Edit image</button>
 </template>
 <template v-else><label class="object-metric" data-tooltip="Picture vertical skew (%)"><span>⇣</span><input aria-label="Picture vertical skew" :value="field('imageSkewY',0,'%')" @input="drafts.imageSkewY=$event.target.value" @blur="commit('imageSkewY',$event)" @keydown.enter="$event.target.blur()"/></label><button aria-label="Replace picture" data-tooltip="Replace picture…" data-shortcut="Ctrl+D" @click="emit('action','place')">Replace…</button><button aria-label="Select picture box" data-tooltip="Select picture box / Exit content mode" @click="emit('action','selectBox')">Box controls</button></template>
+</div>
 </div>
 </section>
 </template>
