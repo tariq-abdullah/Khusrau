@@ -91,7 +91,7 @@ onBeforeUnmount(() => {
 
 <template>
   <Transition name="banner-slide">
-    <aside v-if="shouldShow" class="pwa-install-banner" role="banner" aria-label="Install app banner">
+    <div v-if="shouldShow" class="pwa-install-banner" role="banner" aria-label="Install app banner">
       <div class="pwa-banner-left">
         <div class="pwa-icon-box" title="Khusrau 5.0">
           <img src="/icon.svg" alt="Khusrau Icon" class="pwa-app-icon" />
@@ -125,7 +125,7 @@ onBeforeUnmount(() => {
           ✕
         </button>
       </div>
-    </aside>
+    </div>
   </Transition>
 
   <!-- Quick Helper Dialog for browsers without native prompt (e.g. Safari / macOS) -->
@@ -167,15 +167,20 @@ onBeforeUnmount(() => {
 <style scoped>
 .pwa-install-banner {
   height: 32px;
+  width: auto !important;
+  max-width: none !important;
+  min-width: max-content !important;
   background: linear-gradient(180deg, #ffffff 0%, #f6faff 100%);
   border: 1.2px solid #bfdbfe;
   border-radius: 16px;
   box-shadow: 0 1px 4px rgba(30, 60, 100, 0.1), 0 1px 2px rgba(0, 0, 0, 0.04);
-  padding: 0 5px 0 7px;
-  display: flex;
+  padding: 0 6px 0 8px;
+  display: flex !important;
+  flex-direction: row !important;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  overflow: visible !important;
   z-index: 21;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Tahoma, sans-serif;
   box-sizing: border-box;
@@ -187,6 +192,7 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 6px;
   min-width: 0;
+  flex-shrink: 0;
 }
 
 .pwa-icon-box {
@@ -213,6 +219,7 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 5px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .pwa-badge {
@@ -243,20 +250,24 @@ onBeforeUnmount(() => {
 }
 
 .pwa-install-action-btn {
-  display: inline-flex;
+  display: inline-flex !important;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
-  color: #ffffff;
-  border: 1px solid #1e3a8a;
-  border-radius: 12px;
-  padding: 0 9px;
-  font-size: 11px;
-  font-weight: 600;
+  color: #ffffff !important;
+  border: 1px solid #1e3a8a !important;
+  border-radius: 12px !important;
+  padding: 0 10px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
   cursor: pointer;
   transition: all 0.15s ease;
-  height: 23px;
-  min-height: 23px;
+  height: 24px !important;
+  min-height: 24px !important;
+  width: auto !important;
+  min-width: max-content !important;
   line-height: 1;
   box-shadow: 0 1px 2px rgba(30, 60, 100, 0.2);
 }
@@ -414,9 +425,4 @@ onBeforeUnmount(() => {
   background: #1d4ed8;
 }
 
-@media (max-width: 900px) {
-  .pwa-app-title {
-    display: none;
-  }
-}
 </style>
