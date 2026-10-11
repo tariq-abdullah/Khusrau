@@ -69,17 +69,6 @@ async function fetchFontAsDataUrl(url) {
 export function collectUsedFontFamilies(rootNode) {
   const families = new Set()
 
-  if (typeof document !== 'undefined' && document.fonts) {
-    try {
-      for (const face of document.fonts) {
-        if (face.family && face.status === 'loaded') {
-          const clean = face.family.replace(/['"]/g, '').trim()
-          if (clean) families.add(clean)
-        }
-      }
-    } catch {}
-  }
-
   function scan(el) {
     if (!el || el.nodeType !== 1) return
     try {
@@ -101,7 +90,7 @@ export function collectUsedFontFamilies(rootNode) {
         }
       }
     } catch {}
-    for (let i = 0; i < el.children.length; i++) {
+    for (let i = 0; i < el.children?.length; i++) {
       scan(el.children[i])
     }
   }
@@ -147,27 +136,15 @@ export async function buildFontEmbedCSS(paper) {
         rules.push(`
 @font-face {
   font-family: "${family}";
-  src: url("${dataUrl}") format("truetype"), url("${dataUrl}") format("opentype");
+  src: url("${dataUrl}") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "${family}";
-  src: url("${dataUrl}") format("truetype"), url("${dataUrl}") format("opentype");
+  src: url("${dataUrl}") format("truetype");
   font-weight: bold;
   font-style: normal;
-}
-@font-face {
-  font-family: "${family}";
-  src: url("${dataUrl}") format("truetype"), url("${dataUrl}") format("opentype");
-  font-weight: normal;
-  font-style: italic;
-}
-@font-face {
-  font-family: "${family}";
-  src: url("${dataUrl}") format("truetype"), url("${dataUrl}") format("opentype");
-  font-weight: bold;
-  font-style: italic;
 }
         `.trim())
       }
