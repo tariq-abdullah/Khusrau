@@ -9,9 +9,12 @@ export function nativeDocument(native,name){
 
  let content
  if (native.formattedParagraphs?.length) {
+  let paras = [...native.formattedParagraphs]
+  while (paras.length && !paras[0]?.text?.trim()) paras.shift()
+  while (paras.length && !paras[paras.length - 1]?.text?.trim()) paras.pop()
   content = {
    type: 'doc',
-   content: native.formattedParagraphs.map(p => {
+   content: paras.map(p => {
     if (!p.text?.trim()) return { type: 'paragraph' }
     if (p.isHeading) {
      return {
@@ -98,11 +101,61 @@ export function nativeDocument(native,name){
    characters:native.text.length,
    warning:native.warning,
    isOlderVersion:!!native.isOlderVersion,
-   profile:about?'AboutFaiz manually reconstructed from native inspection':(native.isOlderVersion?'Older InPage document converted':'Text recovery only')
+   profile:about?'AboutFaiz manually reconstructed from native inspection':(native.isOlderVersion?'Older InPage document converted':'Native InPage document layout, typography & images decoded')
   }
  }
 
- if(!about)return d
+ if(!about){
+  const pageId = 'page-1'
+  d.pages = [{ id: pageId, content }]
+  d.content = content
+  if (native.pictureObjects?.length) {
+   d.objects = native.pictureObjects.map((pic, idx) => ({
+    id: 'pic-' + idx,
+    page: pageId,
+    type: 'picture',
+    x: Math.round(pic.x * mm),
+    y: Math.round(pic.y * mm),
+    w: Math.max(12, Math.round(pic.w * mm)),
+    h: Math.max(12, Math.round(pic.h * mm)),
+    rotation: 0,
+    fill: 'none',
+    stroke: 'none',
+    strokeWidth: 0,
+    src: dataURL(pic.bytes),
+    imageFit: 'contain',
+    imageNatural: true,
+    imageX: 0,
+    imageY: 0,
+    imageWidth: Math.max(12, Math.round(pic.w * mm)),
+    imageHeight: Math.max(12, Math.round(pic.h * mm)),
+    master: pic.page === 0
+   }))
+  } else if (native.pictures?.length) {
+   d.objects = native.pictures.map((picBytes, idx) => ({
+    id: 'pic-' + idx,
+    page: pageId,
+    type: 'picture',
+    x: Math.round(12.7 * mm),
+    y: Math.round((12.7 + idx * 55) * mm),
+    w: Math.round(100 * mm),
+    h: Math.round(50 * mm),
+    rotation: 0,
+    fill: 'none',
+    stroke: 'none',
+    strokeWidth: 0,
+    src: dataURL(picBytes),
+    imageFit: 'contain',
+    imageNatural: true,
+    imageX: 0,
+    imageY: 0,
+    imageWidth: Math.round(100 * mm),
+    imageHeight: Math.round(50 * mm),
+    master: false
+   }))
+  }
+  return d
+ }
  d.pages=[{id:'aboutfaiz-page-1',content:blank()},{id:'aboutfaiz-page-2',content:blank()}];d.content=d.pages[0].content
  const paragraphs=[...native.paragraphs];while(!paragraphs[0]?.trim()&&paragraphs.length)paragraphs.shift();while(!paragraphs.at(-1)?.trim()&&paragraphs.length)paragraphs.pop()
  const text=paragraphs.join('\n'),runs=paragraphRuns(paragraphs),w=(184.6-4.233)/2

@@ -37,7 +37,7 @@ test('native document writer permits tested text edits and rejects layout or pro
  d.nativeSource.textRange={start:5502,end:25866};assert.throws(()=>writeNativeText(d,bytes),/do not match/)
 })
 
-test('opens UMA-Vision Doc P.inp with tag 0x0002 header and recovers Unicode story and embedded pictures',()=>{
+test('opens UMA-Vision Doc P.inp with tag 0x0002 header and recovers Unicode story, layout, and embedded pictures',()=>{
  const fileUrl=new URL('../research/oldversionfilesinpage/UMA-Vision Doc P.inp',import.meta.url)
  if(!fs.existsSync(fileUrl))return
  const bytes=new Uint8Array(fs.readFileSync(fileUrl))
@@ -49,7 +49,18 @@ test('opens UMA-Vision Doc P.inp with tag 0x0002 header and recovers Unicode sto
  assert.ok(n.text.includes('اردو میڈیا ایسوسی ایشن'))
  assert.ok(n.text.includes('اردو صحافت'))
  assert.ok(n.pictures.length>=10)
+ assert.equal(n.layout.width,127)
+ assert.equal(n.layout.height,203.2)
+ assert.equal(n.layout.marginLeft,12.7)
  const d=nativeDocument(n,'UMA-Vision Doc P.inp')
  assert.doesNotThrow(()=>parseDocument(JSON.stringify(d)))
  assert.ok(d.content.content.length>100)
+ assert.ok(d.content.content.some(node=>node.type==='heading'&&node.attrs?.textAlign==='center'))
+ assert.ok(d.content.content.some(node=>node.attrs?.textAlign==='justify'))
+ assert.equal(d.paperWidth,127)
+ assert.equal(d.paperHeight,203.2)
+ assert.ok(d.objects.length>=8)
+ assert.equal(d.objects[0].type,'picture')
+ assert.ok(d.objects[0].src.startsWith('data:image/jpeg;base64,'))
 })
+
