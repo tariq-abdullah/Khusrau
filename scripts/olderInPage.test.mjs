@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 import * as CFB from 'cfb'
 import { readNative, createOlderInPageFile, createV3InPageFile, encodeToV1V2 } from '../src/native.js'
 import { nativeDocument } from '../src/nativeDocument.js'
-import { parseOlderInPageStream, buildOlderInPageFile } from '../src/olderInPage.js'
+import { parseOlderInPageStream, buildOlderInPageFile, normalizeLegacyUrduText } from '../src/olderInPage.js'
 import { menus } from '../src/controls.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -240,5 +240,27 @@ test('File -> Export native INP exports v3 Unicode format, and downloadOlderInPa
   assert.equal(v1ReadBack.isOlderVersion, true, 'Must be older version')
   assert.equal(v1ReadBack.paragraphs[0], sampleText)
 })
+
+test('normalizeLegacyUrduText normalizes legacy Hamza, unspaced Noon Ghunna, and unspaced colons', () => {
+  const legacyP1 = 'شاہد بھاءی ایک عالمی شخصیت ہیں اور ہمیشہ حق بات کہتے ہیں: اعظم خاں،  یہ وہ چہرے ہیں جو سماجوادی پارٹی کو نءی طاقت دیںگے:اکھلیش یادو'
+  const normalized = normalizeLegacyUrduText(legacyP1)
+
+  assert.ok(normalized.includes('شاہد بھائی'), 'بھاءی must normalize to بھائی')
+  assert.ok(normalized.includes('نئی طاقت'), 'نءی must normalize to نئی')
+  assert.ok(normalized.includes('دیں گے: اکھلیش یادو'), 'دیںگے:اکھلیش یادو must normalize to دیں گے: اکھلیش یادو')
+
+  // Verify old-inpage.inp fixture decodes with normalized text
+  const bytes = new Uint8Array(fs.readFileSync(fixturePath))
+  const parsed = readNative(bytes)
+  assert.ok(parsed.paragraphs[1].includes('بھائی'), 'Fixture P1 must have بھائی')
+  assert.ok(parsed.paragraphs[1].includes('نئی'), 'Fixture P1 must have نئی')
+  assert.ok(parsed.paragraphs[1].includes('دیں گے: اکھلیش یادو'), 'Fixture P1 must have دیں گے: اکھلیش یادو')
+
+  // Verify encodeToV1V2 supports U+0626 and U+06D3
+  const encoded = encodeToV1V2('بھائی اور گئے')
+  assert.ok(encoded instanceof Uint8Array)
+  assert.ok(encoded.length > 0)
+})
+
 
 

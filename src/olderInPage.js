@@ -21,6 +21,24 @@ function base64ToUint8(b64) {
 }
 
 /**
+ * Normalizes legacy InPage decoded Urdu text to standard Unicode orthography:
+ * 1. Replaces isolated Hamza (U+0621) before Arabic letters with Yeh with Hamza above (U+0626), e.g. بھاءی -> بھائی, نءی -> نئی, ہوءے -> ہوئے۔
+ * 2. Inserts a space after word-final Noon Ghunna (U+06BA) when immediately followed by an Arabic letter, e.g. دیںگے -> دیں گے, میںپارٹی -> میں پارٹی.
+ * 3. Inserts a space after punctuation followed immediately by an Arabic letter, e.g. :اکھلیش -> : اکھلیش, ،اسمبلی -> ، اسمبلی.
+ * 4. Collapses redundant spaces.
+ * @param {string} text
+ * @returns {string}
+ */
+export function normalizeLegacyUrduText(text) {
+  if (!text) return ''
+  return text
+    .replace(/\u0621(?=[\u0620-\u064A\u066E-\u06D3\u06D5])/g, '\u0626')
+    .replace(/(\u06BA)(?=[\u0620-\u064A\u066E-\u06D3\u06D5])/g, '$1 ')
+    .replace(/([:،؛۔؟!%,;])(?=[\u0620-\u064A\u066E-\u06D3\u06D5])/g, '$1 ')
+    .replace(/[^\S\r\n]{2,}/g, ' ')
+}
+
+/**
  * Extracts page layout, line metrics, and styled paragraphs from an InPage 1.x/2.x stream.
  * @param {Uint8Array} stream
  */
@@ -83,6 +101,7 @@ export function parseOlderInPageStream(stream) {
   if (!paragraphs.length) {
     paragraphs = filterParagraphs(decoded.paragraphs).map(p => p === '___PAGE_BREAK___' ? '' : p.trim()).filter(Boolean)
   }
+  paragraphs = paragraphs.map(p => normalizeLegacyUrduText(p))
 
   // 4. Map lines to paragraphs and determine per-paragraph formatting
   let lineIdx = 0

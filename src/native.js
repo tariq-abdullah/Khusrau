@@ -6,6 +6,7 @@ const charToByte = new Map()
 for (const [b, ch] of CHAR_MAP_URDU) {
  if (!charToByte.has(ch)) charToByte.set(ch, b)
 }
+if (!charToByte.has('\u0626')) charToByte.set('\u0626', 0xa3)
 
 export function encodeToV1V2(text) {
  const bytes = []
@@ -28,6 +29,11 @@ export function encodeToV1V2(text) {
   }
   if (text[i] === ' ') {
    bytes.push(0x04, 0x20)
+   i++
+   continue
+  }
+  if (text[i] === '\u06D3') {
+   bytes.push(0x04, 0xa3, 0x04, 0xa5)
    i++
    continue
   }
