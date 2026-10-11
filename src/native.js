@@ -68,19 +68,54 @@ export function createOlderInPageFile(text, options) {
 
 export { createV3InPageFile } from './v3InPage.js'
 
-// V3 Unicode stories are contiguous UTF-16LE. The published decoder's
-// paragraph-count table interpretation truncates this particular native file.
+// V3 Unicode stories are contiguous UTF-16LE. InPage 3 streams precede stories
+// with an 0xFFFFFFFF sentinel followed by a 16-bit story/record tag (e.g. 0x000D or 0x0002).
+// Story text begins at offset i+6. Fallbacks support variable offsets and stream-wide scanning.
 export function recoverV3(stream){
  const candidates=[]
- for(let i=0;i<stream.length-6;i++){
-  if(stream[i]!==255||stream[i+1]!==255||stream[i+2]!==255||stream[i+3]!==255||stream[i+4]!==13||stream[i+5]!==0)continue
-  let end=i+6,arabic=0
-  for(;end+1<stream.length;end+=2){const n=stream[end]|stream[end+1]<<8;
+ function checkRun(start){
+  let end=start,arabic=0
+  for(;end+1<stream.length;end+=2){
+   const n=stream[end]|stream[end+1]<<8
    if(!(n===9||n===10||n===13||n>=32&&n<=126||n===160||n>=0x600&&n<=0x8ff||n>=0x2000&&n<=0x206f||n>=0xfb50&&n<=0xfdff||n>=0xfe70&&n<=0xfeff))break
    if(n>=0x600&&n<=0x8ff)arabic++
   }
-  if(arabic>10)candidates.push({start:i+6,end,arabic})
+  if(arabic>10)candidates.push({start,end,arabic})
  }
+
+ // Strategy 1: Standard InPage 3 story header (0xFFFFFFFF sentinel + 16-bit tag at i+4, text at i+6)
+ for(let i=0;i<stream.length-6;i++){
+  if(stream[i]===255&&stream[i+1]===255&&stream[i+2]===255&&stream[i+3]===255){
+   checkRun(i+6)
+  }
+ }
+
+ // Strategy 2: Check alternative offsets (i+4 direct, i+8 with 32-bit tag) if standard offset had no story
+ if(candidates.length===0){
+  for(let i=0;i<stream.length-6;i++){
+   if(stream[i]===255&&stream[i+1]===255&&stream[i+2]===255&&stream[i+3]===255){
+    checkRun(i+4)
+    checkRun(i+8)
+   }
+  }
+ }
+
+ // Strategy 3: Full-stream contiguous UTF-16LE Urdu text block scan
+ if(candidates.length===0){
+  for(let i=0;i<stream.length-20;i+=2){
+   let end=i,arabic=0
+   for(;end+1<stream.length;end+=2){
+    const n=stream[end]|stream[end+1]<<8
+    if(!(n===9||n===10||n===13||n>=32&&n<=126||n===160||n>=0x600&&n<=0x8ff||n>=0x2000&&n<=0x206f||n>=0xfb50&&n<=0xfdff||n>=0xfe70&&n<=0xfeff))break
+    if(n>=0x600&&n<=0x8ff)arabic++
+   }
+   if(arabic>10&&(end-i)>40){
+    candidates.push({start:i,end,arabic})
+    i=end
+   }
+  }
+ }
+
  candidates.sort((a,b)=>(b.end-b.start)-(a.end-a.start))
  const run=candidates[0];if(!run)throw Error('No supported Unicode story found. This file needs a different InPage decoder.')
  const text=new TextDecoder('utf-16le').decode(stream.slice(run.start,run.end))

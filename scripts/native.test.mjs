@@ -36,3 +36,20 @@ test('native document writer permits tested text edits and rejects layout or pro
  root.fontSize=9;assert.throws(()=>writeNativeText(d,bytes),/formatting/);root.fontSize=8
  d.nativeSource.textRange={start:5502,end:25866};assert.throws(()=>writeNativeText(d,bytes),/do not match/)
 })
+
+test('opens UMA-Vision Doc P.inp with tag 0x0002 header and recovers Unicode story and embedded pictures',()=>{
+ const fileUrl=new URL('../research/oldversionfilesinpage/UMA-Vision Doc P.inp',import.meta.url)
+ if(!fs.existsSync(fileUrl))return
+ const bytes=new Uint8Array(fs.readFileSync(fileUrl))
+ const n=readNative(bytes)
+ assert.equal(n.version,3)
+ assert.equal(n.isOlderVersion,false)
+ assert.ok(n.text.length>30000)
+ assert.ok(n.text.includes('منشور'))
+ assert.ok(n.text.includes('اردو میڈیا ایسوسی ایشن'))
+ assert.ok(n.text.includes('اردو صحافت'))
+ assert.ok(n.pictures.length>=10)
+ const d=nativeDocument(n,'UMA-Vision Doc P.inp')
+ assert.doesNotThrow(()=>parseDocument(JSON.stringify(d)))
+ assert.ok(d.content.content.length>100)
+})
