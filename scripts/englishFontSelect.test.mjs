@@ -122,11 +122,13 @@ test('Ribbon.vue displays logo, emblem icon, and version 5.0 matching preloader 
   assert.ok(content.includes('data-tooltip="Khusrau 5.0 • Developed by Tariq Abdullah"'), 'Brand card must have tooltip with author')
   assert.ok(content.includes("@click=\"emit('about')\""), 'Brand card must emit about on click')
 
-  // Light mode styling in style.css
+  // Light mode styling in style.css with golden touch matching preloader
   const css = fs.readFileSync(path.resolve('src/style.css'), 'utf8')
   assert.ok(css.includes('.ribbon-brand-card'), 'style.css must style .ribbon-brand-card')
   assert.ok(css.includes('.ribbon-brand-name{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;font-size:13px;font-weight:700;letter-spacing:-0.3px;color:#0f172a'), 'Brand name must use light mode dark text #0f172a')
   assert.ok(!css.includes('#090f1a'), 'Logo brand card must not use dark mode #090f1a background')
+  assert.ok(css.includes('.ribbon-brand-emblem{position:relative;width:32px;height:32px;border-radius:6px;background:linear-gradient(135deg, #0f2744 0%, #081628 100%);border:1.3px solid #d4af37'), 'Emblem must feature the signature gold border #d4af37 as in preloader')
+  assert.ok(css.includes('.ribbon-emblem-urdu{font-family:\'Jameel Noori Nastaleeq\', \'Noto Nastaliq Urdu\', serif;font-size:14px;line-height:1;color:#fce79a'), 'Emblem calligraphy must feature the illuminated gold text #fce79a as in preloader')
 })
 
 
