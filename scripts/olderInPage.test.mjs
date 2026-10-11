@@ -4,7 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import * as CFB from 'cfb'
-import { readNative, createOlderInPageFile, encodeToV1V2 } from '../src/native.js'
+import { readNative, createOlderInPageFile, createV3InPageFile, encodeToV1V2 } from '../src/native.js'
 import { nativeDocument } from '../src/nativeDocument.js'
 import { parseOlderInPageStream, buildOlderInPageFile } from '../src/olderInPage.js'
 import { menus } from '../src/controls.js'
@@ -198,13 +198,15 @@ test('older version file open uses in-app dialog and does not trigger window.ale
   assert.ok(!appVue.includes('window.alert'), 'Must not call native window.alert to prevent dual alerts')
 })
 
-test('File -> Export native INP is never disabled and exports valid InPage .inp file', () => {
+test('File -> Export native INP exports v3 Unicode format, and downloadOlderInPage exports v1 legacy format', () => {
   const appVue = fs.readFileSync(path.resolve(__dirname, '../src/App.vue'), 'utf-8')
   assert.ok(!appVue.includes("if(cmd==='native')return !nativeSource.value"), 'Native export must not be disabled when nativeSource is empty')
+  assert.ok(appVue.includes('createV3InPageFile(exportContent,layout)'), 'exportNative must use createV3InPageFile for v3 export')
+  assert.ok(appVue.includes('createOlderInPageFile(exportContent,layout)'), 'downloadOlderInPage must use createOlderInPageFile for older export')
 
-  // Verify that createOlderInPageFile produces valid CFB file for new documents
+  // 1. Verify createV3InPageFile produces valid InPage 3.x (Unicode) file
   const sampleText = 'سماجوادی پارٹی میں شاہد صدیقی'
-  const generated = createOlderInPageFile(sampleText, {
+  const v3Generated = createV3InPageFile(sampleText, {
     width: 210,
     height: 297,
     marginLeft: 12.7,
@@ -214,10 +216,29 @@ test('File -> Export native INP is never disabled and exports valid InPage .inp 
     columns: 1,
     gap: 4.233
   })
-  assert.ok(generated instanceof Uint8Array, 'Generated export must be a Uint8Array')
-  assert.ok(generated.length > 512, 'File must have valid OLE compound structure')
-  const readBack = readNative(generated)
-  assert.equal(readBack.paragraphs[0], sampleText)
+  assert.ok(v3Generated instanceof Uint8Array, 'v3 export must be a Uint8Array')
+  assert.ok(v3Generated.length > 512, 'File must have valid OLE compound structure')
+  const v3ReadBack = readNative(v3Generated)
+  assert.equal(v3ReadBack.version, 3, 'Must be version 3 (InPage300)')
+  assert.equal(v3ReadBack.isOlderVersion, false, 'Must not be older version')
+  assert.equal(v3ReadBack.paragraphs[0], sampleText)
+
+  // 2. Verify createOlderInPageFile produces valid InPage 1.x (legacy) file
+  const v1Generated = createOlderInPageFile(sampleText, {
+    width: 210,
+    height: 297,
+    marginLeft: 12.7,
+    marginRight: 12.7,
+    marginTop: 12.7,
+    marginBottom: 12.7,
+    columns: 1,
+    gap: 4.233
+  })
+  assert.ok(v1Generated instanceof Uint8Array, 'v1 export must be a Uint8Array')
+  const v1ReadBack = readNative(v1Generated)
+  assert.equal(v1ReadBack.version, 1, 'Must be version 1 (InPage100)')
+  assert.equal(v1ReadBack.isOlderVersion, true, 'Must be older version')
+  assert.equal(v1ReadBack.paragraphs[0], sampleText)
 })
 
 

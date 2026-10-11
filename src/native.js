@@ -60,6 +60,8 @@ export function createOlderInPageFile(text, options) {
  return buildOlderInPageFile(text, options)
 }
 
+export { createV3InPageFile } from './v3InPage.js'
+
 // V3 Unicode stories are contiguous UTF-16LE. The published decoder's
 // paragraph-count table interpretation truncates this particular native file.
 export function recoverV3(stream){
