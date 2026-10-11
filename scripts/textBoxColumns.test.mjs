@@ -73,11 +73,11 @@ test('objectColumnGuides logic respects object inset and settings.gap fallback',
   assert.ok(Math.abs(guidesCustomGap[0].left - expectedColWidth) < 0.001);
 });
 
-test('CSS rules enforce balanced column fill and single orphan/widow to avoid stacking', () => {
+test('CSS rules enforce sequential column fill (column-fill: auto) and single orphan/widow', () => {
   const css = fs.readFileSync(path.join(__dirname, '../src/style.css'), 'utf-8');
 
-  // .frame-text and .flow-measure must balance columns and have orphans: 1, widows: 1
-  assert.ok(css.includes('column-fill:balance'), 'CSS must include column-fill:balance');
+  // .frame-text, .flow-measure, and .tiptap must fill columns sequentially (column-fill: auto)
+  assert.ok(css.includes('column-fill:auto'), 'CSS must include column-fill:auto');
   assert.ok(css.includes('orphans:1'), 'CSS must include orphans:1');
   assert.ok(css.includes('widows:1'), 'CSS must include widows:1');
 });
