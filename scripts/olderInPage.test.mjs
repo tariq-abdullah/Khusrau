@@ -197,3 +197,27 @@ test('older version file open uses in-app dialog and does not trigger window.ale
   assert.ok(appVue.includes("dialog.value='olderVersion'"), 'Must trigger in-app olderVersion dialog')
   assert.ok(!appVue.includes('window.alert'), 'Must not call native window.alert to prevent dual alerts')
 })
+
+test('File -> Export native INP is never disabled and exports valid InPage .inp file', () => {
+  const appVue = fs.readFileSync(path.resolve(__dirname, '../src/App.vue'), 'utf-8')
+  assert.ok(!appVue.includes("if(cmd==='native')return !nativeSource.value"), 'Native export must not be disabled when nativeSource is empty')
+
+  // Verify that createOlderInPageFile produces valid CFB file for new documents
+  const sampleText = 'سماجوادی پارٹی میں شاہد صدیقی'
+  const generated = createOlderInPageFile(sampleText, {
+    width: 210,
+    height: 297,
+    marginLeft: 12.7,
+    marginRight: 12.7,
+    marginTop: 12.7,
+    marginBottom: 12.7,
+    columns: 1,
+    gap: 4.233
+  })
+  assert.ok(generated instanceof Uint8Array, 'Generated export must be a Uint8Array')
+  assert.ok(generated.length > 512, 'File must have valid OLE compound structure')
+  const readBack = readNative(generated)
+  assert.equal(readBack.paragraphs[0], sampleText)
+})
+
+
