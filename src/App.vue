@@ -361,9 +361,52 @@ function objectUndo(redo=false){const source=redo?objectFuture:objectHistory,tar
 function performUndo(){if(document.activeElement?.closest('[data-frame-editor]')){document.execCommand?.('undo');return}if(document.activeElement?.closest('.tiptap')){editor.value?.chain().focus().undo().run();return}if(selected.value.length&&objectHistory.value.length){objectUndo();return}if(lastActionKind.value==='object'&&objectHistory.value.length){objectUndo();return}if(editor.value?.can().undo()){editor.value.chain().focus().undo().run();return}if(objectHistory.value.length){objectUndo();return}}
 function performRedo(){if(document.activeElement?.closest('[data-frame-editor]')){document.execCommand?.('redo');return}if(document.activeElement?.closest('.tiptap')){editor.value?.chain().focus().redo().run();return}if(selected.value.length&&objectFuture.value.length){objectUndo(true);return}if(lastActionKind.value==='object'&&objectFuture.value.length){objectUndo(true);return}if(editor.value?.can().redo()){editor.value.chain().focus().redo().run();return}if(objectFuture.value.length){objectUndo(true);return}}
 const toolShortcuts={select:'Ctrl+1',edit:'Ctrl+2',rotate:'Ctrl+3',link:'Ctrl+4',unlink:'Ctrl+5'}
-const toolTooltip=reactive({visible:false,label:'',shortcut:'',top:0,left:0})
-function showToolTooltip(e,label,id){const r=e.currentTarget.getBoundingClientRect();toolTooltip.label=label;toolTooltip.shortcut=toolShortcuts[id]||'';toolTooltip.top=r.top+r.height/2;toolTooltip.left=r.right+7;toolTooltip.visible=true}
+const toolTooltip=reactive({visible:false,label:'',shortcut:'',pos:'right',top:0,left:0})
+function showTooltipForElement(el){
+  if(!el||typeof el.getAttribute!=='function')return;
+  const label=el.getAttribute('data-tooltip');
+  if(!label)return;
+  const r=el.getBoundingClientRect();
+  const shortcut=el.getAttribute('data-shortcut')||(el.dataset?.toolId?toolShortcuts[el.dataset.toolId]:'');
+  let pos=el.getAttribute('data-tooltip-pos');
+  if(!pos){
+    if(el.closest('aside'))pos='right';
+    else if(el.closest('.pagebar, footer'))pos='top';
+    else pos='bottom';
+  }
+  toolTooltip.label=label;
+  toolTooltip.shortcut=shortcut||'';
+  toolTooltip.pos=pos;
+  if(pos==='right'){
+    toolTooltip.top=r.top+r.height/2;
+    toolTooltip.left=r.right+7;
+  }else if(pos==='top'){
+    toolTooltip.top=r.top-6;
+    toolTooltip.left=Math.max(60,Math.min(window.innerWidth-60,r.left+r.width/2));
+  }else{
+    toolTooltip.top=r.bottom+6;
+    toolTooltip.left=Math.max(60,Math.min(window.innerWidth-60,r.left+r.width/2));
+  }
+  toolTooltip.visible=true;
+}
+function showToolTooltip(e,label,id){
+  const el=e.currentTarget||e.target;
+  if(id)el.dataset.toolId=id;
+  if(label)el.setAttribute('data-tooltip',label);
+  showTooltipForElement(el);
+}
 function hideToolTooltip(){toolTooltip.visible=false}
+function handlePointerOver(e){
+  const el=e.target?.closest?.('[data-tooltip]');
+  if(el)showTooltipForElement(el);
+}
+function handlePointerOut(e){
+  const target=e.target?.closest?.('[data-tooltip]');
+  const related=e.relatedTarget?.closest?.('[data-tooltip]');
+  if(!related||related!==target){
+    toolTooltip.visible=false;
+  }
+}
 function chooseTool(id){pictureEditing.value=false;if(!['edit','select','rotate','link','unlink'].includes(id))selected.value=[];tool.value=id;linkSource.value=null;editor.value.setEditable(id==='edit');message.value={select:'Click an object; drag to move. Shift-click selects multiple objects.',edit:'Click text to edit; double-click a picture frame to place an image.',rotate:'Select an object, then drag to rotate.',link:'Click the source text box, then the destination text box.',unlink:'Click a text box to disconnect its link.'}[id]||'Drag on the page to create '+tools.find(t=>t[0]===id)?.[1].toLowerCase()}
 function point(e){return guidePoint(e.clientX,e.clientY,paperEl.value.getBoundingClientRect(),zoom.value)}
 function pointerDown(e){if(e.button!==0||e.target.closest('.canvas-object')||e.target.closest('.master-default-grid'))return;const p=point(e),borderTol=Math.max(8,Math.min(20,10/(zoom.value/100)));if(tool.value==='select'){const candidateTextBoxes=pageObjects.value.filter(a=>['text','title'].includes(a.type)&&(!a.master||isMasterPage.value));if(candidateTextBoxes.length){const {nearest,distance}=findNearestTextBox(p,candidateTextBoxes);if(nearest&&distance<=borderTol){if(e.shiftKey){selected.value=selected.value.includes(nearest.id)?selected.value.filter(id=>id!==nearest.id):[...selected.value,nearest.id]}else{selected.value=nearest.group?objects.value.filter(a=>a.group===nearest.group).map(a=>a.id):[nearest.id]}Object.assign(format,{font:nearest.font||baseStyle.font,size:nearest.fontSize||baseStyle.size,leading:nearest.leading||'Auto',color:nearest.color||'#000000'});if(!nearest.locked){drag={kind:'move',start:p,initial:objects.value.filter(a=>selected.value.includes(a.id)).map(a=>({...a})),center:{x:nearest.x+nearest.w/2,y:nearest.y+nearest.h/2},started:false,snapshot:JSON.parse(JSON.stringify(objects.value))}}e.preventDefault();return}}if(e.target.closest('.text-boundary')||e.target.closest('.tiptap')||e.target.closest('.ProseMirror')){chooseTool('edit');nextTick(()=>editor.value?.commands.focus());return}selected.value=[];return}if(tool.value==='edit'){selected.value=[];return}if(['rotate','link','unlink'].includes(tool.value))return;drag={kind:'create',start:p};previewRect.value={x:p.x,y:p.y,w:1,h:1};e.preventDefault()}
@@ -579,8 +622,8 @@ e.preventDefault();removeObjects();return;
 }
 function installReady(e){e.preventDefault();installEvent.value=e}async function install(){await installEvent.value?.prompt();installEvent.value=null}
 function beforeUnload(e){if(dirty.value){autosave();if(dirty.value){e.preventDefault();e.returnValue=''}}}
-onMounted(async()=>{try{const stored=await loadWorkspace();if(stored){documents.value=stored.documents||[];activeDocument.value=stored.active;apply(parseDocument(JSON.stringify(stored.draft)))}const raw=stored?null:localStorage.getItem('inpage-net-draft');if(raw)apply(parseDocument(raw));if(!stored){const tabs=JSON.parse(localStorage.getItem('inpage-net-tabs')||'[]');documents.value=Array.isArray(tabs)?tabs:[];}let current=documents.value.find(d=>d.id===activeDocument.value)||documents.value.find(d=>d.title===title.value);if(!current){current={id:activeDocument.value,title:title.value,data:snapshot()};documents.value.push(current)}activeDocument.value=current.id}catch{message.value='Stored draft could not be restored';documents.value=[{id:activeDocument.value,title:title.value,data:snapshot()}]}window.addEventListener('keydown',shortcut);window.addEventListener('beforeunload',beforeUnload);window.addEventListener('beforeinstallprompt',installReady);window.addEventListener('pointermove',pointerMove);window.addEventListener('pointerup',pointerUp);window.addEventListener('pointercancel',cancelDrag);document.fonts.ready.then(updateFlow);nextTick(updateFlow)})
-onBeforeUnmount(()=>{clearTimeout(timer);window.removeEventListener('keydown',shortcut);window.removeEventListener('beforeunload',beforeUnload);window.removeEventListener('beforeinstallprompt',installReady);window.removeEventListener('pointermove',pointerMove);window.removeEventListener('pointerup',pointerUp);window.removeEventListener('pointercancel',cancelDrag);measure?.remove();editor.value?.destroy()})
+onMounted(async()=>{try{const stored=await loadWorkspace();if(stored){documents.value=stored.documents||[];activeDocument.value=stored.active;apply(parseDocument(JSON.stringify(stored.draft)))}const raw=stored?null:localStorage.getItem('inpage-net-draft');if(raw)apply(parseDocument(raw));if(!stored){const tabs=JSON.parse(localStorage.getItem('inpage-net-tabs')||'[]');documents.value=Array.isArray(tabs)?tabs:[];}let current=documents.value.find(d=>d.id===activeDocument.value)||documents.value.find(d=>d.title===title.value);if(!current){current={id:activeDocument.value,title:title.value,data:snapshot()};documents.value.push(current)}activeDocument.value=current.id}catch{message.value='Stored draft could not be restored';documents.value=[{id:activeDocument.value,title:title.value,data:snapshot()}]}window.addEventListener('keydown',shortcut);window.addEventListener('beforeunload',beforeUnload);window.addEventListener('beforeinstallprompt',installReady);window.addEventListener('pointermove',pointerMove);window.addEventListener('pointerup',pointerUp);window.addEventListener('pointercancel',cancelDrag);document.addEventListener('pointerover',handlePointerOver);document.addEventListener('pointerout',handlePointerOut);document.fonts.ready.then(updateFlow);nextTick(updateFlow)})
+onBeforeUnmount(()=>{clearTimeout(timer);window.removeEventListener('keydown',shortcut);window.removeEventListener('beforeunload',beforeUnload);window.removeEventListener('beforeinstallprompt',installReady);window.removeEventListener('pointermove',pointerMove);window.removeEventListener('pointerup',pointerUp);window.removeEventListener('pointercancel',cancelDrag);document.removeEventListener('pointerover',handlePointerOver);document.removeEventListener('pointerout',handlePointerOut);measure?.remove();editor.value?.destroy()})
 </script>
 <template>
 <div class="app" @click="menu='';openSubmenu=''">
@@ -589,16 +632,16 @@ onBeforeUnmount(()=>{clearTimeout(timer);window.removeEventListener('keydown',sh
 <nav aria-label="Application menu"><img src="/icon.svg" alt=""/><div v-for="(items,label) in menus" :key="label" class="menu"><button :class="{open:menu===label}" @click.stop="menu=menu===label?'':label;openSubmenu=''">{{label}}</button><div v-if="menu===label" class="dropdown" role="menu"><template v-for="(item,i) in items" :key="i"><hr v-if="!item"/><div v-else-if="item[3]" class="menu-item-with-submenu" @mouseenter="openSubmenu=item[1]" @mouseleave="openSubmenu=''"><button role="menuitem" class="has-submenu" :disabled="disabled(item[1])" @click.stop="openSubmenu=openSubmenu===item[1]?'':item[1]"><span class="check">{{checked(item[1])?'✓':''}}</span><span>{{item[0]}}</span><span class="submenu-arrow">▶</span></button><div v-if="openSubmenu===item[1]" class="submenu-flyout" role="menu"><button v-for="sub in item[3]" :key="sub[1]" role="menuitem" :disabled="disabled(sub[1])" @mousedown.prevent @click="action(sub[1])"><span class="check">{{checked(sub[1])?'✓':''}}</span><span>{{sub[0]}}</span><small>{{sub[2]||''}}</small></button></div></div><button v-else role="menuitem" :disabled="disabled(item[1])" @mousedown.prevent @click="action(item[1])"><span class="check">{{checked(item[1])?'✓':''}}</span><span>{{item[0].startsWith('Hide ')?(settings[{ribbon:'ribbon',tools:'tools',rulers:'rulers',guides:'guides'}[item[1]]]?'Hide ':'Show ')+item[0].slice(5):item[0]}}</span><small>{{item[2]}}</small></button></template></div></div><span class="app-title" @click="action('about')" title="About Khusrau 5.0" style="cursor:pointer">Khusrau 5.0 — [{{title}}]</span><button v-if="installEvent" @click="install">Install</button></nav>
 <ObjectRibbon v-if="settings.ribbon&&objectContext" :object="contextObject" :type="contextType" :colors="colors" :content="pictureEditing" @change="setObjectProperty" @action="objectAction"/><Ribbon v-else-if="settings.ribbon" :document-fonts="documentFonts" :styles="customStyles" :format="format" :editor="editor" :colors="colors" @format="setFormat" @align="align" @direction="setDirection" @character="character"/>
 <div v-if="importReport" class="import-report" role="note"><div class="import-report-text">{{importReport.warning}} <span>{{importReport.characters}} source characters.</span></div><button type="button" class="import-report-dismiss" title="Dismiss message" aria-label="Dismiss message" @click="importReport = null">×</button></div>
-<main><aside v-if="settings.tools" aria-label="Tool strip" @mouseleave="hideToolTooltip"><button v-for="[id,label,icon] in tools" :key="id" :aria-label="label" :data-tooltip="label" :class="{active:tool===id}" @mouseenter="showToolTooltip($event,label,id)" @mouseleave="hideToolTooltip" @click="chooseTool(id);hideToolTooltip()"><Icon :name="icon"/></button></aside>
+<main><aside v-if="settings.tools" aria-label="Tool strip" @mouseleave="hideToolTooltip"><button v-for="[id,label,icon] in tools" :key="id" :aria-label="label" :data-tooltip="label" :data-tool-id="id" :data-shortcut="toolShortcuts[id]" :class="{active:tool===id}" @mouseenter="showToolTooltip($event,label,id)" @mouseleave="hideToolTooltip" @click="chooseTool(id);hideToolTooltip()"><Icon :name="icon"/></button></aside>
 <Teleport to="body">
-  <div v-if="toolTooltip.visible" class="tool-strip-tooltip" :style="{top:toolTooltip.top+'px',left:toolTooltip.left+'px'}" role="tooltip">
+  <div v-if="toolTooltip.visible" class="tool-strip-tooltip" :class="'pos-'+(toolTooltip.pos||'right')" :style="{top:toolTooltip.top+'px',left:toolTooltip.left+'px'}" role="tooltip">
     <span class="tooltip-arrow"></span>
     <span class="tooltip-text">{{toolTooltip.label}}</span>
     <kbd v-if="toolTooltip.shortcut" class="tooltip-shortcut">{{toolTooltip.shortcut}}</kbd>
   </div>
 </Teleport>
 <div class="workarea">
-<div v-if="tabsMode" class="tabs-ribbon ribbon" role="region" aria-label="Tabs ribbon"><label>Default stop (spaces)<input type="number" min="1" max="16" v-model.number="settings.tabSize" @change="scheduleSave"/></label><button @click="tabsMode=false">Done</button><span>Tab inserts a tab character. Explicit aligned tab stops remain unsupported.</span></div>
+<div v-if="tabsMode" class="tabs-ribbon ribbon" role="region" aria-label="Tabs ribbon"><label data-tooltip="Default tab stop spacing">Default stop (spaces)<input type="number" min="1" max="16" v-model.number="settings.tabSize" @change="scheduleSave"/></label><button data-tooltip="Done editing tabs" @click="tabsMode=false">Done</button><span>Tab inserts a tab character. Explicit aligned tab stops remain unsupported.</span></div>
 <div v-if="settings.rulers" class="horizontal-ruler" aria-label="Horizontal ruler" title="Drag onto the page to add a horizontal guide" @pointerdown="rulerDown($event,'horizontal')"><span v-for="n in 50" :style="{left:((n-1)*75.59 + (Number(preferences.doc.rulerOriginAcross)||0)*3.7795)*zoom/100+'px'}">{{340-(n-1)*20}}</span></div>
 <div class="canvas-row"><div v-if="settings.rulers" class="vertical-ruler" aria-label="Vertical ruler" title="Drag onto the page to add a vertical guide" @pointerdown="rulerDown($event,'vertical')"><span v-for="n in 50" :style="{top:((n-1)*75.59 + (Number(preferences.doc.rulerOriginDown)||0)*3.7795)*zoom/100+'px'}">{{(n-1)*20}}</span></div>
 <div ref="scroller" class="scroll" :class="{drawing:!['edit','select'].includes(tool)}"><div class="page-spread" :class="{facing:settings.facing}" :style="{paddingLeft:(preferences.doc.pasteboardAcross||15)+'%',paddingRight:(preferences.doc.pasteboardAcross||15)+'%',paddingBottom:(preferences.doc.pasteboardDown||25)+'mm'}">
@@ -643,7 +686,7 @@ onBeforeUnmount(()=>{clearTimeout(timer);window.removeEventListener('keydown',sh
 <div v-if="settings.facing&&pages.length>1&&!isMasterPage" class="facing-preview" :style="{width:pageWidth+'mm',minHeight:pageHeight+'mm',padding:settings.margin+'mm',zoom:zoom/100}" @click="changePage((pageIndex+1)%pages.length)"><small>Page {{(pageIndex+1)%pages.length+1}} — click to edit</small><div :dir="format.direction" :style="{fontFamily:format.font,fontSize:format.size+'pt',whiteSpace:'pre-wrap'}">{{jsonText(pages[(pageIndex+1)%pages.length].content)}}</div></div>
 </div></div></div></div></main>
 <div v-if="documents.length>1" class="document-tabs"><button v-for="d in documents" :class="{active:d.id===activeDocument}" @click="switchDocument(d.id)">{{d.title}}</button></div>
-<div class="pagebar"><button class="master-toggle-btn" :class="{active:isMasterPage}" @click="toggleMasterPage" title="Master page editor (Alt+Enter / Ctrl+M)">M</button><button aria-label="Previous page" :disabled="isMasterPage ? (!settings.facing || masterSide === 'left') : pageIndex === 0" @click="isMasterPage ? switchMasterSide('left') : changePage(pageIndex-1)">&lt;</button><span class="page-indicator">{{ isMasterPage ? (settings.facing ? (masterSide === 'left' ? 'L' : 'R') : 'M') : (pageIndex+1)+'/'+pages.length }}</span><button aria-label="Next page" :disabled="isMasterPage ? (!settings.facing || masterSide === 'right') : pageIndex === pages.length-1" @click="isMasterPage ? switchMasterSide('right') : changePage(pageIndex+1)">&gt;</button><input aria-label="Zoom" :value="zoom+'%'" @change="zoom=Math.max(25,Math.min(300,parseFloat($event.target.value)||100))"/><button title="Fit in window" @click="fit">◀</button></div>
+<div class="pagebar"><button class="master-toggle-btn" :class="{active:isMasterPage}" @click="toggleMasterPage" data-tooltip="Master page editor" data-shortcut="Alt+Enter">M</button><button aria-label="Previous page" data-tooltip="Previous page" data-shortcut="Page Up" :disabled="isMasterPage ? (!settings.facing || masterSide === 'left') : pageIndex === 0" @click="isMasterPage ? switchMasterSide('left') : changePage(pageIndex-1)">&lt;</button><span class="page-indicator" data-tooltip="Current page / Total pages">{{ isMasterPage ? (settings.facing ? (masterSide === 'left' ? 'L' : 'R') : 'M') : (pageIndex+1)+'/'+pages.length }}</span><button aria-label="Next page" data-tooltip="Next page" data-shortcut="Page Down" :disabled="isMasterPage ? (!settings.facing || masterSide === 'right') : pageIndex === pages.length-1" @click="isMasterPage ? switchMasterSide('right') : changePage(pageIndex+1)">&gt;</button><input aria-label="Zoom" data-tooltip="Zoom percentage" :value="zoom+'%'" @change="zoom=Math.max(25,Math.min(300,parseFloat($event.target.value)||100))"/><button data-tooltip="Fit in window" data-shortcut="Ctrl+F5" @click="fit">◀</button></div>
 <footer><span role="status">{{message}}</span><span class="status">{{wordCount}} words · {{selected.length?selected.length+' selected · ':''}}{{format.language}} · {{dirty?'Unsaved':'Local draft'}}</span></footer>
 <input hidden ref="file" type="file" accept=".ipdoc,.txt,.inp" @change="open"/><input hidden ref="imageFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif" @change="readPicture"/>
 <NewDocumentDialog v-if="dialog==='new'" @create="createNewDocument" @close="dialog=''" @help="openDialog('help')"/>

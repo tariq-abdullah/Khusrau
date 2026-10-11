@@ -31,8 +31,19 @@ main{flex:1;display:flex;min-height:0;overflow:hidden}aside{width:31px;backgroun
 .submenu-flyout button{width:100%;display:flex;align-items:center;text-align:left;border:0;background:transparent;height:24px;white-space:nowrap;padding:3px 8px;font-size:11px}
 .submenu-flyout button:hover:enabled{background:#dce8f5}
 .greeked-text{color:transparent!important;text-shadow:0 0 4px rgba(128,128,128,0.8)!important;user-select:none}
-.tool-strip-tooltip{position:fixed;z-index:9000;pointer-events:none;transform:translateY(-50%);display:flex;align-items:center;background:#182030;color:#f8fafc;font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Tahoma,sans-serif;padding:4px 8px;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);white-space:nowrap;line-height:1.2;animation:tooltip-pop .12s cubic-bezier(0.16,1,0.3,1)}
-.tool-strip-tooltip .tooltip-arrow{position:absolute;left:-4px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:4px solid #182030}
+.tool-strip-tooltip{position:fixed;z-index:9000;pointer-events:none;display:flex;align-items:center;background:#182030;color:#f8fafc;font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Tahoma,sans-serif;padding:4px 8px;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);white-space:nowrap;line-height:1.2}
+.tool-strip-tooltip.pos-right,
+.tool-strip-tooltip:not(.pos-bottom):not(.pos-top){transform:translateY(-50%);animation:tooltip-pop-right .12s cubic-bezier(0.16,1,0.3,1)}
+.tool-strip-tooltip.pos-bottom{transform:translateX(-50%);animation:tooltip-pop-bottom .12s cubic-bezier(0.16,1,0.3,1)}
+.tool-strip-tooltip.pos-top{transform:translate(-50%,-100%);animation:tooltip-pop-top .12s cubic-bezier(0.16,1,0.3,1)}
+.tool-strip-tooltip .tooltip-arrow{position:absolute;width:0;height:0}
+.tool-strip-tooltip.pos-right .tooltip-arrow,
+.tool-strip-tooltip:not(.pos-bottom):not(.pos-top) .tooltip-arrow{left:-4px;top:50%;transform:translateY(-50%);border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:4px solid #182030;border-left:none}
+.tool-strip-tooltip.pos-bottom .tooltip-arrow{top:-4px;left:50%;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:4px solid #182030;border-top:none}
+.tool-strip-tooltip.pos-top .tooltip-arrow{bottom:-4px;left:50%;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:4px solid #182030;border-bottom:none}
 .tool-strip-tooltip .tooltip-text{font-weight:500}
 .tool-strip-tooltip .tooltip-shortcut{margin-left:7px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.22);border-radius:3px;padding:1px 4px;font-size:9.5px;font-family:inherit;color:#93c5fd}
 @keyframes tooltip-pop{from{opacity:0;transform:translateY(-50%) translateX(-4px)}to{opacity:1;transform:translateY(-50%) translateX(0)}}
+@keyframes tooltip-pop-right{from{opacity:0;transform:translateY(-50%) translateX(-4px)}to{opacity:1;transform:translateY(-50%) translateX(0)}}
+@keyframes tooltip-pop-bottom{from{opacity:0;transform:translateX(-50%) translateY(-3px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes tooltip-pop-top{from{opacity:0;transform:translate(-50%,-100%) translateY(3px)}to{opacity:1;transform:translate(-50%,-100%) translateY(0)}}
