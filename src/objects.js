@@ -6,3 +6,27 @@ export function validateObjects(objects){if(!Array.isArray(objects)||objects.len
 export function kashidaText(text,count){const joining='بتثجحخسشصضطظعغفقکلمنهھیپچگ';const nextJoining=joining+'اآدذرزڑژوؤے';return text.replace(/ـ/g,'').split(/(\s+)/).map(word=>{if(!count||/\s/.test(word))return word;for(let i=word.length-2;i>=0;i--){if(joining.includes(word[i])&&nextJoining.includes(word[i+1])&&!(word[i]==='ل'&&'اآأإ'.includes(word[i+1])))return word.slice(0,i+1)+'ـ'.repeat(count)+word.slice(i+1)}return word}).join('')}
 
 export function removeRecords(records,ids){const removed=new Set(ids),result=records.filter(o=>!removed.has(o.id)).map(o=>({...o}));for(const root of records.filter(o=>o.type==='text'&&!records.some(a=>a.next===o.id))){const chain=[],seen=new Set();let current=root;while(current&&!seen.has(current.id)){seen.add(current.id);chain.push(current);current=records.find(o=>o.id===current.next)}const survivors=chain.filter(o=>!removed.has(o.id));if(survivors.length&&removed.has(root.id)){const first=result.find(o=>o.id===survivors[0].id);first.text=root.text||'';for(const o of survivors.slice(1))result.find(a=>a.id===o.id).text=''}}for(const o of result){let next=o.next;const seen=new Set();while(next&&removed.has(next)&&!seen.has(next)){seen.add(next);next=records.find(a=>a.id===next)?.next}o.next=next||null}return result}
+
+export function distToBoxBorder(p,box){
+  const cx=box.x+box.w/2,cy=box.y+box.h/2;
+  let px=p.x,py=p.y;
+  if(box.rotation){
+    const rad=(-box.rotation*Math.PI)/180,cos=Math.cos(rad),sin=Math.sin(rad),dx=px-cx,dy=py-cy;
+    px=cx+(dx*cos-dy*sin);py=cy+(dx*sin+dy*cos);
+  }
+  const left=box.x,right=box.x+box.w,top=box.y,bottom=box.y+box.h;
+  const dTop=Math.hypot(px-Math.max(left,Math.min(right,px)),py-top);
+  const dBot=Math.hypot(px-Math.max(left,Math.min(right,px)),py-bottom);
+  const dLeft=Math.hypot(px-left,py-Math.max(top,Math.min(bottom,py)));
+  const dRight=Math.hypot(px-right,py-Math.max(top,Math.min(bottom,py)));
+  return Math.min(dTop,dBot,dLeft,dRight);
+}
+
+export function findNearestTextBox(p,textBoxes){
+  let nearest=null,minDistance=Infinity;
+  for(const tb of textBoxes){
+    const d=distToBoxBorder(p,tb);
+    if(d<minDistance){minDistance=d;nearest=tb;}
+  }
+  return {nearest,distance:minDistance};
+}
