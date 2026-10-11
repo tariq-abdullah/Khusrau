@@ -9,5 +9,5 @@ export const menus={
  Insert:[['Date & Time…','date'],['Page…','insertPage','Alt+Ins / Alt+P'],['Page Number…','pageNumber'],['Picture…','picture'],['Table…','table'],['Split Table','splitTable'],null,['Index Entry…','indexEntry','Ctrl+Alt+I'],['Object Lock…','lock'],['Footnote…','footnote']],
  Utilities:[['Spelling…','spelling','Ctrl+L'],['Word Count','words'],null,['Group','group','Ctrl+Alt+G'],['Ungroup','ungroup','Ctrl+Alt+U'],['Auto Index…','autoIndex'],['Generate Index','generateIndex'],['Table of Contents','toc','Ctrl+Alt+O'],['Symbols…','symbols','Ctrl+.']],
  Window:[['Cascade','cascade'],['Tile','tile'],['Next Document','nextDocument','Ctrl+F6 / Alt+F6'],['Document list…','documents','Ctrl+F12']],
- Help:[['Help Topics…','help','F1'],['Short Cuts…','shortcuts'],['Using help…','help'],['Keyboard Layout…','keyboard'],['About inpage.net…','about']]
+ Help:[['Help Topics…','help','F1'],['Short Cuts…','shortcuts'],['Using help…','help'],['Keyboard Layout…','keyboard'],['About Khusrau…','about']]
 }
