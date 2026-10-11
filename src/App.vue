@@ -313,7 +313,8 @@ function checkPageOverflow(){
   suspend=false
 
   const nextIdx=pageIndex.value+1
-  if(nextIdx<pages.value.length){
+  const nodesPerPage=Math.max(8,Math.floor((maxH-10)/45))
+  if(nextIdx<pages.value.length && overflowingNodes.length <= nodesPerPage){
     const nextPage=pages.value[nextIdx]
     const existing=(nextPage.content?.content||[]).filter(n=>{
       if(n.type==='paragraph'&&(!n.content||n.content.length===0))return false
@@ -324,14 +325,33 @@ function checkPageOverflow(){
       content:[...overflowingNodes,...existing]
     }
   }else{
-    const newPage={
-      id:uid(),
-      content:{
+    const chunks = []
+    for(let pos=0;pos<overflowingNodes.length;pos+=nodesPerPage){
+      chunks.push(overflowingNodes.slice(pos,pos+nodesPerPage))
+    }
+    if(nextIdx<pages.value.length){
+      const nextPage=pages.value[nextIdx]
+      const existing=(nextPage.content?.content||[]).filter(n=>{
+        if(n.type==='paragraph'&&(!n.content||n.content.length===0))return false
+        return true
+      })
+      nextPage.content={
         type:'doc',
-        content:overflowingNodes
+        content:[...chunks[0],...existing]
+      }
+      const newPages = chunks.slice(1).map(c=>({ id: uid(), content: { type: 'doc', content: c } }))
+      pages.value.splice(nextIdx + 1, 0, ...newPages)
+    }else{
+      for(const chunk of chunks){
+        pages.value.push({
+          id:uid(),
+          content:{
+            type:'doc',
+            content:chunk
+          }
+        })
       }
     }
-    pages.value.push(newPage)
   }
 
   revision.value++
@@ -401,10 +421,10 @@ function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
 function scheduleSave(){saveEpoch++;dirty.value=true;clearTimeout(timer);timer=setTimeout(autosave,450)}
 function snapshot(){if(editor.value&&!suspend)pages.value[pageIndex.value].content=editor.value.getJSON();return {format:'inpage-net',version:1,title:title.value,direction:format.direction,font:baseStyle.font,size:baseStyle.size,paper:settings.paper,margin:settings.margin,content:pages.value[0].content,currentPage:pageIndex.value,pages:JSON.parse(JSON.stringify(pages.value)),objects:JSON.parse(JSON.stringify(objects.value)),customStyles:JSON.parse(JSON.stringify(customStyles.value)),rulerGuides:JSON.parse(JSON.stringify(rulerGuides.value)),preferences:JSON.parse(JSON.stringify(preferences)),baseStyle:{...baseStyle},textFormat:{...format},settings:{...settings},colors:JSON.parse(JSON.stringify(colors.value)),nativeSource:nativeSource.value,importReport:importReport.value,indexTerms:JSON.parse(JSON.stringify(indexTerms.value)),footnotes:JSON.parse(JSON.stringify(footnotes.value))}}
 function autosave(){try{const stamp=saveEpoch,d=snapshot();const tab=documents.value.find(d=>d.id===activeDocument.value);if(tab){tab.title=title.value;tab.data=d}const value=JSON.parse(JSON.stringify({documents:documents.value,active:activeDocument.value,draft:d}));storeWorkspace(value).then(()=>{if(stamp===saveEpoch)dirty.value=false;if(!exporting.value&&dialog.value!=='error')message.value='Saved on this device'},()=>{message.value='Device storage unavailable. Save a document file.'})}catch{message.value='Save a document file to preserve your work.'}nextTick(updateFlow)}
-function apply(d){suspend=true;nativeSource.value=d.nativeSource||null;importReport.value=d.importReport||null;title.value=d.title||'Untitled';Object.assign(baseStyle,{font:d.font,size:d.size,color:'#000000'},d.baseStyle||{});Object.assign(format,defaultsFormat,{direction:d.direction,font:d.font,size:d.size},d.textFormat||{});Object.assign(settings,defaultsSettings,{paper:d.paper,margin:d.margin,paperWidth:d.paperWidth,paperHeight:d.paperHeight,marginTop:d.marginTop,marginBottom:d.marginBottom,marginLeft:d.marginLeft,marginRight:d.marginRight,autoTextBox:d.settings?.autoTextBox!==false},d.settings||{});if(d.preferences){for(const k in d.preferences){if(preferences[k])Object.assign(preferences[k],d.preferences[k])}}pages.value=d.pages?.length?d.pages:[{id:uid(),content:d.content}];pages.value=pages.value.map(p=>({...p,content:editor.value.schema.nodeFromJSON(p.content).toJSON()}));objects.value=d.objects?validateObjects(d.objects):[];customStyles.value=Array.isArray(d.customStyles)?d.customStyles:[];rulerGuides.value=validGuides(d.rulerGuides,pages.value);guidePreview.value=null;drag=null;colors.value=d.colors?.length?d.colors:colors.value;indexTerms.value=d.indexTerms||[];footnotes.value=d.footnotes||[];pageIndex.value=Math.max(0,Math.min(pages.value.length-1,d.currentPage||0));selected.value=[];editor.value.commands.setContent(pages.value[pageIndex.value].content);suspend=false;revision.value++;objectHistory.value=[];objectFuture.value=[];nextTick(updateFlow)}
+function apply(d){suspend=true;nativeSource.value=d.nativeSource||null;importReport.value=d.importReport||null;title.value=d.title||'Untitled';Object.assign(baseStyle,{font:d.font,size:d.size,color:'#000000'},d.baseStyle||{});Object.assign(format,defaultsFormat,{direction:d.direction,font:d.font,size:d.size},d.textFormat||{});Object.assign(settings,defaultsSettings,{paper:d.paper,margin:d.margin,paperWidth:d.paperWidth,paperHeight:d.paperHeight,marginTop:d.marginTop,marginBottom:d.marginBottom,marginLeft:d.marginLeft,marginRight:d.marginRight,autoTextBox:d.settings?.autoTextBox!==false},d.settings||{});if(d.preferences){for(const k in d.preferences){if(preferences[k])Object.assign(preferences[k],d.preferences[k])}}pages.value=d.pages?.length>1?d.pages:(d.pages?.length===1&&(d.pages[0].content?.content?.length||0)>18)?paginateParagraphs(d.pages[0].content.content,settings):d.pages?.length===1?d.pages:(d.content?.content?.length||0)>15?paginateParagraphs(d.content.content,settings):[{id:uid(),content:d.content}];pages.value=pages.value.map(p=>({...p,content:editor.value.schema.nodeFromJSON(p.content).toJSON()}));objects.value=d.objects?validateObjects(d.objects):[];customStyles.value=Array.isArray(d.customStyles)?d.customStyles:[];rulerGuides.value=validGuides(d.rulerGuides,pages.value);guidePreview.value=null;drag=null;colors.value=d.colors?.length?d.colors:colors.value;indexTerms.value=d.indexTerms||[];footnotes.value=d.footnotes||[];pageIndex.value=Math.max(0,Math.min(pages.value.length-1,d.currentPage||0));selected.value=[];editor.value.commands.setContent(pages.value[pageIndex.value].content);suspend=false;revision.value++;objectHistory.value=[];objectFuture.value=[];nextTick(updateFlow)}
 function download(data,name,type){const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=name.replace(/[<>:"/\\|?*]/g,'_');a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function save(){download(JSON.stringify(snapshot(),null,2),title.value+'.ipdoc','application/json');autosave()}
-async function open(e){const f=e.target.files?.[0];if(!f)return;try{let d,sourceBytes,nativeParsed;if(/\.inp$/i.test(f.name)){sourceBytes=new Uint8Array(await f.arrayBuffer());nativeParsed=readNative(sourceBytes);d=nativeDocument(nativeParsed,f.name)}else if(/\.txt$/i.test(f.name)){const text=await f.text();const paginated=paginateParagraphs(text.split(/\r?\n/).map(t=>({text:t,isHeading:false})),{paper:'A4',paperWidth:210,paperHeight:297,margin:13,marginLeft:13,marginRight:13,marginTop:13,marginBottom:13});d={format:'inpage-net',version:1,title:f.name.replace(/\.txt$/i,''),direction:'rtl',font:'Jameel Noori Nastaleeq',size:12,paper:'A4',margin:13,pages:paginated,content:paginated[0].content}}else d=parseDocument(await f.text());if(importMode){const content=nativeParsed?nativeParsed.paragraphs.map(t=>({type:'paragraph',content:t?[{type:'text',text:t}]:[]})):d.content.content;editor.value.chain().focus().insertContent(content).run()}else{autosave();const id=uid();documents.value.push({id,title:d.title,data:d});activeDocument.value=id;apply(d);chooseTool('edit');await document.fonts.ready;updateFlow();nextTick(()=>editor.value?.commands.focus());if(sourceBytes){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',sourceBytes))).map(v=>v.toString(16).padStart(2,'0')).join('');await storeNative(hash,sourceBytes);const root=objects.value.find(o=>o.autoPaginate&&o.text);const rawStory=root?.text.replace(/\n/g,'\r'),position=rawStory?nativeParsed.text.indexOf(rawStory):-1;nativeSource.value={key:hash,name:f.name,version:nativeParsed.version,isOlderVersion:!!nativeParsed.isOlderVersion,baseline:documentFingerprint(snapshot()),storyId:position>=0?root.id:null,textRange:position>=0&&nativeParsed.range?{start:nativeParsed.range.start+position*2,end:nativeParsed.range.start+(position+rawStory.length)*2}:null}}if(nativeParsed?.isOlderVersion){const alertMsg='This file was created in an older version of this software and we have converted it for you. You can download it in older version by File -> Download for older InPage.';message.value=alertMsg;dialog.value='olderVersion'}}autosave()}catch(err){fail(err.message)}finally{e.target.value='';importMode=false}}
+async function open(e){const f=e.target.files?.[0];if(!f)return;try{let d,sourceBytes,nativeParsed;if(/\.inp$/i.test(f.name)){sourceBytes=new Uint8Array(await f.arrayBuffer());nativeParsed=readNative(sourceBytes);d=nativeDocument(nativeParsed,f.name)}else if(/\.txt$/i.test(f.name)){const text=await f.text();const paginated=paginateParagraphs(text.split(/\r?\n/).map(t=>({text:t,isHeading:false})),{paper:'A4',paperWidth:210,paperHeight:297,margin:13,marginLeft:13,marginRight:13,marginTop:13,marginBottom:13});d={format:'inpage-net',version:1,title:f.name.replace(/\.txt$/i,''),direction:'rtl',font:'Jameel Noori Nastaleeq',size:12,paper:'A4',margin:13,pages:paginated,content:paginated[0].content}}else d=parseDocument(await f.text());if(importMode){const paras=nativeParsed?nativeParsed.paragraphs.map(t=>({type:'paragraph',content:t?[{type:'text',text:t}]:[]})):(d.content?.content||[]);if(paras.length>20){const paginated=paginateParagraphs(paras,settings);editor.value.chain().focus().insertContent(paginated[0].content.content).run();for(let i=1;i<paginated.length;i++){pages.value.push(paginated[i])}revision.value++;scheduleSave()}else{editor.value.chain().focus().insertContent(paras).run()}}else{autosave();const id=uid();documents.value.push({id,title:d.title,data:d});activeDocument.value=id;apply(d);chooseTool('edit');await document.fonts.ready;updateFlow();nextTick(()=>editor.value?.commands.focus());if(sourceBytes){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',sourceBytes))).map(v=>v.toString(16).padStart(2,'0')).join('');await storeNative(hash,sourceBytes);const root=objects.value.find(o=>o.autoPaginate&&o.text);const rawStory=root?.text.replace(/\n/g,'\r'),position=rawStory?nativeParsed.text.indexOf(rawStory):-1;nativeSource.value={key:hash,name:f.name,version:nativeParsed.version,isOlderVersion:!!nativeParsed.isOlderVersion,baseline:documentFingerprint(snapshot()),storyId:position>=0?root.id:null,textRange:position>=0&&nativeParsed.range?{start:nativeParsed.range.start+position*2,end:nativeParsed.range.start+(position+rawStory.length)*2}:null}}if(nativeParsed?.isOlderVersion){const alertMsg='This file was created in an older version of this software and we have converted it for you. You can download it in older version by File -> Download for older InPage.';message.value=alertMsg;dialog.value='olderVersion'}}autosave()}catch(err){fail(err.message)}finally{e.target.value='';importMode=false}}
 let importMode=false
 function fail(text){errorMessage.value=text;message.value=text;dialog.value='error'}
 function changePage(index){if(index<0||index>=pages.value.length)return;pages.value[pageIndex.value].content=editor.value.getJSON();pageIndex.value=index;selected.value=[];suspend=true;editor.value.commands.setContent(pages.value[index].content);suspend=false;revision.value++;autosave();nextTick(updateFlow)}
@@ -603,7 +623,7 @@ if(tool.value!=='edit'){chooseTool('edit');e.preventDefault();return}
 if(document.activeElement&&document.activeElement!==document.body){document.activeElement.blur();e.preventDefault();return}
 }
 if(dialog.value){
-if(key==='Enter'&&!e.target.matches('textarea')){
+if(key==='Enter'&&!e.target?.matches?.('textarea')){
 if(['saveAs','duplicate','page','insertPage','deletePage','pageNumber','footnote','find'].includes(dialog.value)){e.preventDefault();applyDialog();return}
 }
 return
@@ -647,7 +667,7 @@ e.preventDefault();openDialog('print');return;
 if(ctrl&&lowerKey==='f'&&!alt){
 e.preventDefault();openDialog('find');return;
 }
-const isInput=e.target.matches('input,textarea,select');
+const isInput=!!e.target?.matches?.('input,textarea,select');
 if((ctrl&&lowerKey==='n'&&!alt)||(alt&&lowerKey==='n'&&!isInput)){
 e.preventDefault();action('new');return;
 }
@@ -756,6 +776,9 @@ scheduleSave();nextTick(updateFlow);return;
 }
 if((key==='Delete'||key==='Del'||(key==='Backspace'&&!isInput&&!e.target.closest('[data-frame-editor]'))&&selected.value.length)){
 e.preventDefault();removeObjects();return;
+}
+if(!isInput&&(key==='PageUp'||key==='PageDown')){
+e.preventDefault();if(isMasterPage.value){switchMasterSide(key==='PageUp'?'left':'right')}else{changePage(pageIndex.value+(key==='PageUp'?-1:1))}return;
 }
 }
 function installReady(e){e.preventDefault();installEvent.value=e}async function install(){await installEvent.value?.prompt();installEvent.value=null}

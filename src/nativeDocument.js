@@ -116,7 +116,7 @@ export function nativeDocument(native,name){
     const coverNodes = [
       {
         type: 'heading',
-        attrs: { level: 1, textAlign: 'center', spaceBefore: 155, spaceAfter: 3 },
+        attrs: { level: 1, textAlign: 'center', spaceBefore: 90, spaceAfter: 3 },
         content: [{ type: 'text', text: 'منشور', marks: [{ type: 'bold' }, { type: 'textStyle', attrs: { color: '#2e1b4e', fontSize: '26pt' } }] }]
       },
       {
@@ -141,7 +141,7 @@ export function nativeDocument(native,name){
       },
       {
         type: 'paragraph',
-        attrs: { textAlign: 'center', spaceBefore: 105, spaceAfter: 2 },
+        attrs: { textAlign: 'center', spaceBefore: 30, spaceAfter: 2 },
         content: [{ type: 'text', text: 'اردو میڈیا ایسوسی ایشن', marks: [{ type: 'bold' }, { type: 'textStyle', attrs: { color: '#111111', fontSize: '13pt' } }] }]
       },
       {
