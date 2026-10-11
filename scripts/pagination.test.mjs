@@ -78,3 +78,10 @@ test('App.vue and style.css enforce fixed page height to prevent infinite height
   assert.ok(appCode.includes('checkPageOverflow'), 'App.vue must implement checkPageOverflow')
   assert.ok(appCode.includes('schedulePageOverflowCheck'), 'App.vue must schedule page overflow check')
 })
+
+test('App.vue overflow check resets text-boundary scrollTop and uses un-scrolled layout metrics', () => {
+  const appCode = fs.readFileSync(path.resolve(__dirname, '../src/App.vue'), 'utf-8')
+  assert.ok(appCode.includes('@scroll="$event.target.scrollTop=0"'), 'text-boundary must prevent scrolling by keeping scrollTop at 0')
+  assert.ok(appCode.includes('childBottom=child.offsetTop+child.offsetHeight'), 'checkPageOverflow must use child offsetTop to detect vertical boundary')
+  assert.ok(appCode.includes('textBoundary.scrollTop=0'), 'checkPageOverflow must reset scrollTop')
+})

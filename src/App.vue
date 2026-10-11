@@ -229,6 +229,7 @@ let flowPending=false
 let timer,drag=null,suspend=false,measure=null,saveEpoch=0
 let overflowTimer = null
 let isUserTyping = false
+let isDocumentLoading = false
 function schedulePageOverflowCheck(){
   if(overflowTimer)clearTimeout(overflowTimer)
   overflowTimer=setTimeout(()=>{
@@ -236,7 +237,7 @@ function schedulePageOverflowCheck(){
   },100)
 }
 function checkPageOverflow(){
-  if(suspend||isMasterPage.value||!editor.value)return
+  if(suspend||isDocumentLoading||isMasterPage.value||!editor.value)return
   const paper=paperEl.value
   if(!paper)return
   const textBoundary=paper.querySelector('.text-boundary')
@@ -244,18 +245,26 @@ function checkPageOverflow(){
   if(!textBoundary||!editorDom)return
 
   const maxH=defaultGridObject.value.h
-  if(editorDom.scrollHeight<=maxH+4)return
+  if(editorDom.scrollHeight<=maxH+4 && textBoundary.scrollHeight<=maxH+4)return
 
   const children=Array.from(editorDom.children)
   if(!children.length)return
 
   const parentRect=textBoundary.getBoundingClientRect()
+  const zoomFactor=(zoom.value||100)/100
+  const sTop=textBoundary.scrollTop||0
+
   let overflowIdx=-1
   for(let i=0;i<children.length;i++){
     const child=children[i]
+    const childBottom=child.offsetTop+child.offsetHeight
+    if(childBottom>maxH+1){
+      overflowIdx=i
+      break
+    }
     const r=child.getBoundingClientRect()
-    const relBottom=r.bottom-parentRect.top
-    if(relBottom>maxH+2){
+    const relBottom=(r.bottom-parentRect.top)/zoomFactor+sTop
+    if(relBottom>maxH+1){
       overflowIdx=i
       break
     }
@@ -268,34 +277,36 @@ function checkPageOverflow(){
   if(overflowIdx>=currentNodes.length)return
 
   let stayingNodes,overflowingNodes
-  if(overflowIdx===0){
-    const node=currentNodes[0]
-    const text=node.content?.map(c=>c.text||'').join('')||''
-    if(text.length>60){
-      const approxRatio=Math.max(0.2,Math.min(0.85,maxH/(editorDom.scrollHeight||1)))
-      const targetChar=Math.floor(text.length*approxRatio)
-      const sub=text.slice(0,Math.min(text.length,targetChar+30))
-      const lastPunct=Math.max(sub.lastIndexOf('۔'),sub.lastIndexOf('.'),sub.lastIndexOf('\n'))
-      let splitAt=-1
-      if(lastPunct>20){
-        splitAt=lastPunct+1
-      }else{
-        const space=sub.lastIndexOf(' ')
-        splitAt=space>20?space+1:targetChar
-      }
-      const stayingText=text.slice(0,splitAt).trim()
-      const overflowingText=text.slice(splitAt).trim()
-      stayingNodes=[{...node,content:stayingText?[{type:'text',text:stayingText}]:[]}]
-      overflowingNodes=[
-        {...node,content:overflowingText?[{type:'text',text:overflowingText}]:[]},
-        ...currentNodes.slice(1)
-      ]
+  const child=children[overflowIdx]
+  const node=currentNodes[overflowIdx]
+  const text=node?.content?.map(c=>c.text||'').join('')||''
+  const childAvail=maxH-(child?.offsetTop||0)
+
+  if(text.length>60 && (childAvail>50 || overflowIdx===0)){
+    const approxRatio=Math.max(0.1,Math.min(0.9,Math.max(0,childAvail)/(child?.offsetHeight||1)))
+    const targetChar=Math.floor(text.length*approxRatio)
+    const sub=text.slice(0,Math.min(text.length,targetChar+30))
+    const lastPunct=Math.max(sub.lastIndexOf('۔'),sub.lastIndexOf('.'),sub.lastIndexOf('\n'))
+    let splitAt=-1
+    if(lastPunct>20){
+      splitAt=lastPunct+1
     }else{
-      return
+      const space=sub.lastIndexOf(' ')
+      splitAt=space>20?space+1:targetChar
     }
+    const stayingText=text.slice(0,splitAt).trim()
+    const overflowingText=text.slice(splitAt).trim()
+    stayingNodes=[
+      ...currentNodes.slice(0,overflowIdx),
+      {...node,content:stayingText?[{type:'text',text:stayingText}]:[]}
+    ]
+    overflowingNodes=[
+      {...node,content:overflowingText?[{type:'text',text:overflowingText}]:[]},
+      ...currentNodes.slice(overflowIdx+1)
+    ]
   }else{
-    stayingNodes=currentNodes.slice(0,overflowIdx)
-    overflowingNodes=currentNodes.slice(overflowIdx)
+    stayingNodes=currentNodes.slice(0,Math.max(1,overflowIdx))
+    overflowingNodes=currentNodes.slice(Math.max(1,overflowIdx))
   }
 
   if(!overflowingNodes.length)return
@@ -306,12 +317,14 @@ function checkPageOverflow(){
     const t=n.content?.map(c=>c.text||'').join('')||''
     stayingChars+=t.length+2
   }
-  const userWasAtOverflow=currentSel.from>=stayingChars
+  const userWasAtOverflow=currentSel.from>=stayingChars-4
 
   suspend=true
   editor.value.commands.setContent({type:'doc',content:stayingNodes})
   pages.value[pageIndex.value].content=editor.value.getJSON()
   suspend=false
+
+  textBoundary.scrollTop=0
 
   const nextIdx=pageIndex.value+1
   const nodesPerPage=Math.max(8,Math.floor((maxH-10)/45))
@@ -358,10 +371,12 @@ function checkPageOverflow(){
   revision.value++
   scheduleSave()
 
-  if(isUserTyping && userWasAtOverflow){
+  if(userWasAtOverflow || isUserTyping){
     changePage(nextIdx)
     nextTick(()=>{
       editor.value?.commands.focus('start')
+      const nextTb=paperEl.value?.querySelector('.text-boundary')
+      if(nextTb)nextTb.scrollTop=0
     })
   }
   isUserTyping = false
@@ -423,10 +438,10 @@ function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
 function scheduleSave(){saveEpoch++;dirty.value=true;clearTimeout(timer);timer=setTimeout(autosave,450)}
 function snapshot(){if(editor.value&&!suspend)pages.value[pageIndex.value].content=editor.value.getJSON();return {format:'inpage-net',version:1,title:title.value,direction:format.direction,font:baseStyle.font,size:baseStyle.size,paper:settings.paper,margin:settings.margin,content:pages.value[0].content,currentPage:pageIndex.value,pages:JSON.parse(JSON.stringify(pages.value)),objects:JSON.parse(JSON.stringify(objects.value)),customStyles:JSON.parse(JSON.stringify(customStyles.value)),rulerGuides:JSON.parse(JSON.stringify(rulerGuides.value)),preferences:JSON.parse(JSON.stringify(preferences)),baseStyle:{...baseStyle},textFormat:{...format},settings:{...settings},colors:JSON.parse(JSON.stringify(colors.value)),nativeSource:nativeSource.value,importReport:importReport.value,indexTerms:JSON.parse(JSON.stringify(indexTerms.value)),footnotes:JSON.parse(JSON.stringify(footnotes.value))}}
 function autosave(){try{const stamp=saveEpoch,d=snapshot();const tab=documents.value.find(d=>d.id===activeDocument.value);if(tab){tab.title=title.value;tab.data=d}const value=JSON.parse(JSON.stringify({documents:documents.value,active:activeDocument.value,draft:d}));storeWorkspace(value).then(()=>{if(stamp===saveEpoch)dirty.value=false;if(!exporting.value&&dialog.value!=='error')message.value='Saved on this device'},()=>{message.value='Device storage unavailable. Save a document file.'})}catch{message.value='Save a document file to preserve your work.'}nextTick(updateFlow)}
-function apply(d){suspend=true;isUserTyping=false;nativeSource.value=d.nativeSource||null;importReport.value=d.importReport||null;title.value=d.title||'Untitled';Object.assign(baseStyle,{font:d.font,size:d.size,color:'#000000'},d.baseStyle||{});Object.assign(format,defaultsFormat,{direction:d.direction,font:d.font,size:d.size},d.textFormat||{});Object.assign(settings,defaultsSettings,{paper:d.paper,margin:d.margin,paperWidth:d.paperWidth,paperHeight:d.paperHeight,marginTop:d.marginTop,marginBottom:d.marginBottom,marginLeft:d.marginLeft,marginRight:d.marginRight,autoTextBox:d.settings?.autoTextBox!==false},d.settings||{});if(d.preferences){for(const k in d.preferences){if(preferences[k])Object.assign(preferences[k],d.preferences[k])}}pages.value=d.pages?.length>1?d.pages:(d.pages?.length===1&&(d.pages[0].content?.content?.length||0)>18)?paginateParagraphs(d.pages[0].content.content,settings):d.pages?.length===1?d.pages:(d.content?.content?.length||0)>15?paginateParagraphs(d.content.content,settings):[{id:uid(),content:d.content}];pages.value=pages.value.map(p=>({...p,content:editor.value.schema.nodeFromJSON(p.content).toJSON()}));objects.value=d.objects?validateObjects(d.objects):[];customStyles.value=Array.isArray(d.customStyles)?d.customStyles:[];rulerGuides.value=validGuides(d.rulerGuides,pages.value);guidePreview.value=null;drag=null;colors.value=d.colors?.length?d.colors:colors.value;indexTerms.value=d.indexTerms||[];footnotes.value=d.footnotes||[];pageIndex.value=Math.max(0,Math.min(pages.value.length-1,d.currentPage||0));selected.value=[];editor.value.commands.setContent(pages.value[pageIndex.value].content);suspend=false;revision.value++;objectHistory.value=[];objectFuture.value=[];nextTick(updateFlow)}
+function apply(d){suspend=true;isDocumentLoading=true;isUserTyping=false;nativeSource.value=d.nativeSource||null;importReport.value=d.importReport||null;title.value=d.title||'Untitled';Object.assign(baseStyle,{font:d.font,size:d.size,color:'#000000'},d.baseStyle||{});Object.assign(format,defaultsFormat,{direction:d.direction,font:d.font,size:d.size},d.textFormat||{});Object.assign(settings,defaultsSettings,{paper:d.paper,margin:d.margin,paperWidth:d.paperWidth,paperHeight:d.paperHeight,marginTop:d.marginTop,marginBottom:d.marginBottom,marginLeft:d.marginLeft,marginRight:d.marginRight,autoTextBox:d.settings?.autoTextBox!==false},d.settings||{});if(d.preferences){for(const k in d.preferences){if(preferences[k])Object.assign(preferences[k],d.preferences[k])}}pages.value=d.pages?.length>1?d.pages:(d.pages?.length===1&&(d.pages[0].content?.content?.length||0)>18)?paginateParagraphs(d.pages[0].content.content,settings):d.pages?.length===1?d.pages:(d.content?.content?.length||0)>15?paginateParagraphs(d.content.content,settings):[{id:uid(),content:d.content}];pages.value=pages.value.map(p=>({...p,content:editor.value.schema.nodeFromJSON(p.content).toJSON()}));objects.value=d.objects?validateObjects(d.objects):[];customStyles.value=Array.isArray(d.customStyles)?d.customStyles:[];rulerGuides.value=validGuides(d.rulerGuides,pages.value);guidePreview.value=null;drag=null;colors.value=d.colors?.length?d.colors:colors.value;indexTerms.value=d.indexTerms||[];footnotes.value=d.footnotes||[];pageIndex.value=Math.max(0,Math.min(pages.value.length-1,d.currentPage||0));selected.value=[];editor.value.commands.setContent(pages.value[pageIndex.value].content);suspend=false;revision.value++;objectHistory.value=[];objectFuture.value=[];nextTick(()=>{updateFlow();nextTick(()=>{isDocumentLoading=false})})}
 function download(data,name,type){const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=name.replace(/[<>:"/\\|?*]/g,'_');a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function save(){download(JSON.stringify(snapshot(),null,2),title.value+'.ipdoc','application/json');autosave()}
-async function open(e){const f=e.target.files?.[0];if(!f)return;try{let d,sourceBytes,nativeParsed;if(/\.inp$/i.test(f.name)){sourceBytes=new Uint8Array(await f.arrayBuffer());nativeParsed=readNative(sourceBytes);d=nativeDocument(nativeParsed,f.name)}else if(/\.txt$/i.test(f.name)){const text=await f.text();const paginated=paginateParagraphs(text.split(/\r?\n/).map(t=>({text:t,isHeading:false})),{paper:'A4',paperWidth:210,paperHeight:297,margin:13,marginLeft:13,marginRight:13,marginTop:13,marginBottom:13});d={format:'inpage-net',version:1,title:f.name.replace(/\.txt$/i,''),direction:'rtl',font:'Jameel Noori Nastaleeq',size:12,paper:'A4',margin:13,pages:paginated,content:paginated[0].content}}else d=parseDocument(await f.text());if(importMode){const paras=nativeParsed?nativeParsed.paragraphs.map(t=>({type:'paragraph',content:t?[{type:'text',text:t}]:[]})):(d.content?.content||[]);if(paras.length>20){const paginated=paginateParagraphs(paras,settings);editor.value.chain().focus().insertContent(paginated[0].content.content).run();for(let i=1;i<paginated.length;i++){pages.value.push(paginated[i])}revision.value++;scheduleSave()}else{editor.value.chain().focus().insertContent(paras).run()}}else{autosave();const id=uid();documents.value.push({id,title:d.title,data:d});activeDocument.value=id;apply(d);chooseTool('edit');await document.fonts.ready;updateFlow();nextTick(()=>editor.value?.commands.focus('start'));if(sourceBytes){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',sourceBytes))).map(v=>v.toString(16).padStart(2,'0')).join('');await storeNative(hash,sourceBytes);const root=objects.value.find(o=>o.autoPaginate&&o.text);const rawStory=root?.text.replace(/\n/g,'\r'),position=rawStory?nativeParsed.text.indexOf(rawStory):-1;nativeSource.value={key:hash,name:f.name,version:nativeParsed.version,isOlderVersion:!!nativeParsed.isOlderVersion,baseline:documentFingerprint(snapshot()),storyId:position>=0?root.id:null,textRange:position>=0&&nativeParsed.range?{start:nativeParsed.range.start+position*2,end:nativeParsed.range.start+(position+rawStory.length)*2}:null}}if(nativeParsed?.isOlderVersion){const alertMsg='This file was created in an older version of this software and we have converted it for you. You can download it in older version by File -> Download for older InPage.';message.value=alertMsg;dialog.value='olderVersion'}else if(dialog.value==='olderVersion'){dialog.value=''}}autosave()}catch(err){fail(err.message)}finally{e.target.value='';importMode=false}}
+async function open(e){const f=e.target.files?.[0];if(!f)return;try{isDocumentLoading=true;let d,sourceBytes,nativeParsed;if(/\.inp$/i.test(f.name)){sourceBytes=new Uint8Array(await f.arrayBuffer());nativeParsed=readNative(sourceBytes);d=nativeDocument(nativeParsed,f.name)}else if(/\.txt$/i.test(f.name)){const text=await f.text();const paginated=paginateParagraphs(text.split(/\r?\n/).map(t=>({text:t,isHeading:false})),{paper:'A4',paperWidth:210,paperHeight:297,margin:13,marginLeft:13,marginRight:13,marginTop:13,marginBottom:13});d={format:'inpage-net',version:1,title:f.name.replace(/\.txt$/i,''),direction:'rtl',font:'Jameel Noori Nastaleeq',size:12,paper:'A4',margin:13,pages:paginated,content:paginated[0].content}}else d=parseDocument(await f.text());if(importMode){const paras=nativeParsed?nativeParsed.paragraphs.map(t=>({type:'paragraph',content:t?[{type:'text',text:t}]:[]})):(d.content?.content||[]);if(paras.length>20){const paginated=paginateParagraphs(paras,settings);editor.value.chain().focus().insertContent(paginated[0].content.content).run();for(let i=1;i<paginated.length;i++){pages.value.push(paginated[i])}revision.value++;scheduleSave()}else{editor.value.chain().focus().insertContent(paras).run()}}else{autosave();const id=uid();documents.value.push({id,title:d.title,data:d});activeDocument.value=id;apply(d);chooseTool('edit');await document.fonts.ready;updateFlow();nextTick(()=>editor.value?.commands.focus('start'));if(sourceBytes){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',sourceBytes))).map(v=>v.toString(16).padStart(2,'0')).join('');await storeNative(hash,sourceBytes);const root=objects.value.find(o=>o.autoPaginate&&o.text);const rawStory=root?.text.replace(/\n/g,'\r'),position=rawStory?nativeParsed.text.indexOf(rawStory):-1;nativeSource.value={key:hash,name:f.name,version:nativeParsed.version,isOlderVersion:!!nativeParsed.isOlderVersion,baseline:documentFingerprint(snapshot()),storyId:position>=0?root.id:null,textRange:position>=0&&nativeParsed.range?{start:nativeParsed.range.start+position*2,end:nativeParsed.range.start+(position+rawStory.length)*2}:null}}if(nativeParsed?.isOlderVersion){const alertMsg='This file was created in an older version of this software and we have converted it for you. You can download it in older version by File -> Download for older InPage.';message.value=alertMsg;dialog.value='olderVersion'}else if(dialog.value==='olderVersion'){dialog.value=''}}autosave()}catch(err){fail(err.message)}finally{e.target.value='';importMode=false;nextTick(()=>{isDocumentLoading=false})}}
 let importMode=false
 function fail(text){errorMessage.value=text;message.value=text;dialog.value='error'}
 function changePage(index){if(index<0||index>=pages.value.length)return;pages.value[pageIndex.value].content=editor.value.getJSON();pageIndex.value=index;selected.value=[];suspend=true;editor.value.commands.setContent(pages.value[index].content);suspend=false;revision.value++;autosave();nextTick(updateFlow)}
@@ -821,7 +836,7 @@ onBeforeUnmount(()=>{clearTimeout(timer);window.removeEventListener('keydown',sh
     <button v-for="h in ['nw','n','ne','w','e','sw','s','se']" :key="h" class="resize-handle" :class="'handle-'+h" :aria-label="'Resize '+h" @pointerdown.stop="resizeDown($event,defaultGridObject,h)"></button>
   </template>
 </div>
-<div class="text-boundary" :class="{'multi-column':(settings.columns||1)>1}" :style="{height:defaultGridObject.h+'px',maxHeight:defaultGridObject.h+'px',boxSizing:'border-box',overflow:'hidden',border:settings.borderWidth?settings.borderWidth+'pt solid '+settings.borderColor:undefined,backgroundColor:settings.fill!=='none'?settings.fill:undefined}" @pointerdown="tool==='edit'&&nextTick(()=>editor?.commands.focus())">
+<div class="text-boundary" :class="{'multi-column':(settings.columns||1)>1}" :style="{height:defaultGridObject.h+'px',maxHeight:defaultGridObject.h+'px',boxSizing:'border-box',overflow:'hidden',border:settings.borderWidth?settings.borderWidth+'pt solid '+settings.borderColor:undefined,backgroundColor:settings.fill!=='none'?settings.fill:undefined}" @scroll="$event.target.scrollTop=0" @pointerdown="tool==='edit'&&nextTick(()=>editor?.commands.focus())">
 <EditorContent v-if="editor&&settings.autoTextBox!==false&&!isMasterPage" :editor="editor" :dir="format.direction" :style="{height:'100%',fontFamily:baseStyle.font,fontSize:baseStyle.size+'pt',color:baseStyle.color,'--editor-columns':settings.columns||1,'--editor-gap':(settings.gap||4.233)+'mm',tabSize:settings.tabSize,whiteSpace:settings.wrap?'pre-wrap':'pre',hyphens:settings.hyphenation?'auto':'none'}"/>
 </div>
 <svg class="link-layer" v-if="['link','unlink'].includes(tool)" width="100%" height="100%"><template v-for="o in pageObjects.filter(o=>o.next)"><line v-if="objects.find(a=>a.id===o.next)" :x1="o.x+o.w" :y1="o.y+o.h" :x2="objects.find(a=>a.id===o.next).x" :y2="objects.find(a=>a.id===o.next).y" stroke="#1468bb" stroke-width="1.5" stroke-dasharray="4 3"/></template></svg>
