@@ -66,13 +66,15 @@ export function nativeDocument(native,name){
  const columns = layout.columns || 1
  const gap = layout.gap ?? 4.233
 
+ const defaultFont = native.font || 'Noori Nastaliq'
  const d={
   format:'inpage-net',
   version:1,
   title,
   direction:'rtl',
-  font:'Jameel Noori Nastaleeq',
+  font:defaultFont,
   size:12,
+  baseStyle:{font:defaultFont,size:12,color:'#000000'},
   paper,
   paperWidth,
   paperHeight,
@@ -108,9 +110,8 @@ export function nativeDocument(native,name){
 
  if(!about){
   const paras = native.formattedParagraphs?.length ? native.formattedParagraphs : (native.paragraphs || []).map(t => ({ text: t }))
-  const isCover = paras.length > 25 &&
-    paras.slice(0, 24).some(p => p.text?.includes('منشور')) &&
-    paras[24]?.text?.includes('بسم اللہ')
+  const bismillahIdx = paras.findIndex(p => p.text?.includes('بسم اللہ'))
+  const isCover = bismillahIdx > 3 && paras.slice(0, bismillahIdx).some(p => p.text?.includes('منشور'))
 
   if (isCover) {
     const coverNodes = [
@@ -156,7 +157,7 @@ export function nativeDocument(native,name){
       }
     ]
 
-    const storyParas = paras.slice(24)
+    const storyParas = paras.slice(bismillahIdx >= 0 ? bismillahIdx : 24)
     const storyPages = paginateParagraphs(storyParas, layout, [], { targetPages: 17, startPageNum: 2 })
     d.pages = [
       { id: 'page-1', content: { type: 'doc', content: coverNodes } },
@@ -319,12 +320,21 @@ export function nativeDocument(native,name){
       })
     }
     d.objects = picList
+    d.font = defaultFont
     d.size = 14
-    d.baseStyle = { font: 'Jameel Noori Nastaleeq', size: 14, color: '#000000' }
+    d.baseStyle = { font: defaultFont, size: 14, color: '#000000' }
     return d
   }
 
-  const inputParas = native.formattedParagraphs?.length ? native.formattedParagraphs : native.paragraphs
+  let inputParas = native.formattedParagraphs?.length ? native.formattedParagraphs : native.paragraphs
+  if (Array.isArray(inputParas)) {
+    let trimmed = [...inputParas]
+    while (trimmed.length && !(typeof trimmed[0] === 'string' ? trimmed[0].trim() : trimmed[0]?.text?.trim())) trimmed.shift()
+    while (trimmed.length && !(typeof trimmed[trimmed.length - 1] === 'string' ? trimmed[trimmed.length - 1].trim() : trimmed[trimmed.length - 1]?.text?.trim())) trimmed.pop()
+    inputParas = trimmed
+  }
+  d.font = defaultFont
+  d.baseStyle = { font: defaultFont, size: d.size || 12, color: '#000000' }
   d.pages = paginateParagraphs(inputParas, layout, native.pictureObjects)
   d.content = content
   if (native.pictureObjects?.length) {

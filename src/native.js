@@ -193,101 +193,147 @@ export function parseV3StreamMeta(s, cfbDoc, paragraphs) {
   }
  }
 
- const nonBlank = paragraphs.filter(p => p && p.trim())
- let lineIdx = 0
- if (nonBlank.length > 0) {
-  const firstLen = nonBlank[0].length * 2
-  const found = lines.findIndex(l => l.lineLen === firstLen)
-  if (found >= 0) lineIdx = found
- }
- let currentLine = lineIdx
- const formattedParagraphs = paragraphs.map((p, pIdx) => {
-  if (!p || !p.trim()) return { text: '', align: 'right', isHeading: false, level: 1, bold: false, fontSize: 12 }
-  const pBytes = p.length * 2
-  const pLines = []
-  let accum = 0
-  while (currentLine < lines.length && accum < pBytes) {
-   const l = lines[currentLine++]
-   pLines.push(l)
-   accum += l.lineLen
+  // 2.5 Font Detection
+  let detectedUrduFont = 'Noori Nastaliq'
+  for (let i = 0; i < Math.min(s.length - 20, 50000); i += 2) {
+    if (s[i] >= 65 && s[i] <= 90 && s[i+1] === 0) {
+      let str = '', j = i
+      while (j + 1 < s.length && s[j] >= 32 && s[j] <= 126 && s[j+1] === 0) {
+        str += String.fromCharCode(s[j])
+        j += 2
+      }
+      if (str.length >= 3 && j + 1 < s.length && s[j] === 0 && s[j+1] === 0) {
+        if (/nastaliq|nastaleeq|naskh|bombay|faiz|batool|pakistan|alvi|kasheeda|noori/i.test(str)) {
+          detectedUrduFont = str.includes('Faiz') ? 'Faiz Lahori Nastaleeq' : str
+          break
+        }
+      }
+    }
   }
-  let align = 'right'
-  if (pLines.length && pLines.every(l => l.alignCode === 2)) {
-   align = 'center'
-  } else if (pLines.some(l => l.alignCode === 3 || l.alignCode === 1)) {
-   align = 'justify'
-  } else if (pLines.some(l => l.alignCode === 2)) {
-   align = 'center'
-  } else if (p.length > 100) {
-   align = 'justify'
+  if (detectedUrduFont === 'Noori Nastaliq') {
+    for (let i = 0; i < Math.min(s.length - 20, 50000); i++) {
+      if (s[i] >= 65 && s[i] <= 90) {
+        let str = '', j = i
+        while (j < s.length && s[j] >= 32 && s[j] <= 126) {
+          str += String.fromCharCode(s[j])
+          j++
+        }
+        if (s[j] === 0 && str.length >= 3) {
+          if (/nastaliq|nastaleeq|naskh|bombay|faiz|batool|pakistan|alvi|kasheeda|noori/i.test(str)) {
+            detectedUrduFont = str.includes('Faiz') ? 'Faiz Lahori Nastaleeq' : str
+            break
+          }
+        }
+      }
+    }
   }
 
-  let isHeading = false, level = 1, bold = false, fontSize = 12
-  if (align === 'center') {
-   if (pIdx === 0 || p.length < 35) {
-    isHeading = true; level = 1; bold = true; fontSize = 24
-   } else if (p.length < 90) {
-    isHeading = true; level = 2; bold = true; fontSize = 16
-   } else {
-    fontSize = 14
+  // Trim leading/trailing blank paragraphs so pIdx === 0 corresponds to actual first title/heading
+  let startIdx = 0
+  while (startIdx < paragraphs.length && (!paragraphs[startIdx] || !paragraphs[startIdx].trim())) {
+    startIdx++
+  }
+  let endIdx = paragraphs.length
+  while (endIdx > startIdx && (!paragraphs[endIdx - 1] || !paragraphs[endIdx - 1].trim())) {
+    endIdx--
+  }
+  const effectiveParagraphs = (startIdx > 0 || endIdx < paragraphs.length) ? paragraphs.slice(startIdx, endIdx) : paragraphs
+
+  const nonBlank = effectiveParagraphs.filter(p => p && p.trim())
+  let lineIdx = 0
+  if (nonBlank.length > 0) {
+   const firstLen = nonBlank[0].length * 2
+   const found = lines.findIndex(l => l.lineLen === firstLen)
+   if (found >= 0) lineIdx = found
+  }
+  let currentLine = lineIdx
+  const formattedParagraphs = effectiveParagraphs.map((p, pIdx) => {
+   if (!p || !p.trim()) return { text: '', align: 'right', isHeading: false, level: 1, bold: false, fontSize: 12 }
+   const pBytes = p.length * 2
+   const pLines = []
+   let accum = 0
+   while (currentLine < lines.length && accum < pBytes) {
+    const l = lines[currentLine++]
+    pLines.push(l)
+    accum += l.lineLen
    }
-  } else if (p.length < 80 && /^(باب|فصل|دفعہ|دستور|منشور|مادہ|قاعدہ|عنوان|ضمیمہ)/.test(p.trim())) {
-   isHeading = true; level = 2; bold = true; fontSize = 14
-  }
-  return { text: p, align, isHeading, level, bold, fontSize, linesCount: pLines.length }
- })
+   let align = 'right'
+   if (pLines.length && pLines.every(l => l.alignCode === 2)) {
+    align = 'center'
+   } else if (pLines.some(l => l.alignCode === 3 || l.alignCode === 1)) {
+    align = 'justify'
+   } else if (pLines.some(l => l.alignCode === 2)) {
+    align = 'center'
+   } else if (p.length > 100) {
+    align = 'justify'
+   }
 
- // 3. Embedded picture references with geometric coordinates
- const picStreams = new Map()
- if (cfbDoc?.FileIndex) {
-  for (const entry of cfbDoc.FileIndex) {
-   if (entry.content && entry.content[0] === 255 && entry.content[1] === 216) {
-    const b = new Uint8Array(entry.content)
-    picStreams.set(entry.name, b)
-    if (entry.name.startsWith('*')) picStreams.set(entry.name.slice(1), b)
-    else picStreams.set('*' + entry.name, b)
+   let isHeading = false, level = 1, bold = false, fontSize = 12
+   if (align === 'center') {
+    if (pIdx === 0 || p.length < 35) {
+     isHeading = true; level = 1; bold = true; fontSize = 24
+    } else if (p.length < 90) {
+     isHeading = true; level = 2; bold = true; fontSize = 16
+    } else {
+     fontSize = 14
+    }
+   } else if (p.length < 80 && /^(باب|فصل|دفعہ|دستور|منشور|مادہ|قاعدہ|عنوان|ضمیمہ)/.test(p.trim())) {
+    isHeading = true; level = 2; bold = true; fontSize = 14
+   }
+   return { text: p, align, isHeading, level, bold, fontSize, linesCount: pLines.length }
+  })
+
+  // 3. Embedded picture references with geometric coordinates
+  const picStreams = new Map()
+  if (cfbDoc?.FileIndex) {
+   for (const entry of cfbDoc.FileIndex) {
+    if (entry.content && entry.content[0] === 255 && entry.content[1] === 216) {
+     const b = new Uint8Array(entry.content)
+     picStreams.set(entry.name, b)
+     if (entry.name.startsWith('*')) picStreams.set(entry.name.slice(1), b)
+     else picStreams.set('*' + entry.name, b)
+    }
    }
   }
- }
 
- const pictureObjects = []
- const seenPics = new Set()
- let pSearchIdx = 0
- while (pSearchIdx < s.length - 12) {
-  const pFound = indexOfUtf16(s, 'PPicts', pSearchIdx)
-  if (pFound === -1) break
-  const winStart = Math.max(0, pFound - 200)
-  let x = 12.7, y = 12.7, w = 50, h = 50, page = 1
-  for (let i = winStart; i < pFound - 6; i++) {
-   if (s[i] === 0x00 && s[i+1] === 0x7e) x = view.getUint32(i + 2, true) / UNITS_PER_MM
-   if (s[i] === 0x01 && s[i+1] === 0x7e) y = view.getUint32(i + 2, true) / UNITS_PER_MM
-   if (s[i] === 0x02 && s[i+1] === 0x7e) w = view.getUint32(i + 2, true) / UNITS_PER_MM
-   if (s[i] === 0x03 && s[i+1] === 0x7e) h = view.getUint32(i + 2, true) / UNITS_PER_MM
-   if (s[i] === 0x10 && s[i+1] === 0x7e) page = view.getUint16(i + 2, true)
+  const pictureObjects = []
+  const seenPics = new Set()
+  let pSearchIdx = 0
+  while (pSearchIdx < s.length - 12) {
+   const pFound = indexOfUtf16(s, 'PPicts', pSearchIdx)
+   if (pFound === -1) break
+   const winStart = Math.max(0, pFound - 200)
+   let x = 12.7, y = 12.7, w = 50, h = 50, page = 1
+   for (let i = winStart; i < pFound - 6; i++) {
+    if (s[i] === 0x00 && s[i+1] === 0x7e) x = view.getUint32(i + 2, true) / UNITS_PER_MM
+    if (s[i] === 0x01 && s[i+1] === 0x7e) y = view.getUint32(i + 2, true) / UNITS_PER_MM
+    if (s[i] === 0x02 && s[i+1] === 0x7e) w = view.getUint32(i + 2, true) / UNITS_PER_MM
+    if (s[i] === 0x03 && s[i+1] === 0x7e) h = view.getUint32(i + 2, true) / UNITS_PER_MM
+    if (s[i] === 0x10 && s[i+1] === 0x7e) page = view.getUint16(i + 2, true)
+   }
+   let nameStart = pFound
+   if (pFound >= 2 && s[pFound - 2] === 42 && s[pFound - 1] === 0) nameStart = pFound - 2
+   let nameEnd = nameStart
+   while (nameEnd + 1 < s.length && !(s[nameEnd] === 0 && s[nameEnd + 1] === 0)) nameEnd += 2
+   const picName = new TextDecoder('utf-16le').decode(s.subarray(nameStart, nameEnd))
+   const picBytes = picStreams.get(picName)
+   if (picBytes && !seenPics.has(picName)) {
+    seenPics.add(picName)
+    pictureObjects.push({
+     name: picName,
+     bytes: picBytes,
+     x: Math.round(x * 10) / 10,
+     y: Math.round(y * 10) / 10,
+     w: Math.round(w * 10) / 10,
+     h: Math.round(h * 10) / 10,
+     page: page === 0 ? 0 : Math.max(1, page)
+    })
+   }
+   pSearchIdx = pFound + 12
   }
-  let nameStart = pFound
-  if (pFound >= 2 && s[pFound - 2] === 42 && s[pFound - 1] === 0) nameStart = pFound - 2
-  let nameEnd = nameStart
-  while (nameEnd + 1 < s.length && !(s[nameEnd] === 0 && s[nameEnd + 1] === 0)) nameEnd += 2
-  const picName = new TextDecoder('utf-16le').decode(s.subarray(nameStart, nameEnd))
-  const picBytes = picStreams.get(picName)
-  if (picBytes && !seenPics.has(picName)) {
-   seenPics.add(picName)
-   pictureObjects.push({
-    name: picName,
-    bytes: picBytes,
-    x: Math.round(x * 10) / 10,
-    y: Math.round(y * 10) / 10,
-    w: Math.round(w * 10) / 10,
-    h: Math.round(h * 10) / 10,
-    page: page === 0 ? 0 : Math.max(1, page)
-   })
-  }
-  pSearchIdx = pFound + 12
- }
 
- return { layout, formattedParagraphs, pictureObjects }
-}
+  return { layout, font: detectedUrduFont, formattedParagraphs, pictureObjects }
+ }
 
 export function readNative(bytes){
  if(bytes.length>50*1024*1024)throw Error('Native files must be smaller than 50 MB.')
@@ -302,6 +348,7 @@ export function readNative(bytes){
   const meta = parseV3StreamMeta(v3Stream, cfb, recovered.paragraphs)
   story = {
    ...recovered,
+   font: meta.font || 'Noori Nastaliq',
    formattedParagraphs: meta.formattedParagraphs,
    layout: meta.layout,
    pictureObjects: meta.pictureObjects,
@@ -312,6 +359,7 @@ export function readNative(bytes){
   const parsed=parseOlderInPageStream(new Uint8Array(oldStream.content))
   story={
    paragraphs:parsed.paragraphs.map(p=>p.text),
+   font: parsed.font || 'Noori Nastaliq',
    formattedParagraphs:parsed.paragraphs,
    layout:parsed.layout,
    text:parsed.text,

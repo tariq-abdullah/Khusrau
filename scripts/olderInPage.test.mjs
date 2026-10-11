@@ -89,6 +89,25 @@ test('opens old-inpage.inp, detects legacy format, and extracts clean paragraphs
 
   assert.equal(nodes[4].type, 'paragraph')
   assert.equal(nodes[4].attrs.textAlign, 'justify')
+
+  // Font preservation: Noori Nastaliq should be preserved, not overwritten with Jameel Noori Nastaleeq
+  assert.equal(parsed.font, 'Noori Nastaliq', 'parsed font should be Noori Nastaliq')
+  assert.equal(doc.font, 'Noori Nastaliq', 'doc.font should preserve Noori Nastaliq')
+  assert.equal(doc.baseStyle.font, 'Noori Nastaliq', 'doc.baseStyle.font should preserve Noori Nastaliq')
+})
+
+test('preserves font and correctly parses InPage 3 file UMA-Vision Doc P.inp without leading blank lines', () => {
+  const v3Path = path.resolve(__dirname, '../research/oldversionfilesinpage/UMA-Vision Doc P.inp')
+  if (!fs.existsSync(v3Path)) return
+  const bytes = new Uint8Array(fs.readFileSync(v3Path))
+  const parsed = readNative(bytes)
+  assert.equal(parsed.version, 3, 'Must be InPage 3')
+  assert.equal(parsed.font, 'Noori Nastaliq', 'parsed font must be Noori Nastaliq')
+  const doc = nativeDocument(parsed, 'UMA-Vision Doc P.inp')
+  assert.equal(doc.font, 'Noori Nastaliq', 'doc.font must be Noori Nastaliq')
+  assert.equal(doc.baseStyle.font, 'Noori Nastaliq', 'doc.baseStyle.font must be Noori Nastaliq')
+  assert.ok(doc.pages.length > 1, 'Document should have multiple pages')
+  assert.equal(doc.pages[0].content.content[0].content[0].text, 'منشور', 'Page 1 must start cleanly with منشور without leading empty lines')
 })
 
 test('correctly extracts custom margins from other legacy files (TASLIM.inp)', () => {

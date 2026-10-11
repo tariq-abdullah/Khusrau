@@ -169,6 +169,24 @@ export function parseOlderInPageStream(stream) {
     }
   })
 
+  // Font Detection
+  let detectedUrduFont = 'Noori Nastaliq'
+  for (let i = 500; i < Math.min(data.length - 20, 20000); i++) {
+    if (data[i] >= 65 && data[i] <= 90) {
+      let s = '', j = i
+      while (j < data.length && data[j] >= 32 && data[j] <= 126) {
+        s += String.fromCharCode(data[j])
+        j++
+      }
+      if (data[j] === 0 && s.length >= 3) {
+        if (/nastaliq|nastaleeq|naskh|bombay|faiz|batool|pakistan|alvi|kasheeda|noori/i.test(s)) {
+          detectedUrduFont = s.includes('Faiz') ? 'Faiz Lahori Nastaleeq' : s
+          break
+        }
+      }
+    }
+  }
+
   return {
     layout: {
       width,
@@ -181,6 +199,7 @@ export function parseOlderInPageStream(stream) {
       columns: 1,
       gap: 4.233
     },
+    font: detectedUrduFont,
     paragraphs: formattedParagraphs,
     text: formattedParagraphs.map(p => p.text).join('\n')
   }

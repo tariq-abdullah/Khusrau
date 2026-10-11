@@ -35,6 +35,7 @@ if (Array.isArray(urduCatalog)) {
 
 // Default bundled fonts
 FONT_FILE_MAP.set('jameel noori nastaleeq', 'Jameel Noori Nastaleeq.ttf')
+FONT_FILE_MAP.set('noori nastaliq', 'Jameel Noori Nastaleeq.ttf')
 FONT_FILE_MAP.set('faiz lahori nastaleeq', 'Faiz Lahori Nastaleeq.ttf')
 FONT_FILE_MAP.set('noto nastaliq urdu', 'NotoNastaliqUrdu.ttf')
 

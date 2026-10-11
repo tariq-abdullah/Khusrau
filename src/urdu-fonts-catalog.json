@@ -40,6 +40,23 @@
     ]
   },
   {
+    "family": "Noori Nastaliq",
+    "displayName": "Noori Nastaliq",
+    "isDefault": false,
+    "hasSubmenu": false,
+    "defaultVariant": "Regular",
+    "defaultFile": "Jameel Noori Nastaleeq.ttf",
+    "primaryFontFamily": "Noori Nastaliq",
+    "variants": [
+      {
+        "name": "Regular",
+        "fontFamily": "Noori Nastaliq",
+        "fullName": "Noori Nastaliq",
+        "file": "Jameel Noori Nastaleeq.ttf"
+      }
+    ]
+  },
+  {
     "family": "Noto Nastaliq Urdu",
     "displayName": "Noto Nastaliq Urdu",
     "isDefault": false,
