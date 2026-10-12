@@ -4,14 +4,17 @@ export function storySegments(text,offset=0,runs=[]){
  return text.split('\n').map((part,i,array)=>{
   const start=cursor;cursor+=part.length+(i<array.length-1?1:0)
   const run=runs.find(r=>start>=r.from&&start<r.to)
+  const paragraphRun=runs.find(r=>r.align&&start>=r.from&&start<r.to)
+  const align=['left','right','center','justify'].includes(run?.align)?run.align:paragraphRun?.align||null
   const segment={text:part,color:run?.color||null}
+  if(align)segment.align=align
   const style={}
   if(run?.font)style.fontFamily=run.font
   if(Number.isFinite(run?.fontSize)&&run.fontSize>0)style.fontSize=run.fontSize+'pt'
   if(Number.isFinite(run?.leading)&&run.leading>0)style.lineHeight=run.leading+'pt'
   if(typeof run?.bold==='boolean')style.fontWeight=run.bold?'bold':'normal'
   if(typeof run?.italic==='boolean')style.fontStyle=run.italic?'italic':'normal'
-  if(['left','right','center','justify'].includes(run?.align))style.textAlign=run.align
+  if(align)style.textAlign=align
   if(Object.keys(style).length)segment.style=style
   const spans=runs.filter(r=>r.from<cursor&&r.to>start)
   if(spans.length>1&&spans.some(r=>r.fontSize||r.font||r.bold||r.italic)){
@@ -41,4 +44,13 @@ export function rebaseRuns(runs,oldText,newText,offset){
  while(suffix<Math.min(oldText.length,newText.length)-prefix&&oldText.at(-1-suffix)===newText.at(-1-suffix))suffix++
  const start=offset+prefix,end=offset+oldText.length-suffix,delta=newText.length-oldText.length
  return runs.map(r=>({...r,from:r.from>=end?r.from+delta:r.from>start?start:r.from,to:r.to>=end?r.to+delta:r.to>start?start+newText.length-prefix-suffix:r.to})).filter(r=>r.to>r.from)
+}
+export function setParagraphRunAlignment(runs,from,to,align){
+ const next=(runs||[]).map(run=>{
+  if(!run.align||run.to<=from||run.from>=to)return {...run}
+  const {align:ignored,...rest}=run
+  return Object.keys(rest).length?rest:null
+ }).filter(Boolean)
+ next.push({from,to,align})
+ return next
 }

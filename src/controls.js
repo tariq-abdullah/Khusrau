@@ -8,6 +8,6 @@ export const menus={
  Format:[['Character…','character','Ctrl+H'],['Paragraph…','paragraph','Ctrl+G'],['Hyphenation…','hyphenation'],['Borders…','borders'],['Tabs…','tabs','Ctrl+Alt+T'],['Text Wrap','wrap'],['Sort Text…','sort'],null,['Table Format…','tableFormat'],['Table Layout…','tableLayout'],null,['Object…','object'],['Runaround…','runaround'],['Inset…','inset'],['Master Page Objects…','master'],['Document…','page','Alt+F12'],['Guides…','guideSettings'],['Style Sheets…','styles','Ctrl+T / Alt+T'],['Define Colors…','colors']],
  Insert:[['Date & Time…','date'],['Page…','insertPage','Alt+Ins / Alt+P'],['Page Number…','pageNumber'],['Picture…','picture'],['Table…','table'],['Split Table','splitTable'],null,['Index Entry…','indexEntry','Ctrl+Alt+I'],['Object Lock…','lock'],['Footnote…','footnote']],
  Utilities:[['Spelling…','spelling','Ctrl+L'],['Word Count','words'],null,['Group','group','Ctrl+Alt+G'],['Ungroup','ungroup','Ctrl+Alt+U'],['Auto Index…','autoIndex'],['Generate Index','generateIndex'],['Table of Contents','toc','Ctrl+Alt+O'],['Symbols…','symbols','Ctrl+.']],
- Window:[['Cascade','cascade'],['Tile','tile'],['Next Document','nextDocument','Ctrl+F6 / Alt+F6'],['Document list…','documents','Ctrl+F12']],
+ Window:[['Cascade','cascade'],['Tile','tile'],['Next Document','nextDocument','Ctrl+F6 / Alt+F6'],['Document list…','documents','Ctrl+F12'],['Close all Windows','closeAll']],
  Help:[['Help Topics…','help','F1'],['Short Cuts…','shortcuts'],['Using help…','help'],['Keyboard Layout…','keyboard'],['About Khusrau…','about']]
 }

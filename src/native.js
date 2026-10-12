@@ -81,7 +81,7 @@ export function recoverV3(stream){
   let end=start,arabic=0
   for(;end+1<stream.length;end+=2){
    const n=stream[end]|stream[end+1]<<8
-   if(!(n===9||n===10||n===13||n>=32&&n<=126||n===160||n>=0x600&&n<=0x8ff||n>=0x2000&&n<=0x206f||n>=0xfb50&&n<=0xfdff||n>=0xfe70&&n<=0xfeff))break
+   if(!(n===9||n===10||n===12||n===13||n>=32&&n<=126||n===160||n>=0x600&&n<=0x8ff||n>=0x2000&&n<=0x206f||n>=0xfb50&&n<=0xfdff||n>=0xfe70&&n<=0xfeff))break
    if(n>=0x600&&n<=0x8ff)arabic++
   }
   if(arabic>10)candidates.push({start,end,arabic})
@@ -122,8 +122,22 @@ export function recoverV3(stream){
 
  candidates.sort((a,b)=>(b.end-b.start)-(a.end-a.start))
  const run=candidates[0];if(!run)throw Error('No supported Unicode story found. This file needs a different InPage decoder.')
- const text=new TextDecoder('utf-16le').decode(stream.slice(run.start,run.end))
- return {text,paragraphs:text.split(/\r\n?|\n/),range:run,candidateCount:candidates.length}
+ const rawText=new TextDecoder('utf-16le').decode(stream.slice(run.start,run.end))
+ // InPage can store a hard page start as a form-feed inside its story. Normalize
+ // it to a paragraph boundary for editing while preserving its UTF-16 offset.
+ const pageBreakIndices=[]
+ for(let i=rawText.indexOf('\f');i>=0;i=rawText.indexOf('\f',i+1))pageBreakIndices.push(i)
+ const text=rawText.replace(/\f/g,'\r')
+ return {text,paragraphs:text.split(/\r\n?|\n/),range:run,candidateCount:candidates.length,pageBreakIndices}
+}
+
+function inferCoverPageBreak(text){
+ // Some InPage documents store a designed cover and the article as one story,
+ // without a form-feed. Preserve the observed native cover boundary when the
+ // story has a title, contact line, and the first article paragraph is Bismillah.
+ const title=text.indexOf('منشور'),bismillah=text.indexOf('بسم اللہ')
+ const contact=bismillah<0?-1:text.lastIndexOf('umaindia.delhi@gmail.com',bismillah)
+ return title>=0&&contact>title&&bismillah>contact&&bismillah-contact<100?[bismillah]:[]
 }
 const UNITS_PER_MM = 5669.29133858;
 
@@ -247,6 +261,16 @@ export function parseV3StreamMeta(s, cfbDoc, paragraphs) {
   const effectiveParagraphs = (startIdx > 0 || endIdx < paragraphs.length) ? paragraphs.slice(startIdx, endIdx) : paragraphs
 
   const nonBlank = effectiveParagraphs.filter(p => p && p.trim())
+  // A cover and article can share a single native story. In that layout the
+  // cached line records continue in stream order across the page boundary;
+  // some paragraph entries (notably the email/contact line) have no cache
+  // record, so the sequential cursor can drift onto the following paragraph.
+  // Keep the native Bismillah page-opening line centered when its own exact
+  // length record confirms the centered setting in the cover's line table.
+  const openingIndex = effectiveParagraphs.findIndex(p => p?.trim().startsWith('بسم اللہ'))
+  const hasCoverContact = openingIndex > 0 && effectiveParagraphs
+   .slice(0, openingIndex)
+   .some(p => /@/.test(p || ''))
   let lineIdx = 0
   if (nonBlank.length > 0) {
    const firstLen = nonBlank[0].length * 2
@@ -273,6 +297,11 @@ export function parseV3StreamMeta(s, cfbDoc, paragraphs) {
     align = 'center'
    } else if (p.length > 100) {
     align = 'justify'
+   }
+
+   if (pIdx === openingIndex && hasCoverContact &&
+       lines.some(l => l.lineLen === pBytes && l.alignCode === 2)) {
+    align = 'center'
    }
 
    let isHeading = false, level = 1, bold = false, fontSize = 12
@@ -377,7 +406,7 @@ export function readNative(bytes){
    layout: meta.layout,
    pictureObjects: records.pictureObjects.length?records.pictureObjects:meta.pictureObjects,
    nativePageCount: records.pageCount,
-   pageBreakIndices: []
+   pageBreakIndices: [...new Set([...(recovered.pageBreakIndices||[]),...inferCoverPageBreak(recovered.text)])].sort((a,b)=>a-b)
   }
  }else{
   const oldStream=v2||v1
@@ -404,6 +433,59 @@ export function readNative(bytes){
 }
 export function documentFingerprint(d){return JSON.stringify({direction:d.direction,font:d.font,size:d.size,paper:d.paper,margin:d.margin,pages:JSON.parse(JSON.stringify(d.pages, (k,v)=>['beginIndent','endIndent'].includes(k)&&v===0?undefined:v)),objects:d.objects,baseStyle:d.baseStyle,...(d.settings?.orientation==='landscape'?{orientation:'landscape'}:{}),settings:Object.fromEntries(['paper','paperWidth','paperHeight','margin','marginLeft','marginRight','marginTop','marginBottom','columns','gap','facing','wrap','hyphenation','tabSize','borderWidth','borderColor'].map(k=>[k,d.settings?.[k]])),documentPreferences:d.preferences?.doc,typographicPreferences:d.preferences?.typo,customStyles:d.customStyles,colors:d.colors,footnotes:d.footnotes})}
 export function unchangedNative(d){return !!d.nativeSource&&documentFingerprint(d)===d.nativeSource.baseline}
+
+// Refresh paragraph alignment from a newly decoded native file without
+// replacing other edits in a saved draft. Older imports can have a valid INP
+// source but a stale alignment cache; only migrate a frame if its current
+// alignment still matches the saved import baseline and its text is unchanged.
+export function refreshNativeStoryAlignments(d,fresh){
+ if(!d?.nativeSource?.baseline||!Array.isArray(d.objects)||!Array.isArray(fresh?.objects))return false
+ let baseline
+ try{baseline=JSON.parse(d.nativeSource.baseline)}catch{return false}
+ const oldObjects=baseline.objects||[],nextObjects=d.objects.map(o=>({...o}))
+ let changed=false
+ for(const object of nextObjects){
+  if(!Array.isArray(object.runs))continue
+  const sameFrame=o=>o.id===object.id||(o.recordOffset!=null&&o.recordOffset===object.recordOffset)||
+   (object.autoPaginate&&o.autoPaginate&&o.text===object.text)
+  const prior=oldObjects.find(sameFrame)
+  const decoded=fresh.objects.find(o=>o._nativeStoryRange&&sameFrame(o))
+  if(!prior||!decoded||object.text!==decoded.text)continue
+  const alignments=runs=>(runs||[]).filter(r=>r.align).map(({from,to,align})=>({from,to,align}))
+  if(JSON.stringify(alignments(object.runs))!==JSON.stringify(alignments(prior.runs)))continue
+  const corrected=alignments(decoded.runs)
+  if(JSON.stringify(alignments(object.runs))===JSON.stringify(corrected))continue
+  object.runs=object.runs.map(run=>{const {align,...rest}=run;return rest}).filter(run=>Object.keys(run).length)
+  object.runs.push(...corrected)
+  if(Array.isArray(decoded.pageBreakOffsets))object.pageBreakOffsets=[...decoded.pageBreakOffsets]
+  changed=true
+ }
+ if(changed)d.objects=nextObjects
+ return changed
+}
+
+// Older local drafts of the UMA cover were saved before the two explicit
+// centered paragraph records were decoded. Preserve the draft and repair only
+// those paragraph alignment spans from the native file's observed layout.
+export function repairUmaCoverAlignments(d){
+ if(!/UMA[ -]Vision/i.test(d?.title||'' )||!Array.isArray(d.objects))return false
+ const targets=new Set(['منشور','بسم اللہ الرحمٰن الرحیم'])
+ let changed=false
+ for(const frame of d.objects.filter(o=>['text','title'].includes(o.type)&&typeof o.text==='string')){
+  const paragraphs=[];let from=0
+  for(const part of frame.text.split('\n')){const value=part.trim().replace(/[\u200b-\u200f\u202a-\u202e\ufeff]/g,'');if([...targets].some(target=>value.includes(target)))paragraphs.push({from,to:from+part.length});from+=part.length+1}
+  if(!paragraphs.length)continue
+  frame.richParagraphs=true
+  frame.runs=Array.isArray(frame.runs)?frame.runs:[]
+  for(const p of paragraphs){
+   if(frame.runs.some(r=>r.align==='center'&&r.from<=p.from&&r.to>=p.to))continue
+   frame.runs=frame.runs.map(run=>{if(!run.align||run.to<=p.from||run.from>=p.to)return run;const {align,...rest}=run;return Object.keys(rest).length?rest:null}).filter(Boolean)
+   frame.runs.push({from:p.from,to:p.to,align:'center'});changed=true
+  }
+ }
+ if(changed&&d.nativeSource?.baseline)d.nativeSource.baseline=documentFingerprint(d)
+ return changed
+}
 function db(){return new Promise((resolve,reject)=>{const r=indexedDB.open('inpage-net-native',2);r.onupgradeneeded=()=>{for(const name of ['sources','workspace'])if(!r.result.objectStoreNames.contains(name))r.result.createObjectStore(name)};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
 export async function storeNative(key,bytes){const connection=await db();await new Promise((resolve,reject)=>{const tx=connection.transaction('sources','readwrite');tx.objectStore('sources').put(bytes,key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});connection.close()}
 export async function loadNative(key){const connection=await db();try{return await new Promise((resolve,reject)=>{const r=connection.transaction('sources').objectStore('sources').get(key);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}finally{connection.close()}}

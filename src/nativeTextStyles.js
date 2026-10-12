@@ -3,6 +3,7 @@
 export function readV3TextStyles(bytes,range){
  if(!range)return []
  const v=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength),runs=[]
+ const fontNames=readV3FontNames(bytes)
  // InPage includes the story's initial paragraph sentinel in the format counts.
  let offset=range.end,position=-1
  while(offset+22<=bytes.length){
@@ -12,7 +13,11 @@ export function readV3TextStyles(bytes,range){
   const style={fontSize:12,bold:false},end=offset+8+length
   for(let p=offset+20;p+2<=end;){
    const tag=v.getUint16(p,true)
-   if([0x7f00,0x7f8a].includes(tag)&&p+6<=end){
+   if(tag===0x0202&&p+4<=end){
+    style.fontId=v.getUint16(p+2,true)
+    if(fontNames.has(style.fontId))style.font=fontNames.get(style.fontId)
+    p+=4
+   }else if([0x7f00,0x7f8a].includes(tag)&&p+6<=end){
     const value=v.getUint32(p+2,true)/2000
     if(value>=1&&value<=300)style[tag===0x7f00?'fontSize':'leading']=value
     p+=6
@@ -27,6 +32,26 @@ export function readV3TextStyles(bytes,range){
  }
  // Reject accidental matches unless the spans account for the complete story.
  return position===(range.end-range.start)/2?runs:[]
+}
+
+// V3 stores font names in fixed 86-byte slots beginning with the document's
+// default font. Character runs refer to those slots through tag 0x0202.
+function readV3FontNames(bytes){
+ const find=(name)=>{for(let i=0;i+name.length*2<=bytes.length;i++){let ok=true;for(let j=0;j<name.length;j++)if(bytes[i+j*2]!==name.charCodeAt(j)||bytes[i+j*2+1]!==0){ok=false;break}if(ok)return i}return -1}
+ const first=find('Noori Nastaliq'),names=new Map()
+ if(first<0)return names
+ for(let id=0;id<256;id++){
+  const start=first+id*86
+  if(start+86>bytes.length)break
+  let name='',begun=false
+  for(let p=start;p+1<start+86;p+=2){const c=bytes[p]|bytes[p+1]<<8
+   if(c>=32&&c<=126){name+=String.fromCharCode(c);begun=true}
+   else if(c===0){if(begun)break}
+   else if(begun)break
+  }
+  if(name)names.set(id,name.trim())
+ }
+ return names
 }
 
 export function styledNativeParagraph(text,start,runs,attrs={},palette=[]){

@@ -1,10 +1,10 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
-import {readNative,documentFingerprint,unchangedNative} from '../src/native.js'
+import {readNative,recoverV3,documentFingerprint,unchangedNative,refreshNativeStoryAlignments,repairUmaCoverAlignments} from '../src/native.js'
 import {nativeDocument} from '../src/nativeDocument.js'
 import {splitInlineContent} from '../src/richSplit.js'
-import {storySegments} from '../src/frameStory.js'
+import {storySegments,setParagraphRunAlignment} from '../src/frameStory.js'
 import {readV3TextStyles} from '../src/nativeTextStyles.js'
 import {readV3Palette} from '../src/nativePalette.js'
 import {createNativeColumnFrames} from '../src/nativeColumnFrames.js'
@@ -52,6 +52,27 @@ test('UMA saved character-format table covers its story and supplies cover size 
  assert.equal(d.baseStyle.size,12)
  assert.ok(d.objects.some(o=>o.type==='text'&&o.text.includes('منشور')))
  assert.equal(d.pages.length,16)
+ const body=d.objects.find(o=>o._nativeStoryRange)
+ const bismillah=n.text.indexOf('بسم اللہ')
+ const bismillahParagraph=n.formattedParagraphs.find(p=>p.text.startsWith('بسم اللہ'))
+ assert.equal(bismillahParagraph.align,'center','the native line cache marks the Bismillah opening centered')
+ assert.deepEqual(n.pageBreakIndices,[bismillah],'the native cover ends before the Bismillah article opening')
+ assert.deepEqual(body.pageBreakOffsets,[bismillah-body._nativeStoryRange.from],'linked story flow must keep Bismillah on the next native page')
+ const titleOffset=body.text.indexOf('منشور'),ruleOffset=body.text.indexOf('دستور')
+ assert.equal(body.runs.find(r=>r.from<=titleOffset&&r.to>titleOffset)?.font,'Aadil')
+ assert.equal(body.runs.find(r=>r.from<=ruleOffset&&r.to>ruleOffset)?.font,'Aadil')
+ assert.equal(body.runs.find(r=>r.align&&r.from<=titleOffset&&r.to>titleOffset)?.align,'center')
+ assert.equal(body.runs.find(r=>r.align&&r.from<=ruleOffset&&r.to>ruleOffset)?.align,'center')
+ const bismillahOffset=body.text.indexOf('بسم اللہ')
+ assert.equal(body.runs.find(r=>r.align&&r.from<=bismillahOffset&&r.to>bismillahOffset)?.align,'center')
+ const titleSegment=storySegments(body.text,0,body.runs).find(p=>p.text==='منشور')
+ const statuteSegment=storySegments(body.text,0,body.runs).find(p=>p.text==='دستور')
+ assert.equal(titleSegment.style.textAlign,'center')
+ assert.equal(titleSegment.style.fontFamily,'Aadil')
+ assert.equal(statuteSegment.style.textAlign,'center')
+ assert.equal(statuteSegment.style.fontFamily,'Aadil')
+ const bismillahSegment=storySegments(body.text,0,body.runs).find(p=>p.text.startsWith('بسم اللہ'))
+ assert.equal(bismillahSegment.style.textAlign,'center')
  const root=d.objects.find(o=>o._nativeStoryRange)
  const bodyRun=root.runs[0],sourceOffset=root._nativeStoryRange.from,sourceRun=n.characterRuns.find(r=>r.from<=sourceOffset&&r.to>sourceOffset)
  assert.ok(Math.abs(bodyRun.leading-sourceRun.leading*.89)<.001,'Noori native leading must use the calibrated bundled-font line metric')
@@ -61,13 +82,63 @@ test('UMA saved character-format table covers its story and supplies cover size 
  assert.deepEqual(readV3TextStyles(new Uint8Array(24),{start:0,end:2}),[])
  assert.deepEqual(readV3Palette(new Uint8Array(24)),[])
 })
+test('saved native draft repairs stale imported alignments while preserving other draft edits',()=>{
+ const n=readNative(source),fresh=nativeDocument(n,'UMA-Vision Doc P.inp'),stale=structuredClone(fresh)
+ const current=stale.objects.find(o=>o._nativeStoryRange),decoded=fresh.objects.find(o=>o._nativeStoryRange)
+ const titleAt=current.text.indexOf('منشور'),bismAt=current.text.indexOf('بسم اللہ')
+ current.runs=current.runs.filter(r=>!r.align)
+ current.runs.push({from:titleAt,to:titleAt+'منشور'.length,align:'right'},{from:bismAt,to:bismAt+'بسم اللہ الرحمٰن الرحیم'.length,align:'right'})
+ stale.nativeSource={key:'fixture',baseline:documentFingerprint(stale)}
+ assert.equal(unchangedNative(stale),true)
+ assert.equal(refreshNativeStoryAlignments(stale,fresh),true)
+ assert.equal(stale.objects.find(o=>o._nativeStoryRange).runs.find(r=>r.align&&r.from<=titleAt&&r.to>titleAt)?.align,'center')
+ assert.equal(stale.objects.find(o=>o._nativeStoryRange).runs.find(r=>r.align&&r.from<=bismAt&&r.to>bismAt)?.align,'center')
+ assert.equal(stale.objects.find(o=>o._nativeStoryRange).text,current.text,'migration retains native story text')
+})
+
+test('UMA-Vision saved drafts repair the cover title and Bismillah alignment only',()=>{
+ const d={title:'UMA-Vision Doc P',objects:[{id:'root',type:'text',autoPaginate:true,text:'\u200bمنشور\nبسم اللہ الرحمٰن الرحیم\nBody',runs:[{from:0,to:6,align:'right'},{from:7,to:30,align:'right'},{from:31,to:35,align:'justify'}]}]}
+ assert.equal(repairUmaCoverAlignments(d),true)
+ const root=d.objects[0]
+ assert.equal(root.runs.find(r=>r.from===0&&r.to===6&&r.align)?.align,'center')
+ assert.equal(root.runs.find(r=>r.from===7&&r.to===30&&r.align)?.align,'center')
+ assert.equal(root.runs.find(r=>r.from===31&&r.to===35)?.align,'justify')
+ const segments=storySegments(root.text,0,root.runs)
+ assert.equal(segments.find(p=>p.text.includes('منشور'))?.align,'center')
+ assert.equal(segments.find(p=>p.text.includes('بسم اللہ'))?.align,'center')
+ assert.equal(repairUmaCoverAlignments(d),false)
+})
+
+test('paragraph alignment replaces stale imported alignment spans without changing character formatting',()=>{
+ const runs=[{from:8,to:13,align:'right'},{from:8,to:13,font:'Aadil',bold:true},{from:14,to:20,align:'justify'}]
+ const aligned=setParagraphRunAlignment(runs,8,13,'center')
+ assert.equal(aligned.find(r=>r.from===8&&r.to===13&&r.align)?.align,'center')
+ assert.deepEqual(aligned.find(r=>r.font==='Aadil'),{from:8,to:13,font:'Aadil',bold:true})
+ assert.equal(aligned.find(r=>r.from===14)?.align,'justify')
+})
+test('V3 form-feed page starts survive story recovery as normalized paragraph boundaries',()=>{
+ const body='بسم اللہ الرحمٰن الرحیم'
+ const bytes=new Uint8Array(6+(body.length+1)*2)
+ bytes.set([255,255,255,255,13,0])
+ const view=new DataView(bytes.buffer)
+ for(let i=0;i<body.length;i++)view.setUint16(6+i*2,body.charCodeAt(i),true)
+ view.setUint16(6+body.length*2,12,true)
+ const recovered=recoverV3(bytes)
+ assert.equal(recovered.pageBreakIndices[0],body.length)
+ assert.equal(recovered.text,body+'\r')
+})
 
 test('linked frame measurement and rendering share heading font, size, leading and color',()=>{
  const runs=[{from:0,to:8,color:'#2e1b4e',font:'Noori Nastaliq',fontSize:20,leading:30,bold:true,align:'center'}]
  const segments=storySegments('عنوان\nمتن',2,runs)
  assert.deepEqual(segments[0].style,{fontFamily:'Noori Nastaliq',fontSize:'20pt',lineHeight:'30pt',fontWeight:'bold',textAlign:'center'})
+ assert.equal(segments[0].align,'center')
+ assert.equal(storySegments('منشور',0,[{from:0,to:6,align:'center'}])[0].style.textAlign,'center')
  const app=fs.readFileSync(new URL('../src/App.vue',import.meta.url),'utf8')
  assert.ok(app.includes('...p.style,color:p.color'))
+ assert.ok(app.includes(':data-align="p.align"'))
+ const css=fs.readFileSync(new URL('../src/style.css',import.meta.url),'utf8')
+ assert.match(css,/\.story-paragraph\[data-align="center"\]\{text-align:center!important;width:fit-content;max-width:100%;margin-left:auto;margin-right:auto\}/)
  assert.ok(!app.includes("o.leading+'pt':'2.1'"))
 })
 test('native unchanged detection includes margins, paper dimensions and master page numbering',()=>{

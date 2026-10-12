@@ -53,13 +53,17 @@ export function nativeStoriesDocument(d,native){
   if(!story?.text?.trim())continue
   const frameRuns=native.characterRuns.filter(r=>r.from<story.to&&r.to>story.from).map(r=>({
    from:Math.max(story.from,r.from)-story.from,to:Math.min(story.to,r.to)-story.from,
-   font:d.font,fontSize:r.fontSize,
+   font:r.font||d.font,fontSize:r.fontSize,
    // CSS line boxes for the bundled Noori face run taller than InPage's point
    // leading. Apply the measured conversion uniformly; the bundled font face
    // below prevents OS-installed font variants from changing this conversion.
    leading:(r.leading??r.fontSize*1.5)*(isBody?0.89:1),bold:r.bold,
    color:native.palette.find(c=>c.index===(r.nativeColorIndex??2))?.color||'#000000'
   }))
+  // Paragraph offsets must use the same CRLF-normalized text stored on the
+  // frame. Using the raw native string shifts every following run by one for
+  // each collapsed CRLF, which makes the renderer miss the paragraph start.
+  if(isBody)frameRuns.push(...nativeParagraphRuns(native.formattedParagraphs,story.text.replace(/\r\n?/g,'\n')))
   const root=isBody&&frame.page===1
   const first=frameRuns[0]
   const object={id:'native-text-'+frame.recordOffset,page:'page-'+frame.page,type:'text',
@@ -68,7 +72,12 @@ export function nativeStoriesDocument(d,native){
    font:d.font,fontSize:first?.fontSize||12,leading:'Auto',color:first?.color||'#000000',
    direction:d.direction,align:'right',columns:1,richParagraphs:true,runs:frameRuns,
    autoPaginate:root,next:null,nativeStoryId:frame.storyId??null,recordOffset:frame.recordOffset}
-  if(root)object._nativeStoryRange={from:story.from,to:story.to}
+  if(root){
+   object._nativeStoryRange={from:story.from,to:story.to}
+   object.pageBreakOffsets=(native.pageBreakIndices||[])
+    .filter(position=>position>=story.from&&position<story.to)
+    .map(position=>position-story.from)
+  }
   objects.push(object);frameByOffset.set(frame.recordOffset,object)
  }
  const bodyFrames=native.textFrames.filter(f=>!f.master&&f.inheritedId===assignment.bodyFrames[0]?.inheritedId&&f.inheritedParent===1&&frameByOffset.has(f.recordOffset)).sort((a,b)=>a.page-b.page)
@@ -99,3 +108,16 @@ export function nativeStoriesDocument(d,native){
 }
 
 function dataURL(bytes){let str='';for(let i=0;i<bytes.length;i+=8192)str+=String.fromCharCode(...bytes.slice(i,i+8192));return 'data:image/jpeg;base64,'+btoa(str)}
+
+function nativeParagraphRuns(paragraphs,text){
+ const runs=[];let searchFrom=0
+ for(const paragraph of paragraphs||[]){
+  if(!paragraph.text)continue
+  const from=text.indexOf(paragraph.text,searchFrom)
+  if(from<0)continue
+  const align=paragraph.node?.attrs?.textAlign||paragraph.align
+  if(['left','right','center','justify'].includes(align))runs.push({from,to:from+paragraph.text.length,align})
+  searchFrom=from+paragraph.text.length
+ }
+ return runs
+}
