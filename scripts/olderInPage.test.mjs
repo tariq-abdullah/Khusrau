@@ -107,7 +107,7 @@ test('preserves font and correctly parses InPage 3 file UMA-Vision Doc P.inp wit
   assert.equal(doc.font, 'Noori Nastaliq', 'doc.font must be Noori Nastaliq')
   assert.equal(doc.baseStyle.font, 'Noori Nastaliq', 'doc.baseStyle.font must be Noori Nastaliq')
   assert.ok(doc.pages.length > 1, 'Document should have multiple pages')
-  assert.equal(doc.pages[0].content.content[0].content[0].text, 'منشور', 'Page 1 must start cleanly with منشور without leading empty lines')
+  assert.ok(doc.objects.some(o=>o.type==='text'&&o.text.includes('منشور')), 'Native cover text is placed into its saved InPage text frame')
 })
 
 test('correctly extracts custom margins from other legacy files (TASLIM.inp)', () => {

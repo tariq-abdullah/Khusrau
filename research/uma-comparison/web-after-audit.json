@@ -1,0 +1,140 @@
+[
+  {
+    "page": 1,
+    "chars": 106,
+    "images": 3,
+    "overflowLines": 2
+  },
+  {
+    "page": 2,
+    "chars": 1486,
+    "images": 0,
+    "overflowLines": 24
+  },
+  {
+    "page": 3,
+    "chars": 1325,
+    "images": 0,
+    "overflowLines": 5
+  },
+  {
+    "page": 4,
+    "chars": 1207,
+    "images": 0,
+    "overflowLines": 0
+  },
+  {
+    "page": 5,
+    "chars": 1708,
+    "images": 0,
+    "overflowLines": 11
+  },
+  {
+    "page": 6,
+    "chars": 1133,
+    "images": 0,
+    "overflowLines": 0
+  },
+  {
+    "page": 7,
+    "chars": 1203,
+    "images": 2,
+    "overflowLines": 13
+  },
+  {
+    "page": 8,
+    "chars": 1296,
+    "images": 1,
+    "overflowLines": 11
+  },
+  {
+    "page": 9,
+    "chars": 1322,
+    "images": 0,
+    "overflowLines": 0
+  },
+  {
+    "page": 10,
+    "chars": 1591,
+    "images": 0,
+    "overflowLines": 37
+  },
+  {
+    "page": 11,
+    "chars": 1103,
+    "images": 0,
+    "overflowLines": 0
+  },
+  {
+    "page": 12,
+    "chars": 1140,
+    "images": 0,
+    "overflowLines": 0
+  },
+  {
+    "page": 13,
+    "chars": 1810,
+    "images": 0,
+    "overflowLines": 19
+  },
+  {
+    "page": 14,
+    "chars": 1679,
+    "images": 0,
+    "overflowLines": 31
+  },
+  {
+    "page": 15,
+    "chars": 1324,
+    "images": 1,
+    "overflowLines": 6
+  },
+  {
+    "page": 16,
+    "chars": 1336,
+    "images": 1,
+    "overflowLines": 15
+  },
+  {
+    "page": 17,
+    "chars": 1758,
+    "images": 0,
+    "overflowLines": 16
+  },
+  {
+    "page": 18,
+    "chars": 1807,
+    "images": 0,
+    "overflowLines": 17
+  },
+  {
+    "page": 19,
+    "chars": 1509,
+    "images": 0,
+    "overflowLines": 9
+  },
+  {
+    "page": 20,
+    "chars": 1442,
+    "images": 0,
+    "overflowLines": 12
+  },
+  {
+    "page": 21,
+    "chars": 1130,
+    "images": 0,
+    "overflowLines": 1
+  },
+  {
+    "page": 22,
+    "chars": 1795,
+    "images": 0,
+    "overflowLines": 72
+  },
+  {
+    "page": 23,
+    "chars": 685,
+    "images": 0,
+    "overflowLines": 23
+  }
+]

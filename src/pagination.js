@@ -1,4 +1,4 @@
-const mm = 96 / 25.4
+import {splitInlineContent} from './richSplit.js'
 
 export function splitLongParagraph(p, maxChars) {
   const text = p.text || ''
@@ -14,10 +14,21 @@ export function splitLongParagraph(p, maxChars) {
       const space = sub.lastIndexOf(' ')
       idx = space > maxChars * 0.5 ? space + 1 : maxChars
     }
-    res.push({ ...p, text: rem.slice(0, idx).trim() })
-    rem = rem.slice(idx).trim()
+    const chunk={ ...p, text: rem.slice(0, idx) }
+    if(p.node){
+      const consumed=text.length-rem.length
+      const [,tail]=splitInlineContent(p.node.content,consumed)
+      const [inline]=splitInlineContent(tail,idx)
+      chunk.node={...structuredClone(p.node),content:inline}
+    }
+    res.push(chunk)
+    rem = rem.slice(idx)
   }
-  if (rem) res.push({ ...p, text: rem })
+  if (rem) {
+    const chunk={...p,text:rem}
+    if(p.node){const [,inline]=splitInlineContent(p.node.content,text.length-rem.length);chunk.node={...structuredClone(p.node),content:inline}}
+    res.push(chunk)
+  }
   return res
 }
 
@@ -33,6 +44,7 @@ export function estimateParagraphHeightMm(p, usableWidthMm) {
 }
 
 export function toTiptapNode(p) {
+  if(p.node)return structuredClone(p.node)
   if (!p.text?.trim()) return { type: 'paragraph' }
   if (p.isHeading) {
     return {
@@ -78,6 +90,7 @@ export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = [],
     if (item.type === 'heading' || item.type === 'paragraph') {
       const text = item.content?.map(c => c.text || '').join('') || ''
       return {
+        node:structuredClone(item),
         text,
         isHeading: item.type === 'heading',
         level: item.attrs?.level || 1,
@@ -103,7 +116,9 @@ export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = [],
   const mBottom = layout.marginBottom ?? layout.margin ?? 12.7
   const usableW = Math.max(30, paperW - mLeft - mRight)
   const usableH = Math.max(40, paperH - mTop - mBottom)
-  const charsPerLine = Math.max(30, Math.floor(usableW * 0.55))
+  const columns=Math.max(1,Math.min(8,Math.round(layout.columns||1)))
+  const columnWidth=Math.max(10,(usableW-(columns-1)*(layout.gap??4.233))/columns)
+  const charsPerLine = Math.max(30, Math.floor(columnWidth * 0.55))
   const maxParaChars = Math.floor(charsPerLine * 14)
 
   // Expand long paragraphs
@@ -125,7 +140,9 @@ export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = [],
     for (let i = 0; i < expanded.length; i++) {
       const p = expanded[i]
       const len = p.text?.trim().length || 0
-      if (pages.length < targetPages - 1 && curChars + len > charsPerPage && curNodes.length > 0) {
+      // A requested count is an estimate, never a cap. Capping the number of
+      // pages previously dumped thousands of remaining characters on the last.
+      if (curChars + len > charsPerPage && curNodes.length > 0) {
         pages.push({
           id: 'page-' + (startPageNum + pages.length),
           content: {
@@ -164,10 +181,10 @@ export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = [],
   const pages = []
   let curNodes = []
   let curH = 0
-  let pageLimit = Math.max(20, usableH - page1Reserve)
+  let pageLimit = Math.max(20, usableH*columns - page1Reserve)
 
   for (const p of expanded) {
-    const h = estimateParagraphHeightMm(p, usableW)
+    const h = estimateParagraphHeightMm(p, columnWidth)
     if (curH + h > pageLimit && curNodes.length > 0) {
       pages.push({
         id: 'page-' + (startPageNum + pages.length),
@@ -178,7 +195,7 @@ export function paginateParagraphs(paragraphs, layout = {}, pictureObjects = [],
       })
       curNodes = [p]
       curH = h
-      pageLimit = usableH
+      pageLimit = usableH*columns
     } else {
       curNodes.push(p)
       curH += h

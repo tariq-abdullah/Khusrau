@@ -1,6 +1,10 @@
 import * as CFB from 'cfb'
 import {decodeV1V2,filterParagraphs,filterParagraphsWithMeta,CHAR_MAP_URDU,COMPOSITE_SEQUENCES} from 'inpage-format'
 import { parseOlderInPageStream, buildOlderInPageFile } from './olderInPage.js'
+import {readV3PageRecords} from './nativeRecords.js'
+import {readV3TextStyles,styledNativeParagraph} from './nativeTextStyles.js'
+import {readV3Palette} from './nativePalette.js'
+import {readV3Stories,assignV3Stories} from './nativeStories.js'
 
 const charToByte = new Map()
 for (const [b, ch] of CHAR_MAP_URDU) {
@@ -228,6 +232,9 @@ export function parseV3StreamMeta(s, cfbDoc, paragraphs) {
     }
   }
 
+  // A font-table suffix can be encountered before the complete style name.
+  // Resolve the native Noori alias only when its full name exists in the stream.
+  if(detectedUrduFont==='Nastaliq'&&indexOfUtf16(s,'Noori Nastaliq')>=0)detectedUrduFont='Noori Nastaliq'
   // Trim leading/trailing blank paragraphs so pIdx === 0 corresponds to actual first title/heading
   let startIdx = 0
   while (startIdx < paragraphs.length && (!paragraphs[startIdx] || !paragraphs[startIdx].trim())) {
@@ -346,12 +353,30 @@ export function readNative(bytes){
   const v3Stream = new Uint8Array(v3.content)
   const recovered = recoverV3(v3Stream)
   const meta = parseV3StreamMeta(v3Stream, cfb, recovered.paragraphs)
+  const palette=readV3Palette(v3Stream)
+  const records=readV3PageRecords(v3Stream,cfb.FileIndex,palette)
+  const characterRuns=readV3TextStyles(v3Stream,recovered.range)
+  const stories=readV3Stories(v3Stream,recovered)
+  let paragraphStart=0
+  const styledParagraphs=recovered.paragraphs.map(text=>{
+   const prior=meta.formattedParagraphs.find(p=>p.text===text)
+   const node=styledNativeParagraph(text,paragraphStart,characterRuns,{textAlign:prior?.align||'right'},palette)
+   if(prior?.isHeading){node.type='heading';node.attrs.level=prior.level||1}
+   paragraphStart+=text.length+1
+   return {...prior,text,node}
+  })
   story = {
    ...recovered,
    font: meta.font || 'Noori Nastaliq',
-   formattedParagraphs: meta.formattedParagraphs,
+   formattedParagraphs: characterRuns.length?styledParagraphs:meta.formattedParagraphs,
+   characterRuns,
+   palette,
+   stories,
+   textFrames:records.textFrames,
+   storyAssignments:assignV3Stories(stories,records.textFrames),
    layout: meta.layout,
-   pictureObjects: meta.pictureObjects,
+   pictureObjects: records.pictureObjects.length?records.pictureObjects:meta.pictureObjects,
+   nativePageCount: records.pageCount,
    pageBreakIndices: []
   }
  }else{
@@ -377,7 +402,7 @@ export function readNative(bytes){
    :'Recovered text; native layout and character styling are not fully decoded.'
  }
 }
-export function documentFingerprint(d){return JSON.stringify({direction:d.direction,font:d.font,size:d.size,paper:d.paper,margin:d.margin,pages:JSON.parse(JSON.stringify(d.pages, (k,v)=>['beginIndent','endIndent'].includes(k)&&v===0?undefined:v)),objects:d.objects,baseStyle:d.baseStyle,...(d.settings?.orientation==='landscape'?{orientation:'landscape'}:{}),settings:Object.fromEntries(['paper','margin','columns','gap','wrap','hyphenation','tabSize','borderWidth','borderColor'].map(k=>[k,d.settings?.[k]])),footnotes:d.footnotes})}
+export function documentFingerprint(d){return JSON.stringify({direction:d.direction,font:d.font,size:d.size,paper:d.paper,margin:d.margin,pages:JSON.parse(JSON.stringify(d.pages, (k,v)=>['beginIndent','endIndent'].includes(k)&&v===0?undefined:v)),objects:d.objects,baseStyle:d.baseStyle,...(d.settings?.orientation==='landscape'?{orientation:'landscape'}:{}),settings:Object.fromEntries(['paper','paperWidth','paperHeight','margin','marginLeft','marginRight','marginTop','marginBottom','columns','gap','facing','wrap','hyphenation','tabSize','borderWidth','borderColor'].map(k=>[k,d.settings?.[k]])),documentPreferences:d.preferences?.doc,typographicPreferences:d.preferences?.typo,customStyles:d.customStyles,colors:d.colors,footnotes:d.footnotes})}
 export function unchangedNative(d){return !!d.nativeSource&&documentFingerprint(d)===d.nativeSource.baseline}
 function db(){return new Promise((resolve,reject)=>{const r=indexedDB.open('inpage-net-native',2);r.onupgradeneeded=()=>{for(const name of ['sources','workspace'])if(!r.result.objectStoreNames.contains(name))r.result.createObjectStore(name)};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
 export async function storeNative(key,bytes){const connection=await db();await new Promise((resolve,reject)=>{const tx=connection.transaction('sources','readwrite');tx.objectStore('sources').put(bytes,key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});connection.close()}

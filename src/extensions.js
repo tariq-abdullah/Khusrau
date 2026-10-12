@@ -18,7 +18,8 @@ export const Metrics = Mark.create({
 export const ParagraphLayout=Extension.create({
  name:'paragraphLayout',
  addGlobalAttributes(){return [{types:['paragraph','heading'],attributes:{
-  leading:{default:'Auto',parseHTML:e=>e.dataset.leading||'Auto',renderHTML:a=>({'data-leading':a.leading,style:`line-height:${a.leading==='Auto'?'2.1':a.leading+'pt'}`})},
+  fontSize:{default:null,parseHTML:e=>e.style.fontSize||null,renderHTML:a=>a.fontSize?{style:`font-size:${a.fontSize}`}:{}} ,
+  leading:{default:'Auto',parseHTML:e=>e.dataset.leading||'Auto',renderHTML:a=>({'data-leading':a.leading,style:`line-height:${a.leading==='Auto'?'var(--auto-line-spacing,2.1)':a.leading+'pt'}`})},
   direction:{default:null,parseHTML:e=>e.getAttribute('dir'),renderHTML:a=>a.direction?{dir:a.direction}:{}},
   spaceBefore:{default:0,parseHTML:e=>parseFloat(e.style.marginTop)||0,renderHTML:a=>({style:`margin-top:${a.spaceBefore}pt`})},
   spaceAfter:{default:0,parseHTML:e=>parseFloat(e.style.marginBottom)||0,renderHTML:a=>({style:`margin-bottom:${a.spaceAfter}pt`})},

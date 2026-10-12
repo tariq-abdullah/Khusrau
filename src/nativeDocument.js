@@ -1,5 +1,6 @@
 import {paragraphRuns} from './frameStory.js'
 import {paginateParagraphs} from './pagination.js'
+import {nativeStoriesDocument} from './nativeStories.js'
 const blank=()=>({type:'doc',content:[{type:'paragraph'}]})
 const mm=96/25.4
 function dataURL(bytes){let str='';for(let i=0;i<bytes.length;i+=8192)str+=String.fromCharCode(...bytes.slice(i,i+8192));return 'data:image/jpeg;base64,'+btoa(str)}
@@ -16,6 +17,7 @@ export function nativeDocument(native,name){
   content = {
    type: 'doc',
    content: paras.map(p => {
+    if(p.node)return structuredClone(p.node)
     if (!p.text?.trim()) return { type: 'paragraph' }
     if (p.isHeading) {
      return {
@@ -85,6 +87,7 @@ export function nativeDocument(native,name){
   marginBottom,
   content,
   objects:[],
+  colors:native.palette?.map(c=>({name:c.name,value:c.color})),
   isOlderVersion:!!native.isOlderVersion,
   settings:{
    margin,
@@ -102,10 +105,16 @@ export function nativeDocument(native,name){
   importReport:{
    version:native.version,
    characters:native.text.length,
+   nativePageCount:native.nativePageCount,
    warning:native.warning,
    isOlderVersion:!!native.isOlderVersion,
-   profile:about?'AboutFaiz manually reconstructed from native inspection':(native.isOlderVersion?'Older InPage document converted':'Native InPage document layout, typography & images decoded')
+   profile:about?'AboutFaiz manually reconstructed from native inspection':(native.isOlderVersion?'Older InPage document converted':'Native text and picture boxes recovered; text layout remains approximate')
   }
+ }
+
+ if(!about&&native.storyAssignments){
+  const recovered=nativeStoriesDocument(d,native)
+  if(recovered)return recovered
  }
 
  if(!about){
@@ -157,6 +166,14 @@ export function nativeDocument(native,name){
       }
     ]
 
+    // Preserve recovered character formatting even in the existing cover profile.
+    for(const node of coverNodes){
+      const text=node.content?.map(c=>c.text||'').join('')
+      const original=paras.find(p=>p.text===text&&p.node)
+      if(!original)continue
+      node.content=structuredClone(original.node.content)
+      if(original.node.attrs?.leading)node.attrs.leading=original.node.attrs.leading
+    }
     const storyParas = paras.slice(bismillahIdx >= 0 ? bismillahIdx : 24)
     const storyPages = paginateParagraphs(storyParas, layout, [], { targetPages: 17, startPageNum: 2 })
     d.pages = [
@@ -165,164 +182,21 @@ export function nativeDocument(native,name){
     ]
     d.content = content
 
-    const picList = []
-    if (native.pictures?.[2]) {
-      picList.push({
-        id: 'pic-stamp',
-        page: 'page-1',
-        type: 'picture',
-        x: Math.round(41.7 * mm),
-        y: Math.round(13.7 * mm),
-        w: Math.round(43.1 * mm),
-        h: Math.round(34.5 * mm),
-        rotation: 0,
-        fill: 'none',
-        stroke: 'none',
-        strokeWidth: 0,
-        src: dataURL(native.pictures[2]),
-        imageFit: 'contain',
-        imageNatural: true,
-        master: false
-      })
-    }
-    if (native.pictures?.[0]) {
-      picList.push({
-        id: 'pic-diamond',
-        page: 'page-1',
-        type: 'picture',
-        x: Math.round(57.6 * mm),
-        y: Math.round(49.0 * mm),
-        w: Math.round(11.6 * mm),
-        h: Math.round(16.0 * mm),
-        rotation: 0,
-        fill: 'none',
-        stroke: 'none',
-        strokeWidth: 0,
-        src: dataURL(native.pictures[0]),
-        imageFit: 'contain',
-        imageNatural: true,
-        master: false
-      })
-    }
-    if (native.pictures?.[1]) {
-      picList.push({
-        id: 'pic-logo',
-        page: 'page-1',
-        type: 'picture',
-        x: Math.round(51.5 * mm),
-        y: Math.round(138.0 * mm),
-        w: Math.round(23.9 * mm),
-        h: Math.round(28.8 * mm),
-        rotation: 0,
-        fill: 'none',
-        stroke: 'none',
-        strokeWidth: 0,
-        src: dataURL(native.pictures[1]),
-        imageFit: 'contain',
-        imageNatural: true,
-        master: false
-      })
-    }
-    const footerBytes = native.pictures?.[8] || native.pictures?.[7]
-    if (footerBytes) {
-      picList.push({
-        id: 'pic-footer',
-        page: null,
-        type: 'picture',
-        x: Math.round(59.5 * mm),
-        y: Math.round(191.4 * mm),
-        w: Math.round(8.1 * mm),
-        h: Math.round(4.8 * mm),
-        rotation: 0,
-        fill: 'none',
-        stroke: 'none',
-        strokeWidth: 0,
-        src: dataURL(footerBytes),
-        imageFit: 'contain',
-        imageNatural: true,
-        master: true
-      })
-    }
-    if (native.pictures?.[12] && d.pages.length >= 4) {
-      picList.push({
-        id: 'pic-hall',
-        page: 'page-4',
-        type: 'picture',
-        x: Math.round(12.7 * mm),
-        y: Math.round(12.8 * mm),
-        w: Math.round(101.6 * mm),
-        h: Math.round(38.1 * mm),
-        rotation: 0,
-        fill: 'none',
-        stroke: 'none',
-        strokeWidth: 0,
-        src: dataURL(native.pictures[12]),
-        imageFit: 'contain',
-        imageNatural: true,
-        master: false
-      })
-    }
-    if (native.pictures?.[10] && d.pages.length >= 6) {
-      picList.push({
-        id: 'pic-photo-1',
-        page: 'page-6',
-        type: 'picture',
-        x: Math.round(47.8 * mm),
-        y: Math.round(5.6 * mm),
-        w: Math.round(30.8 * mm),
-        h: Math.round(6.1 * mm),
-        rotation: 0,
-        fill: 'none',
-        stroke: 'none',
-        strokeWidth: 0,
-        src: dataURL(native.pictures[10]),
-        imageFit: 'contain',
-        imageNatural: true,
-        master: false
-      })
-    }
-    if (native.pictures?.[5] && d.pages.length >= 8) {
-      picList.push({
-        id: 'pic-photo-2',
-        page: 'page-8',
-        type: 'picture',
-        x: Math.round(47.7 * mm),
-        y: Math.round(5.2 * mm),
-        w: Math.round(30.8 * mm),
-        h: Math.round(6.1 * mm),
-        rotation: 0,
-        fill: 'none',
-        stroke: 'none',
-        strokeWidth: 0,
-        src: dataURL(native.pictures[5]),
-        imageFit: 'contain',
-        imageNatural: true,
-        master: false
-      })
-    }
-    if (native.pictures?.[6] && d.pages.length >= 10) {
-      picList.push({
-        id: 'pic-emblem-10',
-        page: 'page-10',
-        type: 'picture',
-        x: Math.round(45.7 * mm),
-        y: Math.round(6.2 * mm),
-        w: Math.round(35.0 * mm),
-        h: Math.round(6.1 * mm),
-        rotation: 0,
-        fill: 'none',
-        stroke: 'none',
-        strokeWidth: 0,
-        src: dataURL(native.pictures[6]),
-        imageFit: 'contain',
-        imageNatural: true,
-        master: false
-      })
-    }
+    const picList = (native.pictureObjects || []).map((pic,idx)=>({
+      id:'native-picture-'+idx,page:pic.master?null:'page-'+pic.page,
+      type:'picture',x:pic.x*mm,y:pic.y*mm,w:pic.w*mm,h:pic.h*mm,
+      rotation:0,fill:pic.fill??'none',stroke:'none',strokeWidth:0,
+      src:dataURL(pic.bytes),imageFit:'fill',imageNatural:true,
+      imageWidth:(pic.imageWidth??pic.w)*mm,imageHeight:(pic.imageHeight??pic.h)*mm,
+      imageX:(pic.imageX??0)*mm,imageY:(pic.imageY??0)*mm,master:!!pic.master,
+      wrap:pic.wrap??'none',wrapLeft:(pic.wrapLeft??0)*mm,wrapRight:(pic.wrapRight??0)*mm,
+      wrapTop:(pic.wrapTop??0)*mm,wrapBottom:(pic.wrapBottom??0)*mm,
+      nativeImageName:pic.name
+    }))
     d.objects = picList
     d.font = defaultFont
-    d.size = 14
-    d.baseStyle = { font: defaultFont, size: 14, color: '#000000' }
+    d.size = 12
+    d.baseStyle = { font: defaultFont, size: 12, color: '#000000' }
     return d
   }
 
@@ -342,23 +216,25 @@ export function nativeDocument(native,name){
     id: 'pic-' + idx,
     page: pic.page === 0 ? null : ('page-' + (pic.page || 1)),
     type: 'picture',
-    x: Math.round(pic.x * mm),
-    y: Math.round(pic.y * mm),
-    w: Math.max(12, Math.round(pic.w * mm)),
-    h: Math.max(12, Math.round(pic.h * mm)),
+    x: pic.x * mm,
+    y: pic.y * mm,
+    w: pic.w * mm,
+    h: pic.h * mm,
     rotation: 0,
-    fill: 'none',
+    fill: pic.fill??'none',
     stroke: 'none',
     strokeWidth: 0,
     src: dataURL(pic.bytes),
     imageFit: 'contain',
     imageNatural: true,
-    imageX: 0,
-    imageY: 0,
-    imageWidth: Math.max(12, Math.round(pic.w * mm)),
-    imageHeight: Math.max(12, Math.round(pic.h * mm)),
-    master: pic.page === 0
-   }))
+    imageX: (pic.imageX??0)*mm,
+    imageY: (pic.imageY??0)*mm,
+    imageWidth: (pic.imageWidth??pic.w)*mm,
+    imageHeight: (pic.imageHeight??pic.h)*mm,
+    wrap:pic.wrap??'none',wrapLeft:(pic.wrapLeft??0)*mm,wrapRight:(pic.wrapRight??0)*mm,
+    wrapTop:(pic.wrapTop??0)*mm,wrapBottom:(pic.wrapBottom??0)*mm,
+    master: !!pic.master || pic.page === 0
+   })).sort((a,b)=>Number(a.master)-Number(b.master))
   } else if (native.pictures?.length) {
    d.objects = native.pictures.map((picBytes, idx) => ({
     id: 'pic-' + idx,

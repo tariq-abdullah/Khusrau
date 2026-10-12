@@ -201,6 +201,23 @@ export function preserveNewlinesForExport(root) {
   }
 }
 
+export function assertDefaultTextFits(paper) {
+  const boundary=paper.querySelector('.text-boundary')
+  const editor=boundary?.querySelector('.tiptap')
+  if(!editor)return
+  const bounds=boundary.getBoundingClientRect()
+  const walker=paper.ownerDocument.createTreeWalker(editor,4)
+  const range=paper.ownerDocument.createRange()
+  let node
+  while((node=walker.nextNode())){
+    if(!node.textContent.trim()||node.parentElement?.closest('.runaround-widget'))continue
+    range.selectNodeContents(node)
+    if([...range.getClientRects()].some(r=>r.bottom>bounds.bottom+4||r.top<bounds.top-4||r.left<bounds.left-4||r.right>bounds.right+4)){
+      throw Error('Page text extends outside its text box. Correct the page flow before exporting; otherwise some text would be clipped.')
+    }
+  }
+}
+
 export async function capturePaper(paper, widthMM, heightMM, options = {}) {
   const usedFamilies = collectUsedFontFamilies(paper)
   if (typeof document !== 'undefined' && document.fonts && document.fonts.load) {
@@ -220,6 +237,7 @@ export async function capturePaper(paper, widthMM, heightMM, options = {}) {
       await document.fonts.ready
     } catch {}
   }
+  if(!options.selectedIds)assertDefaultTextFits(paper)
 
   const guides = paper.classList.contains('guides')
   const invisibles = paper.classList.contains('invisibles')

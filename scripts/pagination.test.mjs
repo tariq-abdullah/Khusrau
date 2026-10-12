@@ -43,7 +43,28 @@ test('paginateParagraphs generates multiple pages for multi-paragraph content', 
   })
 })
 
-test('nativeDocument paginates UMA-Vision Doc P.inp across multiple pages and caps page height', () => {
+test('pagination preserves inline formatting and paragraph attributes across splits',()=>{
+ const text=('الفاظ  ').repeat(200)
+ const node={type:'paragraph',attrs:{textAlign:'left',leading:18,spaceBefore:4},content:[{type:'text',text,marks:[{type:'bold'},{type:'textStyle',attrs:{color:'#0000ff',fontSize:'20pt'}}]}]}
+ const pages=paginateParagraphs([node],{width:100,height:120,margin:10})
+ const nodes=pages.flatMap(p=>p.content.content)
+ assert.ok(nodes.length>1)
+ assert.equal(nodes.flatMap(n=>n.content).map(n=>n.text||'').join(''),text)
+ for(const n of nodes){assert.deepEqual(n.attrs,node.attrs);assert.deepEqual(n.content[0].marks,node.content[0].marks)}
+})
+
+test('column count and gutter change pagination capacity without losing text',()=>{
+ const paras=Array.from({length:40},()=>({text:'الفاظ '.repeat(35)}))
+ const layout={width:210,height:297,margin:12.7}
+ const single=paginateParagraphs(paras,{...layout,columns:1})
+ const double=paginateParagraphs(paras,{...layout,columns:2,gap:4.23})
+ const narrow=paginateParagraphs(paras,{...layout,columns:2,gap:60})
+ assert.ok(narrow.length>double.length)
+ const text=pages=>pages.flatMap(p=>p.content.content).flatMap(n=>n.content||[]).map(n=>n.text||'').join('')
+ assert.equal(text(single),text(double));assert.equal(text(double),text(narrow))
+})
+
+test('UMA native page count is decoded independently of estimated web pagination', () => {
   const fileUrl = new URL('../research/oldversionfilesinpage/UMA-Vision Doc P.inp', import.meta.url)
   if (!fs.existsSync(fileUrl)) return
 
@@ -51,14 +72,21 @@ test('nativeDocument paginates UMA-Vision Doc P.inp across multiple pages and ca
   const parsed = readNative(bytes)
   const d = nativeDocument(parsed, 'UMA-Vision Doc P.inp')
 
-  assert.equal(d.pages.length, 18, `Expected exactly 18 pages matching InPage, got ${d.pages.length}`)
+  // Verified in installed InPage: 16 pages, not the previously asserted 18.
+  assert.equal(parsed.nativePageCount,16)
+  assert.equal(d.importReport.nativePageCount,16)
+  assert.ok(d.pages.length>1)
+  assert.ok(d.pages.every(p=>p.content.content.reduce((n,c)=>n+(c.content||[]).reduce((m,t)=>m+(t.text?.length||0),0),0)<2500),'Remaining text must not be dumped on a capped last page')
   assert.equal(d.paperWidth, 127)
   assert.equal(d.paperHeight, 203.2)
-  // Ensure page 1 has heading content
-  assert.ok(d.pages[0].content.content.some(n => n.type === 'heading' || n.content?.[0]?.text?.includes('منشور')))
-  // Ensure subsequent pages have content
-  assert.ok(d.pages[1].content.content.length > 0)
-  assert.ok(d.pages[d.pages.length - 1].content.content.length > 0)
+  // Native v3 text is stored in linked page frames rather than page-content blocks.
+  const root=d.objects.find(o=>o.type==='text'&&o._nativeStoryRange)
+  let bodyFrameCount=0,frame=root
+  while(frame){bodyFrameCount++;frame=d.objects.find(o=>o.id===frame.next)}
+  assert.equal(bodyFrameCount,16)
+  assert.equal(root.text.length,parsed.storyAssignments.primary.text.length)
+  assert.ok(d.objects.some(o=>o.type==='text'&&o.text.includes('منشور')))
+  assert.ok(d.objects.some(o=>o.type==='picture'&&o.page==='page-16'))
 })
 
 test('App.vue and style.css enforce fixed page height to prevent infinite height expansion', () => {
