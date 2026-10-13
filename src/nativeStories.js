@@ -51,27 +51,31 @@ export function nativeStoriesDocument(d,native){
   const isBody=frame.inheritedId===assignment.bodyFrames[0]?.inheritedId&&frame.inheritedParent===1
   if(isBody)story=assignment.primary
   if(!story?.text?.trim())continue
+  const frameText=story.text.replace(/\r\n?/g,'\n')
   const frameRuns=native.characterRuns.filter(r=>r.from<story.to&&r.to>story.from).map(r=>({
    from:Math.max(story.from,r.from)-story.from,to:Math.min(story.to,r.to)-story.from,
    font:r.font||d.font,fontSize:r.fontSize,
-   // CSS line boxes for the bundled Noori face run taller than InPage's point
-   // leading. Apply the measured conversion uniformly; the bundled font face
-   // below prevents OS-installed font variants from changing this conversion.
-   leading:(r.leading??r.fontSize*1.5)*(isBody?0.89:1),bold:r.bold,
+   // The bundled Noori face produces taller browser line boxes than InPage.
+   // Use its measured conversion so small per-line differences don't add pages.
+   leading:(r.leading??r.fontSize*1.5)*(isBody?0.89:1),bold:r.bold,scale:r.scale??100,tracking:r.tracking??0,
    color:native.palette.find(c=>c.index===(r.nativeColorIndex??2))?.color||'#000000'
   }))
   // Paragraph offsets must use the same CRLF-normalized text stored on the
   // frame. Using the raw native string shifts every following run by one for
   // each collapsed CRLF, which makes the renderer miss the paragraph start.
-  if(isBody)frameRuns.push(...nativeParagraphRuns(native.formattedParagraphs,story.text.replace(/\r\n?/g,'\n')))
+  if(isBody)frameRuns.push(...nativeParagraphRuns(native.formattedParagraphs,frameText))
   const root=isBody&&frame.page===1
   const first=frameRuns[0]
   const object={id:'native-text-'+frame.recordOffset,page:'page-'+frame.page,type:'text',
    x:frame.x*mm,y:frame.y*mm,w:frame.w*mm,h:frame.h*mm,rotation:0,
-   fill:'none',stroke:'none',strokeWidth:0,inset:0,text:story.text.replace(/\r\n?/g,'\n'),
+   fill:'none',stroke:'none',strokeWidth:0,inset:0,text:frameText,
    font:d.font,fontSize:first?.fontSize||12,leading:'Auto',color:first?.color||'#000000',
    direction:d.direction,align:'right',columns:1,richParagraphs:true,runs:frameRuns,
-   autoPaginate:root,next:null,nativeStoryId:frame.storyId??null,recordOffset:frame.recordOffset}
+   // InPage's bundled Noori face advances narrower than its Unicode web
+   // substitute. Widen the layout measure and counter-scale the frame so the
+   // visual box stays fixed while paragraph wrapping matches the native face.
+   nativeAdvanceScale:isBody?1.05:1,
+   autoPaginate:root,next:null,nativeFixedFrame:!isBody,nativeStoryId:frame.storyId??null,recordOffset:frame.recordOffset}
   if(root){
    object._nativeStoryRange={from:story.from,to:story.to}
    object.pageBreakOffsets=(native.pageBreakIndices||[])

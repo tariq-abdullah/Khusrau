@@ -293,8 +293,6 @@ export function parseV3StreamMeta(s, cfbDoc, paragraphs) {
     align = 'center'
    } else if (pLines.some(l => l.alignCode === 3 || l.alignCode === 1)) {
     align = 'justify'
-   } else if (pLines.some(l => l.alignCode === 2)) {
-    align = 'center'
    } else if (p.length > 100) {
     align = 'justify'
    }
@@ -431,7 +429,7 @@ export function readNative(bytes){
    :'Recovered text; native layout and character styling are not fully decoded.'
  }
 }
-export function documentFingerprint(d){return JSON.stringify({direction:d.direction,font:d.font,size:d.size,paper:d.paper,margin:d.margin,pages:JSON.parse(JSON.stringify(d.pages, (k,v)=>['beginIndent','endIndent'].includes(k)&&v===0?undefined:v)),objects:d.objects,baseStyle:d.baseStyle,...(d.settings?.orientation==='landscape'?{orientation:'landscape'}:{}),settings:Object.fromEntries(['paper','paperWidth','paperHeight','margin','marginLeft','marginRight','marginTop','marginBottom','columns','gap','facing','wrap','hyphenation','tabSize','borderWidth','borderColor'].map(k=>[k,d.settings?.[k]])),documentPreferences:d.preferences?.doc,typographicPreferences:d.preferences?.typo,customStyles:d.customStyles,colors:d.colors,footnotes:d.footnotes})}
+export function documentFingerprint(d){return JSON.stringify({direction:d.direction,font:d.font,size:d.size,paper:d.paper,margin:d.margin,pages:JSON.parse(JSON.stringify(d.pages, (k,v)=>['beginIndent','endIndent'].includes(k)&&v===0?undefined:v)),objects:(d.objects||[]).map(({nativeFixedFrame,...object})=>object),baseStyle:d.baseStyle,...(d.settings?.orientation==='landscape'?{orientation:'landscape'}:{}),settings:Object.fromEntries(['paper','paperWidth','paperHeight','margin','marginLeft','marginRight','marginTop','marginBottom','columns','gap','facing','wrap','hyphenation','tabSize','borderWidth','borderColor'].map(k=>[k,d.settings?.[k]])),documentPreferences:d.preferences?.doc,typographicPreferences:d.preferences?.typo,customStyles:d.customStyles,colors:d.colors,footnotes:d.footnotes})}
 export function unchangedNative(d){return !!d.nativeSource&&documentFingerprint(d)===d.nativeSource.baseline}
 
 // Refresh paragraph alignment from a newly decoded native file without
@@ -464,16 +462,42 @@ export function refreshNativeStoryAlignments(d,fresh){
  return changed
 }
 
+// Older native imports need this marker so standalone frames do not get
+// truncated by linked-story overflow measurement when saved drafts are restored.
+export function markNativeFixedFrames(d){
+ if(!Array.isArray(d?.objects))return false
+ let changed=false
+ for(const frame of d.objects){
+  if(frame.type!=='text'||frame.nativeStoryId==null||frame.autoPaginate||frame.next||frame.nativeFixedFrame)continue
+  frame.nativeFixedFrame=true;changed=true
+ }
+ return changed
+}
+
 // Older local drafts of the UMA cover were saved before the two explicit
 // centered paragraph records were decoded. Preserve the draft and repair only
 // those paragraph alignment spans from the native file's observed layout.
 export function repairUmaCoverAlignments(d){
  if(!/UMA[ -]Vision/i.test(d?.title||'' )||!Array.isArray(d.objects))return false
- const targets=new Set(['منشور','بسم اللہ الرحمٰن الرحیم'])
+ const targets=new Set([
+  'منشور',
+  'بسم اللہ الرحمٰن الرحیم',
+  'اردو میڈیا ایسوسی ایشن (UMA) کا رکن بنیں اور دوستو ںکو بھی بنائیں',
+  'Urdu Media Association',
+  '3rd Floor,1006/45, Zakir Nagar',
+  'New Delhi 110025',
+  'umaindia.delhi@gmail.com',
+  'اتحاد ابلاغ اردو',
+  'صحافت کے معیار کے فروغ اور باہمی تعاون کی تحریک',
+  'اردو میڈیا ایسوسی ایشن سےجڑیں اور',
+  'خود کو مضبوط بنائیں',
+  'umaindia.delhi@gmail.com, info@umaindia.in',
+  'www.umaindia.in'
+ ])
  let changed=false
  for(const frame of d.objects.filter(o=>['text','title'].includes(o.type)&&typeof o.text==='string')){
   const paragraphs=[];let from=0
-  for(const part of frame.text.split('\n')){const value=part.trim().replace(/[\u200b-\u200f\u202a-\u202e\ufeff]/g,'');if([...targets].some(target=>value.includes(target)))paragraphs.push({from,to:from+part.length});from+=part.length+1}
+  for(const part of frame.text.split('\n')){const value=part.trim().replace(/[\u200b-\u200f\u202a-\u202e\ufeff]/g,'');if([...targets].some(target=>value===target||target==='بسم اللہ الرحمٰن الرحیم'&&value.startsWith(target)))paragraphs.push({from,to:from+part.length});from+=part.length+1}
   if(!paragraphs.length)continue
   frame.richParagraphs=true
   frame.runs=Array.isArray(frame.runs)?frame.runs:[]

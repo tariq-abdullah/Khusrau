@@ -7,6 +7,8 @@ export function storySegments(text,offset=0,runs=[]){
   const paragraphRun=runs.find(r=>r.align&&start>=r.from&&start<r.to)
   const align=['left','right','center','justify'].includes(run?.align)?run.align:paragraphRun?.align||null
   const segment={text:part,color:run?.color||null}
+  if(Number.isFinite(run?.tracking))segment.tracking=run.tracking
+  if(Number.isFinite(run?.scale))segment.scale=run.scale
   if(align)segment.align=align
   const style={}
   if(run?.font)style.fontFamily=run.font
@@ -14,10 +16,11 @@ export function storySegments(text,offset=0,runs=[]){
   if(Number.isFinite(run?.leading)&&run.leading>0)style.lineHeight=run.leading+'pt'
   if(typeof run?.bold==='boolean')style.fontWeight=run.bold?'bold':'normal'
   if(typeof run?.italic==='boolean')style.fontStyle=run.italic?'italic':'normal'
+  if(Number.isFinite(run?.tracking)||Number.isFinite(run?.scale)){const tracking=Number.isFinite(run?.tracking)?run.tracking:0,scale=Number.isFinite(run?.scale)?run.scale:100;style.letterSpacing=((tracking+scale-100)/100)+'em'}
   if(align)style.textAlign=align
   if(Object.keys(style).length)segment.style=style
   const spans=runs.filter(r=>r.from<cursor&&r.to>start)
-  if(spans.length>1&&spans.some(r=>r.fontSize||r.font||r.bold||r.italic)){
+  if(spans.length>1&&spans.some(r=>r.fontSize||r.font||r.bold||r.italic||Number.isFinite(r.tracking)&&r.tracking!==0||Number.isFinite(r.scale)&&r.scale!==100)){
    const breaks=[start,...spans.flatMap(r=>[Math.max(start,r.from),Math.min(cursor,r.to)]),cursor].sort((a,b)=>a-b).filter((v,j,a)=>j===0||v!==a[j-1])
    segment.parts=[]
    for(let j=0;j<breaks.length-1;j++){
@@ -29,7 +32,8 @@ export function storySegments(text,offset=0,runs=[]){
     if(partRun.color)partStyle.color=partRun.color
     if(typeof partRun.bold==='boolean')partStyle.fontWeight=partRun.bold?'bold':'normal'
     if(typeof partRun.italic==='boolean')partStyle.fontStyle=partRun.italic?'italic':'normal'
-    segment.parts.push({text:part.slice(from-start,to-start),style:partStyle})
+    if(Number.isFinite(partRun.tracking)||Number.isFinite(partRun.scale)){const tracking=Number.isFinite(partRun.tracking)?partRun.tracking:0,scale=Number.isFinite(partRun.scale)?partRun.scale:100;partStyle.letterSpacing=((tracking+scale-100)/100)+'em'}
+    segment.parts.push({text:part.slice(from-start,to-start),style:partStyle,tracking:partRun.tracking,scale:partRun.scale})
    }
   }
   return segment
@@ -53,4 +57,21 @@ export function setParagraphRunAlignment(runs,from,to,align){
  }).filter(Boolean)
  next.push({from,to,align})
  return next
+}
+
+// The UMA cover title and opening Bismillah are standalone centered lines.
+// Match the complete paragraph so article text that merely mentions either
+// phrase keeps the alignment imported from InPage.
+export function isUmaNativeCenteredParagraph(value){
+ const text=String(value||'').trim().replace(/[\u200b-\u200f\u202a-\u202e\ufeff]/g,'').replace(/\s+/g,'')
+ return new Set([
+  'منشور',
+  'بسم اللہ الرحمٰن الرحیم',
+  'اردو صحافت کی نئی صدی کے استقبال میں',
+  'منشور دوصدی سال اردو صحافت کا اجرا',
+  'منشوردوصدی سال اردوصحافت',
+  'دستور العمل',
+  'اردو میڈیاایسوسی ایشن',
+  'میثاق ِتاسیس'
+ ].map(value=>value.replace(/\s+/g,''))).has(text)
 }
