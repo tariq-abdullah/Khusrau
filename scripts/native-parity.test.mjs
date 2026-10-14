@@ -205,6 +205,18 @@ test('native unchanged detection includes margins, paper dimensions and master p
   const changed=structuredClone(d);modify(changed);assert.equal(unchangedNative(changed),false)
  }
 })
+test('native unchanged detection ignores app defaults added while reopening a legacy IPDOC',()=>{
+ const baseline={direction:'rtl',pages:[{content:{type:'doc',content:[{type:'paragraph'}]}}],objects:[],settings:{},baseStyle:{}}
+ const reopened=structuredClone(baseline)
+ reopened.pages[0].content.content[0].attrs={textAlign:'right',fontSize:null,leading:'Auto',direction:null,spaceBefore:0,spaceAfter:0,indent:0,beginIndent:0,endIndent:0,fullJustify:false,borderAbove:null,borderBelow:null}
+ reopened.settings={facing:false,wrap:true,hyphenation:false,tabSize:4,borderWidth:0,borderColor:'#000000'}
+ reopened.preferences={doc:{unitGeneral:'Millimeters',unitCharacter:'Points',pasteboardAcross:15,pasteboardDown:25,snapDistance:2,guidesPosition:'Front',rulersVisible:true,rulerOriginAcross:0,rulerOriginDown:0,pageNumberStart:1,pageNumberStyle:'1 2 3',viewPercent:100},typo:{nastaliqFirstSpace:0,nastaliqSubsequentSpace:25,boxedAbove:10,boxedBelow:15,boxedText:7,autoLineSpacing:50,reduceLatinFontsize:18,characterSpaceExtra:20,underlinesShift:40,underlinesWidth:7,justPriorityNastaliq:10,justPriorityLatin:10,usePrinterWidths:false,autoKerning:true,autoKashida:true,footnoteFont:'',footnoteSize:75,footnoteShift:25}}
+ reopened.customStyles=[];reopened.footnotes=[]
+ reopened.nativeSource={baseline:documentFingerprint(baseline)}
+ assert.equal(unchangedNative(reopened),true)
+ reopened.settings.paperWidth=210
+ assert.equal(unchangedNative(reopened),false)
+})
 test('UMA picture references resolve by stream name and native page, excluding unused JPEGs',()=>{
  const n=readNative(source)
  assert.equal(n.nativePageCount,16)

@@ -429,8 +429,37 @@ export function readNative(bytes){
    :'Recovered text; native layout and character styling are not fully decoded.'
  }
 }
-export function documentFingerprint(d){return JSON.stringify({direction:d.direction,font:d.font,size:d.size,paper:d.paper,margin:d.margin,pages:JSON.parse(JSON.stringify(d.pages, (k,v)=>['beginIndent','endIndent'].includes(k)&&v===0?undefined:v)),objects:(d.objects||[]).map(({nativeFixedFrame,...object})=>object),baseStyle:d.baseStyle,...(d.settings?.orientation==='landscape'?{orientation:'landscape'}:{}),settings:Object.fromEntries(['paper','paperWidth','paperHeight','margin','marginLeft','marginRight','marginTop','marginBottom','columns','gap','facing','wrap','hyphenation','tabSize','borderWidth','borderColor'].map(k=>[k,d.settings?.[k]])),documentPreferences:d.preferences?.doc,typographicPreferences:d.preferences?.typo,customStyles:d.customStyles,colors:d.colors,footnotes:d.footnotes})}
-export function unchangedNative(d){return !!d.nativeSource&&documentFingerprint(d)===d.nativeSource.baseline}
+const nativeFingerprintSettings={facing:false,wrap:true,hyphenation:false,tabSize:4,borderWidth:0,borderColor:'#000000'}
+const nativeFingerprintDocumentPreferences={unitGeneral:'Millimeters',unitCharacter:'Points',pasteboardAcross:15,pasteboardDown:25,snapDistance:2,guidesPosition:'Front',rulersVisible:true,rulerOriginAcross:0,rulerOriginDown:0,pageNumberStart:1,pageNumberStyle:'1 2 3',viewPercent:100}
+const nativeFingerprintTypographicPreferences={nastaliqFirstSpace:0,nastaliqSubsequentSpace:25,boxedAbove:10,boxedBelow:15,boxedText:7,autoLineSpacing:50,reduceLatinFontsize:18,characterSpaceExtra:20,underlinesShift:40,underlinesWidth:7,justPriorityNastaliq:10,justPriorityLatin:10,usePrinterWidths:false,autoKerning:true,autoKashida:true,footnoteFont:'',footnoteSize:75,footnoteShift:25}
+
+function normalizeNativeFingerprint(value){
+ const projection=structuredClone(value||{})
+ const cleanEmptyParagraphs=node=>{
+  if(!node||typeof node!=='object')return
+  if(node.type==='paragraph'&&!node.content?.length&&node.attrs&&Object.keys(node.attrs).every(key=>{
+   const defaults={textAlign:'right',fontSize:null,leading:'Auto',direction:null,spaceBefore:0,spaceAfter:0,indent:0,beginIndent:0,endIndent:0,fullJustify:false,borderAbove:null,borderBelow:null}
+   return Object.hasOwn(defaults,key)&&node.attrs[key]===defaults[key]
+  }))delete node.attrs
+  for(const child of node.content||[])cleanEmptyParagraphs(child)
+ }
+ for(const page of projection.pages||[])cleanEmptyParagraphs(page.content)
+ if(projection.settings){
+  for(const [key,defaultValue] of Object.entries(nativeFingerprintSettings))if(projection.settings[key]===defaultValue)delete projection.settings[key]
+ }
+ if(projection.documentPreferences&&Object.keys(projection.documentPreferences).every(key=>Object.hasOwn(nativeFingerprintDocumentPreferences,key)&&projection.documentPreferences[key]===nativeFingerprintDocumentPreferences[key]))delete projection.documentPreferences
+ if(projection.typographicPreferences&&Object.keys(projection.typographicPreferences).every(key=>Object.hasOwn(nativeFingerprintTypographicPreferences,key)&&projection.typographicPreferences[key]===nativeFingerprintTypographicPreferences[key]))delete projection.typographicPreferences
+ if(Array.isArray(projection.customStyles)&&!projection.customStyles.length)delete projection.customStyles
+ if(Array.isArray(projection.footnotes)&&!projection.footnotes.length)delete projection.footnotes
+ return projection
+}
+
+function nativeFingerprintProjection(d){return normalizeNativeFingerprint({direction:d.direction,font:d.font,size:d.size,paper:d.paper,margin:d.margin,pages:JSON.parse(JSON.stringify(d.pages, (k,v)=>['beginIndent','endIndent'].includes(k)&&v===0?undefined:v)),objects:(d.objects||[]).map(({nativeFixedFrame,...object})=>object),baseStyle:d.baseStyle,...(d.settings?.orientation==='landscape'?{orientation:'landscape'}:{}),settings:Object.fromEntries(['paper','paperWidth','paperHeight','margin','marginLeft','marginRight','marginTop','marginBottom','columns','gap','facing','wrap','hyphenation','tabSize','borderWidth','borderColor'].map(k=>[k,d.settings?.[k]])),documentPreferences:d.preferences?.doc,typographicPreferences:d.preferences?.typo,customStyles:d.customStyles,colors:d.colors,footnotes:d.footnotes})}
+export function documentFingerprint(d){return JSON.stringify(nativeFingerprintProjection(d))}
+export function unchangedNative(d){
+ if(!d?.nativeSource?.baseline)return false
+ try{return documentFingerprint(d)===JSON.stringify(normalizeNativeFingerprint(JSON.parse(d.nativeSource.baseline)))}catch{return false}
+}
 
 // Refresh paragraph alignment from a newly decoded native file without
 // replacing other edits in a saved draft. Older imports can have a valid INP
